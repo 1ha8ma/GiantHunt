@@ -5,13 +5,17 @@ class Input
 public:
 	enum InputNumber
 	{
-		Right = 1,//右          0000001
-		Left = 2,//左           0000010
-		Up = 4,//上             0000100
-		Down = 8,//下           0001000
-		BButton = 16,//Bボタン  0010000
-		AButton = 32,//Aボタン　0100000
-		Start = 64,//start      1000000  
+		Right_L = 1,		//右
+		Left_L = 2,			//左
+		Up_L = 4,			//上
+		Down_L = 8,			//下
+		BButton = 16,		//Bボタン
+		AButton = 32,		//Aボタン
+		Start = 64,			//start
+		Right_R = 128,		//右
+		Left_R = 256,		//左
+		Up_R = 512,			//上
+		Down_R = 1024,		//下
 	};
 
 	int GetInputState();

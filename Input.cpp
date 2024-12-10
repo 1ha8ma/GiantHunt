@@ -8,22 +8,26 @@
 int Input::GetInputState()
 {
 	int inputstate = 0;
+	
+	DINPUT_JOYSTATE StickInput;//左スティック入力
+	GetJoypadDirectInputState(DX_INPUT_PAD1, &StickInput);
+	
 
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT) || (CheckHitKey(KEY_INPUT_RIGHT)))//右
+	if (StickInput.X > 0 || (CheckHitKey(KEY_INPUT_RIGHT)))//右
 	{
-		inputstate |= InputNumber::Right;
+		inputstate |= InputNumber::Right_L;
 	}
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT || (CheckHitKey(KEY_INPUT_LEFT)))//左
+	if (StickInput.X < 0 || (CheckHitKey(KEY_INPUT_LEFT)))//左
 	{
-		inputstate |= InputNumber::Left;
+		inputstate |= InputNumber::Left_L;
 	}
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP || (CheckHitKey(KEY_INPUT_UP)))//上
+	if (StickInput.Y < 0 || (CheckHitKey(KEY_INPUT_UP)))//上
 	{
-		inputstate |= InputNumber::Up;
+		inputstate |= InputNumber::Up_L;
 	}
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN || (CheckHitKey(KEY_INPUT_DOWN)))//下
+	if (StickInput.Y > 0 || (CheckHitKey(KEY_INPUT_DOWN)))//下
 	{
-		inputstate |= InputNumber::Down;
+		inputstate |= InputNumber::Down_L;
 	}
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_4 || (CheckHitKey(KEY_INPUT_SPACE)))//Bボタン
 	{
@@ -37,6 +41,23 @@ int Input::GetInputState()
 	{
 		inputstate |= InputNumber::Start;
 	}
+	if (StickInput.Rx > 0)//右
+	{
+		inputstate |= InputNumber::Right_R;
+	}
+	if (StickInput.Rx < 0)//左
+	{
+		inputstate |= InputNumber::Left_R;
+	}
+	if (StickInput.Ry < 0)//上
+	{
+		inputstate |= InputNumber::Up_R;
+	}
+	if (StickInput.Ry > 0)//下
+	{
+		inputstate |= InputNumber::Down_R;
+	}
+
 
 	return inputstate;
 }

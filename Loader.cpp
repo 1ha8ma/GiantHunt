@@ -24,5 +24,13 @@ Loader* Loader::GetInstance()
 /// </summary>
 void Loader::Load()
 {
+	//3D
+	handle[ArmEnemyStage] = MV1LoadModel("3D/ArmEnemyStage.mv1");
+	handle[PlayerModel] = MV1LoadModel("3D/Player.mv1");
 
+	//2D
+
+	//音
+
+	//エフェクト
 }

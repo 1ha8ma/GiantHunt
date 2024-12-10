@@ -10,6 +10,18 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{94f26bf3-893d-433b-9a76-f66f7b24af18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{e82dbe77-87a9-431f-833e-72e553fc7663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{523fe433-8ccb-4907-9cf3-325907fe826a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{481d39b6-1a29-402c-9f7e-204772bb98bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{01dc42d8-b4fe-47db-b0c2-b519bd22e72c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -30,6 +42,24 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBase.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyStage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -49,6 +79,27 @@
     </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionData.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBase.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyStage.h">
+      <Filter>Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

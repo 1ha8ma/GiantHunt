@@ -7,8 +7,9 @@
 /// </summary>
 GameManager::GameManager()
 {
-	//シーン初期化s
+	//シーン初期化
 	nowscene = SceneBase::InitializeBase();
+	nextscene = NULL;
 }
 
 /// <summary>
@@ -26,11 +27,17 @@ void GameManager::Update()
 	}
 }
 
+/// <summary>
+/// 描画
+/// </summary>
 void GameManager::Draw()
 {
 	nowscene->Draw();
 }
 
+/// <summary>
+/// シーン変更
+/// </summary>
 void GameManager::ChangeScene()
 {
 	//現在のシーンを削除
