@@ -16,7 +16,15 @@ public:
 		Left_R = 256,		//左
 		Up_R = 512,			//上
 		Down_R = 1024,		//下
+		L1 = 2048,			//L2
 	};
 
 	int GetInputState();
+
+	DINPUT_JOYSTATE GetStickInput() { GetJoypadDirectInputState(DX_INPUT_PAD1, &stickInput); return stickInput; }
+
+	void Draw();
+
+private:
+	DINPUT_JOYSTATE stickInput;//スティック入力情報
 };

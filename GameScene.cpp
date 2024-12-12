@@ -29,7 +29,7 @@ GameScene::~GameScene()
 /// </summary>
 void GameScene::Initialize()
 {
-
+	camera->Initialize(player->GetPosition());
 }
 
 /// <summary>
@@ -38,8 +38,8 @@ void GameScene::Initialize()
 /// <returns>Ÿ‚ÌƒV[ƒ“</returns>
 SceneBase* GameScene::Update()
 {
-	camera->Update(player->GetPosition(), player->GetAngle());
-	player->Update();
+	camera->Update(player->GetPosition(), player->GetAngle(), VGet(0, 0, 0));
+	player->Update(*camera);
 
 	return this;
 }

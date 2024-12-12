@@ -28,7 +28,7 @@ private:
 
 	static CollisionManager* collisionmanager;//インスタンス
 	
-	std::vector<CapsuleCollisionData*> capsuleCollisionData;//カプセルの当たり判定を行うリスト
+	std::vector<CollisionData*> capsuleCollisionData;//カプセルの当たり判定を行うリスト
 
 	//カプセルどうしの当たり判定
 	bool CapsuleWithCapsule(VECTOR capsuleStart1, VECTOR capsuleEnd1, float capsuleRadius1, VECTOR capsuleStart2, VECTOR capsuleEnd2, float capsuleRadius2);

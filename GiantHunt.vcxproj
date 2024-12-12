@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArmEnemyStage.cpp" />
+    <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="FPS.cpp" />
@@ -143,11 +144,14 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerStateProcessBase.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="StageBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArmEnemyStage.h" />
+    <ClInclude Include="Calculation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
@@ -157,6 +161,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerStateProcessBase.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="StageBase.h" />
     <ClInclude Include="Utility.h" />

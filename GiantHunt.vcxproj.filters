@@ -60,6 +60,15 @@
     <ClCompile Include="ArmEnemyStage.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Calculation.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateProcessBase.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRun.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -100,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="ArmEnemyStage.h">
       <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculation.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateProcessBase.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRun.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

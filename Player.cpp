@@ -1,7 +1,9 @@
 #include"DxLib.h"
 #include"CollisionData.h"
 #include"Loader.h"
-#include"Input.h"
+#include"Camera.h"
+#include"PlayerStateProcessBase.h"
+#include"PlayerRun.h"
 #include"Player.h"
 
 /// <summary>
@@ -12,8 +14,11 @@ Player::Player()
 	Loader* loader = loader->GetInstance();
 
 	modelHandle = loader->GetHandle(Loader::Kind::PlayerModel);
-	position = VGet(0.0f, 200.0f, 0.0f);
+	position = VGet(0.0f, 0.0f, 0.0f);
 	angle = 0.0f;
+
+	nowstate = new PlayerRun(modelHandle);
+	nextstate = NULL;
 
 	MV1SetPosition(modelHandle, position);
 }
@@ -29,10 +34,25 @@ void Player::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update()
+void Player::Update(const Camera& camera)
 {
-	Move();
+	nextstate = nowstate->Update(camera);
+
+	//移動
+	moveVec = nowstate->GetmoveVec();
+	position = VAdd(position, moveVec);
+
+	//角度更新
+	targetLookDirection = nowstate->GettargetLookDirection();
 	UpdateAngle();
+
+	MV1SetPosition(modelHandle, position);
+
+	//次のステートが違えば変更
+	if (nextstate != nowstate)
+	{
+		ChangeState();
+	}
 }
 
 /// <summary>
@@ -41,45 +61,8 @@ void Player::Update()
 void Player::Draw()
 {
 	MV1DrawModel(modelHandle);
-
-	DrawFormatString(100, 100, GetColor(128, 127, 128), "X:%d Y:%d Z:%d", position.x, position.y, position.z);
-}
-
-/// <summary>
-/// 移動
-/// </summary>
-void Player::Move()
-{
-	moveVec = VGet(0, 0, 0);
-
-	if ((Input::InputNumber::Right_L & input->GetInputState()) == Input::InputNumber::Right_L)
-	{
-		moveVec = VAdd(moveVec, VGet(1.0f, 0.0f, 0.0f));
-	}
-	if ((Input::InputNumber::Left_L & input->GetInputState()) == Input::InputNumber::Left_L)
-	{
-		moveVec = VAdd(moveVec, VGet(-1.0f, 0.0f, 0.0f));
-	}
-	if ((Input::InputNumber::Up_L & input->GetInputState()) == Input::InputNumber::Up_L)
-	{
-		moveVec = VAdd(moveVec, VGet(0.0f, 0.0f, 1.0f));
-	}
-	if ((Input::InputNumber::Down_L & input->GetInputState()) == Input::InputNumber::Down_L)
-	{
-		moveVec = VAdd(moveVec, VGet(0.0f, 0.0f, -1.0f));
-	}
-
-	targetLookDirection = moveVec;
-
-	//移動量
-	if (VSize(moveVec) > 0)
-	{
-		moveVec = VNorm(moveVec);
-	}
-	moveVec = VScale(moveVec, Speed);
-
-	position = VAdd(position, moveVec);
-	MV1SetPosition(modelHandle, position);
+	nowstate->Draw();
+	//DrawFormatString(100, 100, GetColor(127, 255, 0), "X:%d Y:%d Z:%d", position.x, position.y, position.z);
 }
 
 /// <summary>
@@ -128,6 +111,19 @@ void Player::UpdateAngle()
 
 	//モデルの角度を更新
 	angle = targetAngle - difference;
+	
 
 	MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
+}
+
+/// <summary>
+/// ステート変更
+/// </summary>
+void Player::ChangeState()
+{
+	delete nowstate;
+
+	nowstate = nextstate;
+	
+	nextstate = NULL;
 }

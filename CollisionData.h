@@ -2,13 +2,6 @@
 #include<functional>
 #include"DxLib.h"
 
-struct CapsuleCollisionData;
-
-class HitObjectAddress
-{
-
-};
-
 //オブジェクトの種類
 enum ObjectTag
 {
@@ -55,6 +48,4 @@ struct CollisionData
 
 	std::function<void(CollisionData)> onHit;   //当たった時に行われる処理
 	bool isCollisionActive;						//当たり判定を適用させたいかどうか
-
-	HitObjectAddress* objectAddress;
 };
