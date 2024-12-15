@@ -69,6 +69,12 @@
     <ClCompile Include="PlayerRun.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerJump.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerNormalAttack.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -117,6 +123,12 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerRun.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJump.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerNormalAttack.h">
       <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>

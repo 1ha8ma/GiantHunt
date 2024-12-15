@@ -2,8 +2,11 @@
 #include"CollisionData.h"
 #include"Loader.h"
 #include"Camera.h"
+#include"Input.h"
 #include"PlayerStateProcessBase.h"
 #include"PlayerRun.h"
+#include"PlayerJump.h"
+#include"PlayerNormalAttack.h"
 #include"Player.h"
 
 /// <summary>
@@ -17,8 +20,11 @@ Player::Player()
 	position = VGet(0.0f, 0.0f, 0.0f);
 	angle = 0.0f;
 
-	nowstate = new PlayerRun(modelHandle);
-	nextstate = NULL;
+	nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	input = new Input();
+	nowstateKind = State::Run;
+
+	onGround = true;
 
 	MV1SetPosition(modelHandle, position);
 }
@@ -36,23 +42,29 @@ void Player::Initialize()
 /// </summary>
 void Player::Update(const Camera& camera)
 {
-	nextstate = nowstate->Update(camera);
+	//入力
+	inputstate = input->GetInputState();
+	stickstate = input->GetStickInput();
+
+	//入力によってステート変更
+	ChangeState();
+
+	//ステート更新
+	changeStateflg = nowstate->Update(inputstate, stickstate, camera);
 
 	//移動
 	moveVec = nowstate->GetmoveVec();
 	position = VAdd(position, moveVec);
 
+	//足がついているか確認
+	CheckOnGround();
+
 	//角度更新
 	targetLookDirection = nowstate->GettargetLookDirection();
 	UpdateAngle();
 
+	//ポジション反映
 	MV1SetPosition(modelHandle, position);
-
-	//次のステートが違えば変更
-	if (nextstate != nowstate)
-	{
-		ChangeState();
-	}
 }
 
 /// <summary>
@@ -61,8 +73,6 @@ void Player::Update(const Camera& camera)
 void Player::Draw()
 {
 	MV1DrawModel(modelHandle);
-	nowstate->Draw();
-	//DrawFormatString(100, 100, GetColor(127, 255, 0), "X:%d Y:%d Z:%d", position.x, position.y, position.z);
 }
 
 /// <summary>
@@ -121,9 +131,41 @@ void Player::UpdateAngle()
 /// </summary>
 void Player::ChangeState()
 {
-	delete nowstate;
+	//ジャンプ
+	if (nowstateKind != State::Jump && nowstateKind != State::NormalAttack && (Input::InputNumber::AButton & inputstate) == Input::InputNumber::AButton)
+	{
+		delete nowstate;
+		onGround = false;
+		nowstateKind = State::Jump;
+		nowstate = new PlayerJump(modelHandle, moveVec);
+	}
 
-	nowstate = nextstate;
-	
-	nextstate = NULL;
+	//走る
+	if (nowstateKind == State::Jump && onGround ||
+		nowstateKind == State::NormalAttack && changeStateflg)
+	{
+		delete nowstate;
+		nowstateKind = State::Run;
+		nowstate = new PlayerRun(modelHandle, targetLookDirection);
+	}
+
+	//通常攻撃
+	if (nowstateKind != State::NormalAttack && nowstateKind != State::Jump && (Input::InputNumber::BButton & inputstate) == Input::InputNumber::BButton)
+	{
+		delete nowstate;
+		nowstateKind = State::NormalAttack;
+		nowstate = new PlayerNormalAttack(modelHandle, targetLookDirection);
+	}
+}
+
+/// <summary>
+/// 足がついているか確認
+/// </summary>
+void Player::CheckOnGround()
+{
+	if (position.y <= 0.0f)
+	{
+		onGround = true;
+		position.y = 0.0f;
+	}
 }

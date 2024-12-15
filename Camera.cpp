@@ -39,36 +39,46 @@ void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
 {
 	//注視点移動
 	bool inputflg = false;
-	if ((Input::InputNumber::Right_R & input->GetInputState()) == Input::InputNumber::Right_R)
+	DINPUT_JOYSTATE stickinput = input->GetStickInput();//スティック入力情報
+
+	//右
+	if (stickinput.Rx > 0.0f)
 	{
 		angleH += AngleSpeed;
+		//180度を超えたら戻す
 		if (angleH > DX_PI_F)
 		{
 			angleH -= DX_PI_F;
 		}
 		inputflg = true;
 	}
-	if ((Input::InputNumber::Left_R & input->GetInputState()) == Input::InputNumber::Left_R)
+	//左
+	if (stickinput.Rx < 0.0f)
 	{
 		angleH -= AngleSpeed;
+		//-180度を超えたら戻す
 		if (angleH < -DX_PI_F)
 		{
 			angleH -= DX_TWO_PI_F;
 		}
 		inputflg = true;
 	}
-	if ((Input::InputNumber::Up_R & input->GetInputState()) == Input::InputNumber::Up_R)
+	//上
+	if (stickinput.Ry < 0.0f)
 	{
 		angleV -= AngleSpeed;
+		//上限
 		if (angleV < -DX_PI_F / 8)
 		{
 			angleV = -DX_PI_F / 8;
 		}
 		inputflg = true;
 	}
-	if ((Input::InputNumber::Down_R & input->GetInputState()) == Input::InputNumber::Down_R)
+	//下
+	if (stickinput.Ry > 0.0f)
 	{
 		angleV += AngleSpeed;
+		//上限
 		if (angleV > DX_PI_F / 2 - 0.6f)
 		{
 			angleV = DX_PI_F / 2 - 0.6f;

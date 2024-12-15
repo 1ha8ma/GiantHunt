@@ -144,6 +144,8 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerJump.cpp" />
+    <ClCompile Include="PlayerNormalAttack.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
     <ClCompile Include="PlayerStateProcessBase.cpp" />
     <ClCompile Include="SceneBase.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerJump.h" />
+    <ClInclude Include="PlayerNormalAttack.h" />
     <ClInclude Include="PlayerRun.h" />
     <ClInclude Include="PlayerStateProcessBase.h" />
     <ClInclude Include="SceneBase.h" />

@@ -9,10 +9,7 @@ public:
 	//初期化
 	virtual void Initialize() abstract;
 	//更新
-	virtual PlayerStateProcessBase* Update(const Camera& camera) abstract;
-
-	//NOTE:確認のためだけ別にいらない
-	virtual void Draw()abstract;
+	virtual bool Update(int inputstate, DINPUT_JOYSTATE stickstate,const Camera& camera) abstract;
 
 	//Get,Set
 	VECTOR GetmoveVec() { return moveVec; }
@@ -22,11 +19,18 @@ protected:
 	//アニメーション番号
 	enum PlayerAnimationNumber
 	{
-		Run,
+		Run,			//走る
+		Jump,			//ジャンプ
+		NormalAttack,	//通常攻撃
+		Climb,			//登り
 	};
 	
 	//アニメーション再生
 	void PlayAnimation(float playSpeed,bool stop);
+	//アニメーション再生(1回のみ)
+	bool PlayAnimationOnce(float playSpeed);
+	//アニメーション逆再生
+	bool ReversePlaybackAnimation(float playSpeed, float backPoint);
 	//アニメーションの終了
 	void DetachAnimation(int attachIndex);
 

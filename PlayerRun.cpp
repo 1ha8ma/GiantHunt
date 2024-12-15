@@ -1,20 +1,20 @@
 #include<math.h>
 #include"DxLib.h"
-#include"Input.h"
 #include"Camera.h"
 #include"PlayerRun.h"
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PlayerRun::PlayerRun(int modelHandle):PlayerStateProcessBase(modelHandle)
+/// <param name="modelHandle">モデルハンドル</param>
+PlayerRun::PlayerRun(int modelHandle,VECTOR prevtargetLookDirection):PlayerStateProcessBase(modelHandle)
 {
 	//アニメーションアタッチ
 	nowPlayAnim = MV1AttachAnim(modelHandle, PlayerAnimationNumber::Run);
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
-	input = new Input();
+	targetLookDirection = prevtargetLookDirection;
 }
 
 /// <summary>
@@ -28,50 +28,52 @@ PlayerRun::~PlayerRun()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="cameralookAngleXZ">カメラの平面角度</param>
-/// <returns>次のステート</returns>
-PlayerStateProcessBase* PlayerRun::Update(const Camera& camera)
+/// <param name="inputstate">入力情報</param>
+/// <param name="stickstate">スティック入力情報</param>
+/// <param name="camera">カメラ</param>
+bool PlayerRun::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera)
 {
-	Move(camera);
+	//移動処理
+	Move(inputstate, stickstate, camera);
+	//アニメーション再生
 	PlayAnimation(0.4f,!moveflg);
 
-	return this;
+	return false;
 }
 
 /// <summary>
 /// 移動処理
 /// </summary>
-/// <param name="cameralookAngleXZ"></param>
-void PlayerRun::Move(Camera camera)
+/// <param name="inputstate">入力情報</param>
+/// <param name="stickstate">スティック入力情報</param>
+/// <param name="camera">カメラ</param>
+void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera)
 {
-	moveVec = VGet(0, 0, 0);
+	//初期化
+	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	moveflg = false;
 
 	//左スティックの角度を取る
-	float inputX = input->GetStickInput().X;
-	float inputY = -input->GetStickInput().Y;
+	float stickX = stickstate.X;
+	float stickY = -stickstate.Y;
 
 	//入力があれば
-	if (!inputX == 0 || !inputY == 0)
+	if (!stickX == 0.0f || !stickY == 0.0f)
 	{
-		float ang = atan2(inputY, inputX);
+		float stickAngle = atan2(stickY, stickX);
 
-		moveVec.x = cos(ang + -camera.GetangleH());
-		moveVec.z = sin(ang + -camera.GetangleH());
+		moveVec.x = cos(stickAngle + -camera.GetangleH());
+		moveVec.z = sin(stickAngle + -camera.GetangleH());
 
 		moveflg = true;
 		targetLookDirection = moveVec;
 	}
 
-	//移動量
+	//正規化
 	if (VSize(moveVec) > 0)
 	{
 		moveVec = VNorm(moveVec);
 	}
+	//スピード加算
 	moveVec = VScale(moveVec, Speed);
-}
-
-void PlayerRun::Draw()
-{
-	input->Draw();
 }
