@@ -8,22 +8,30 @@
 int Input::GetInputState()
 {
 	int inputstate = 0;
-	
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2 || (CheckHitKey(KEY_INPUT_SPACE)))
-	{
-		inputstate |= InputNumber::BButton;
-	}
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1 || (CheckHitKey(KEY_INPUT_A)))
+
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1)
 	{
 		inputstate |= InputNumber::AButton;
 	}
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_12 || (CheckHitKey(KEY_INPUT_S)))
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)
 	{
-		inputstate |= InputNumber::Start;
+		inputstate |= InputNumber::BButton;
+	}
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_3)
+	{
+		inputstate |= InputNumber::XButton;
 	}
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)
 	{
 		inputstate |= InputNumber::L1;
+	}
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)
+	{
+		inputstate |= InputNumber::R1;
+	}
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_8)
+	{
+		inputstate |= InputNumber::Start;
 	}
 
 	return inputstate;

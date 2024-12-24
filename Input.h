@@ -5,14 +5,17 @@ class Input
 public:
 	enum InputNumber
 	{
-		BButton = 1,		//Bボタン
-		AButton = 2,		//Aボタン
-		Start = 4,			//start
-		L1 = 8,			//L2
+		AButton = 1,		//Aボタン
+		BButton = 2,		//Bボタン
+		XButton = 4,		//Xボタン
+		Start = 8,			//start
+		L1 = 16,			//L1
+		R1 = 32,			//R1
 	};
 
+	//ボタン入力
 	int GetInputState();
-
+	//スティック入力
 	DINPUT_JOYSTATE GetStickInput() { GetJoypadDirectInputState(DX_INPUT_PAD1, &stickInput); return stickInput; }
 
 private:

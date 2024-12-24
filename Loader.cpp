@@ -27,6 +27,9 @@ void Loader::Load()
 	//3D
 	handle[ArmEnemyStage] = MV1LoadModel("3D/ArmEnemyStage.mv1");
 	handle[PlayerModel] = MV1LoadModel("3D/Player.mv1");
+	handle[WallModel] = MV1LoadModel("3D/Wall.mv1");
+	handle[ArmEnemyModel] = MV1LoadModel("3D/monster.mv1");
+	handle[WoodModel] = MV1LoadModel("3D/Wood.mv1");
 
 	//2D
 

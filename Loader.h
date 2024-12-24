@@ -13,6 +13,7 @@ public:
 		ArmEnemyModel,		//腕の敵
 		WallModel,			//壁
 		BossEnemyModel,		//ボス
+		WoodModel,			//木
 		ArmEnemyStage,		//腕の敵戦ステージ
 		BossEnemyStage,		//ボス戦ステージ
 

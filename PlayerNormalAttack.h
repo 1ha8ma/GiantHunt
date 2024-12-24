@@ -10,7 +10,7 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
-	bool Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera)override;
+	bool Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)override;
 
 private:
 	bool stateChangeflg;	//ステート変更フラグ

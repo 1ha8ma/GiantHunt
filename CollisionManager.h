@@ -1,4 +1,5 @@
 #pragma once
+#include"CollisionData.h"
 #include<vector>
 
 class CollisionManager final
@@ -11,24 +12,21 @@ public:
 	//更新
 	void Update();
 
-	//インスタンス作製
-	static void CreateInstance();
-
 	//インスタンスゲット
 	static CollisionManager* GetInstance();
 
 	//インスタンス削除
 	static void DeleteInstance();
 
-	//当たり判定情報読み込み
-	static void RegisterCollisionData(CollisionData data);
+	//当たり判定情報追加
+	static void AddCollisionData(CollisionData* data);
 
 private:
 	CollisionManager();
 
-	static CollisionManager* collisionmanager;//インスタンス
-	
-	std::vector<CollisionData*> capsuleCollisionData;//カプセルの当たり判定を行うリスト
+	static CollisionManager* collisionManager;				//インスタンス
+
+	static std::vector<CollisionData*> collisionDataList;	//当たり判定情報リスト
 
 	//カプセルどうしの当たり判定
 	bool CapsuleWithCapsule(VECTOR capsuleStart1, VECTOR capsuleEnd1, float capsuleRadius1, VECTOR capsuleStart2, VECTOR capsuleEnd2, float capsuleRadius2);

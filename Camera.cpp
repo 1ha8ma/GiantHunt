@@ -35,7 +35,9 @@ void Camera::Initialize(VECTOR playerPosition)
 /// <summary>
 /// 更新
 /// </summary>
-void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
+/// <param name="playerPosition">プレイヤーポジション</param>
+/// <param name="targetCameraPosition">ターゲットカメラポジション</param>
+void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
 {
 	//注視点移動
 	bool inputflg = false;
@@ -48,7 +50,7 @@ void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
 		//180度を超えたら戻す
 		if (angleH > DX_PI_F)
 		{
-			angleH -= DX_PI_F;
+			angleH -= DX_TWO_PI_F;
 		}
 		inputflg = true;
 	}
@@ -59,7 +61,7 @@ void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
 		//-180度を超えたら戻す
 		if (angleH < -DX_PI_F)
 		{
-			angleH -= DX_TWO_PI_F;
+			angleH += DX_TWO_PI_F;
 		}
 		inputflg = true;
 	}
@@ -94,7 +96,7 @@ void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
 			t = 0;
 			lerpflg = true;
 		}
-		lookTargetPos = enemyPosition;
+		lookTargetPos = targetCameraPosition;
 
 		lookPosition = Calculation::Lerp(lookTargetPos, lookPosition, 0.01, t);
 	}
@@ -120,7 +122,7 @@ void Camera::Update(VECTOR playerPosition, float angle, VECTOR enemyPosition)
 
 	//0基準→プレイヤーとの距離分X軸方向にずらす→Z軸回転で高くする→Y軸回転で場所移動→プレイヤーのY座標を高くしたものを足す
 	//NOTE:最後プレイヤーのY座標を高くしたものを足すようにしたのはlookPositionを足すとターゲットカメラにしたときにターゲットの場所に移動してしまうから
-	MATRIX rotY = MGetRotY(angleH + DX_PI_F / 2);//XXX:90度足さなければ後ろからではなく横から見えるようになった
+	MATRIX rotY = MGetRotY(angleH + DX_PI_F / 2);
 	MATRIX rotZ = MGetRotZ(angleV);
 	position = VAdd(VTransform(VTransform(VGet(PlayerDistance, 0.0f, 0.0f), rotZ), rotY), VAdd(playerPosition, VGet(0.0f, CameraPlayerTargetHeight, 0.0f)));
 

@@ -12,6 +12,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetGraphMode(SCREEN_W, SCREEN_H, 32);
 	SetWaitVSyncFlag(FALSE);//垂直同期
 	ChangeWindowMode(TRUE);//FASLE 大　TRUE 小
+	//ライティング処理使用設定
+	SetUseLighting(FALSE);
 
 	//ライブラリ初期化
 	SetUseDirect3DVersion(DX_DIRECT3D_11);

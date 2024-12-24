@@ -10,7 +10,7 @@ public:
 	//‰Šú‰»
 	void Initialize(VECTOR playerpos);
 	//XV
-	void Update(VECTOR playerPosition,float lookAngle,VECTOR enemyPosition);
+	void Update(VECTOR playerPosition,VECTOR targetCameraPosition);
 
 	float GetangleH() { return angleH; }
 	float GetangleV() { return angleV; }

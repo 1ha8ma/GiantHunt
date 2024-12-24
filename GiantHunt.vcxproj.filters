@@ -22,6 +22,24 @@
     <Filter Include="Stage">
       <UniqueIdentifier>{01dc42d8-b4fe-47db-b0c2-b519bd22e72c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stage\ArmEnemyStage">
+      <UniqueIdentifier>{05023824-00f9-4258-be6f-32c9e1b19835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\PlayerState">
+      <UniqueIdentifier>{5f8b8471-6663-43f5-b112-003aa71c0eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{babc3fb7-50ae-4c50-a3f5-5f886417a7ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Base">
+      <UniqueIdentifier>{ba7e3ba5-4272-44ae-8ff5-0f29de3298aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\PlayerState\Base">
+      <UniqueIdentifier>{32d0524f-931c-4e9c-903b-e7421e16df28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\ArmEnemy">
+      <UniqueIdentifier>{b0cf87fc-2421-4baf-ad44-d23b86eeb492}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -54,26 +72,38 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="StageBase.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="ArmEnemyStage.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Calculation.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStateProcessBase.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerRun.cpp">
-      <Filter>Player</Filter>
+    <ClCompile Include="ArmEnemyStage.cpp">
+      <Filter>Stage\ArmEnemyStage</Filter>
     </ClCompile>
     <ClCompile Include="PlayerJump.cpp">
-      <Filter>Player</Filter>
+      <Filter>Player\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="PlayerNormalAttack.cpp">
-      <Filter>Player</Filter>
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRun.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBase.cpp">
+      <Filter>Stage\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateProcessBase.cpp">
+      <Filter>Player\PlayerState\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemy.cpp">
+      <Filter>Enemy\ArmEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Wood.cpp">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerClimb.cpp">
+      <Filter>Player\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,32 +134,44 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="StageBase.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="ArmEnemyStage.h">
-      <Filter>Stage</Filter>
     </ClInclude>
     <ClInclude Include="Calculation.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateProcessBase.h">
-      <Filter>Player</Filter>
+    <ClInclude Include="ArmEnemyStage.h">
+      <Filter>Stage\ArmEnemyStage</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRun.h">
+    <ClInclude Include="Player.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerJump.h">
-      <Filter>Player</Filter>
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="PlayerNormalAttack.h">
-      <Filter>Player</Filter>
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRun.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBase.h">
+      <Filter>Stage\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateProcessBase.h">
+      <Filter>Player\PlayerState\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemy.h">
+      <Filter>Enemy\ArmEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Wood.h">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerClimb.h">
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

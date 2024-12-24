@@ -45,7 +45,7 @@ void PlayerNormalAttack::Initialize()
 /// <param name="inputstate">入力情報</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerNormalAttack::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera)
+bool PlayerNormalAttack::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
 {
 	if (!animEndflg)//再生
 	{
@@ -56,6 +56,7 @@ bool PlayerNormalAttack::Update(int inputstate, DINPUT_JOYSTATE stickstate, cons
 		stateChangeflg = ReversePlaybackAnimation(0.4f, 0.6);
 	}
 
+	//移動はしない
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 
 	return stateChangeflg;

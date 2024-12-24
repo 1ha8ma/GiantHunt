@@ -43,7 +43,7 @@ void PlayerJump::Initialize()
 /// <param name="inputstate">入力情報</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerJump::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera)
+bool PlayerJump::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
 {
 	Move();
 	//アニメーション再生
@@ -67,7 +67,4 @@ void PlayerJump::Move()
 	moveVec.y += jumpPower;
 
 	targetLookDirection = moveVec;
-
-	//ジャンプの高さを低下
-	jumpPower -= Gravity;
 }

@@ -1,6 +1,10 @@
 #include"DxLib.h"
 #include"Camera.h"
+#include"CollisionManager.h"
+#include"ArmEnemy.h"
 #include"ArmEnemyStage.h"
+#include"Wall.h"
+#include"Wood.h"
 #include"Player.h"
 #include"GameScene.h"
 
@@ -11,8 +15,12 @@ GameScene::GameScene()
 {
 	//インスタンス化
 	camera = new Camera();
+	collisionManager = collisionManager->GetInstance();
 	armEnemyStage = new ArmEnemyStage();
 	player = new Player();
+	wall = new Wall();
+	armEnemy = new ArmEnemy();
+	wood = new Wood();
 }
 
 /// <summary>
@@ -21,7 +29,12 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	delete camera;
+	delete collisionManager;
 	delete armEnemyStage;
+	delete player;
+	delete wall;
+	delete armEnemy;
+	delete wood;
 }
 
 /// <summary>
@@ -30,6 +43,7 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	camera->Initialize(player->GetPosition());
+	collisionManager->Initialize();
 }
 
 /// <summary>
@@ -38,8 +52,11 @@ void GameScene::Initialize()
 /// <returns>次のシーン</returns>
 SceneBase* GameScene::Update()
 {
-	camera->Update(player->GetPosition(), player->GetAngle(), VGet(0, 0, 0));
+	camera->Update(player->GetPosition(), VGet(2000.0f, 2000.0f, 6550.0f));
 	player->Update(*camera);
+
+	//当たり判定
+	collisionManager->Update();
 
 	return this;
 }
@@ -50,5 +67,8 @@ SceneBase* GameScene::Update()
 void GameScene::Draw()
 {
 	armEnemyStage->Draw();
+	wall->Draw();
+	wood->Draw();
 	player->Draw();
+	armEnemy->Draw();
 }
