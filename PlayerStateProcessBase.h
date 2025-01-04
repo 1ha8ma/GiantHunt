@@ -17,12 +17,21 @@ public:
 	/// <param name="stickstate">スティック入力情報</param>
 	/// <param name="camera">カメラ</param>
 	/// <returns>ステートからのステート変更指示</returns>
-	virtual bool Update(int inputstate, DINPUT_JOYSTATE stickstate,const Camera& camera,VECTOR objectCapsuleStart,VECTOR objectCapsuleEnd) abstract;
+	virtual bool Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate,const Camera& camera,VECTOR objectCapsuleStart,VECTOR objectCapsuleEnd) abstract;
+
+	//走っている場所
+	enum class RunPlaceKind :int
+	{
+		air,		//空中
+		ground,		//地面上
+		capsule,	//カプセル上
+	};
 
 	//Get,Set
 	VECTOR GetmoveVec() { return moveVec; }
 	VECTOR GettargetLookDirection() { return targetLookDirection; }
-	void SetRunPlace(bool place) { runPlace = place; }
+	void SetRunPlace(RunPlaceKind place) { runPlace = place; }
+
 
 protected:
 	//アニメーション番号
@@ -33,8 +42,6 @@ protected:
 		NormalAttack,	//通常攻撃
 		Climb,			//登り
 	};
-
-
 	
 	//アニメーション再生
 	void PlayAnimation(float playSpeed,bool stop);
@@ -54,5 +61,5 @@ protected:
 	//移動
 	VECTOR moveVec;				//移動ベクトル
 	VECTOR targetLookDirection;	//目標角度
-	bool runPlace;				//走っている場所　false:地面 true:カプセル上
+	RunPlaceKind runPlace;				//走っている場所　false:地面 true:カプセル上
 };

@@ -3,10 +3,12 @@
 class Calculation
 {
 public:
-	//線形補間
-	static VECTOR Lerp(VECTOR targetPos, VECTOR nowPos,float speed,float &t);
-	
-private:
-	
+	Calculation() {};
+	~Calculation() {};
 
+	//線形補間
+	VECTOR Lerp(VECTOR targetPos, VECTOR nowPos, float speed, float& t);
+	
+	//ロドリゲスの回転公式
+	VECTOR RodriguesRotationFormula(VECTOR shaft, float angle, VECTOR prevVec);
 };

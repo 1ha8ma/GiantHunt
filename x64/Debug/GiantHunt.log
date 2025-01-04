@@ -1,13 +1,6 @@
-﻿  PlayerRun.cpp
+﻿  ArmEnemy.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(59,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(60,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(65,20): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(67,18): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(68,18): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(102,56): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(103,55): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(105,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(113,20): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(114,26): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  GameScene.cpp
+C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
   GiantHunt.vcxproj -> C:\Users\hamar\Desktop\GiantHunt\x64\Debug\GiantHunt.exe

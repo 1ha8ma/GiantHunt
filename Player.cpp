@@ -5,7 +5,6 @@
 #include"Input.h"
 #include"CollisionManager.h"
 #include"CollisionData.h"
-#include"PlayerStateProcessBase.h"
 #include"PlayerRun.h"
 #include"PlayerJump.h"
 #include"PlayerNormalAttack.h"
@@ -32,10 +31,11 @@ Player::Player()
 	//private変数初期化
 	onGround = true;
 	isCatch = false;
+	isStand = false;
 	fallSpeed = 0.0f;
 	hitObjectCapStart = VGet(0.0f, 0.0f, 0.0f);
 	hitObjectCapEnd = VGet(0.0f, 0.0f, 0.0f);
-	runPlace = false;
+	runPlace = PlayerStateProcessBase::RunPlaceKind::ground;
 
 	//当たり判定
 	//衝突後の処理を渡す
@@ -77,7 +77,7 @@ void Player::Update(const Camera& camera)
 	ChangeState();
 
 	//ステート更新
-	changeStateflg = nowstate->Update(inputstate, stickstate, camera, hitObjectCapStart, hitObjectCapEnd);
+	changeStateflg = nowstate->Update(position, inputstate, stickstate, camera, hitObjectCapStart, hitObjectCapEnd);
 
 	//移動
 	moveVec = nowstate->GetmoveVec();
@@ -103,6 +103,7 @@ void Player::Update(const Camera& camera)
 
 	//フラグ初期化
 	isCatch = false;
+	isStand = false;
 }
 
 /// <summary>
@@ -122,46 +123,30 @@ void Player::Draw()
 /// <param name="hitObjectData">衝突したもの</param>
 void Player::OnHitObject(CollisionData hitObjectData)
 {
-	VECTOR difference;
-	float distance;
-
-	//hitObjectCapStart = hitObjectData.startPosition;
-	//hitObjectCapEnd = hitObjectData.endPosition;
+	hitObjectCapStart = hitObjectData.startPosition;
+	hitObjectCapEnd = hitObjectData.endPosition;
 
 	//衝突したオブジェクトごとに処理を変更
-	switch (hitObjectData.tag)
-	{
-	case ObjectTag::Attack_E1:
-	{
-		//HP減少
-		HP -= hitObjectData.attackPower;
-	}
-	break;
-	case ObjectTag::Attack_E2:
+	//敵の攻撃
+	if (hitObjectData.tag == ObjectTag::Attack_E1 ||
+		hitObjectData.tag == ObjectTag::Attack_E2)
 	{
 		//HP減少
 		HP -= hitObjectData.attackPower;
 	}
-	case ObjectTag::Wood1:
+
+	//カプセル
+	if (hitObjectData.tag == ObjectTag::Wood1 || hitObjectData.tag == ObjectTag::Wood2 ||	//木
+		hitObjectData.tag == ObjectTag::Upperarm_E1 || hitObjectData.tag == ObjectTag::Forearm_E1 || hitObjectData.tag == ObjectTag::Hand_E1)	//腕の敵
 	{
-		//printfDx("wood1hit");
-		CollisionPushBack(hitObjectData);
-		hitObjectCapStart = hitObjectData.startPosition;
-		hitObjectCapEnd = hitObjectData.endPosition;
+		if (nowstateKind != State::Climb)
+		{
+			CollisionPushBack(hitObjectData);
+		}
+		//オブジェクトの半分より上にいたら
+
 		isCatch = true;
-		runPlace = true;
-	}
-	break;
-	case ObjectTag::Wood2:
-	{
-		//printfDx("wood2hit");
-		CollisionPushBack(hitObjectData);
-		hitObjectCapStart = hitObjectData.startPosition;
-		hitObjectCapEnd = hitObjectData.endPosition;
-		isCatch = true;
-		runPlace = true;
-	}
-	break;
+		runPlace= PlayerStateProcessBase::RunPlaceKind::capsule;
 	}
 }
 
@@ -282,6 +267,7 @@ void Player::CheckOnGround()
 	if (position.y > 0.0f && !isCatch)
 	{
 		onGround = false;
+		runPlace = PlayerStateProcessBase::RunPlaceKind::air;
 	}
 
 	//足がついていなければ落下
@@ -297,7 +283,7 @@ void Player::CheckOnGround()
 	//下まで行かないように
 	if (position.y < 0.0f)
 	{
-		runPlace = false;
+		runPlace = PlayerStateProcessBase::RunPlaceKind::ground;
 		position.y = 0.0f;
 	}
 }

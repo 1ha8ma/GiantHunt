@@ -1,6 +1,7 @@
 #pragma once
 
 class Input;
+class Calculation;
 
 class Camera
 {
@@ -25,6 +26,7 @@ private:
 
 	//他クラス
 	Input* input;
+	Calculation* calculation;
 
 	VECTOR position;		//ポジション
 	VECTOR lookPosition;	//注視点

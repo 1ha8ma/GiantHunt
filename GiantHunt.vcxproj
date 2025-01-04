@@ -134,10 +134,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArmEnemy.cpp" />
+    <ClCompile Include="ArmEnemyMove.cpp" />
     <ClCompile Include="ArmEnemyStage.cpp" />
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="EnemyParts.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -157,11 +159,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArmEnemy.h" />
+    <ClInclude Include="ArmEnemyMove.h" />
     <ClInclude Include="ArmEnemyStage.h" />
     <ClInclude Include="Calculation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="EnemyParts.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameScene.h" />

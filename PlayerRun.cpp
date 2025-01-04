@@ -14,7 +14,7 @@ PlayerRun::PlayerRun(int modelHandle,VECTOR prevtargetLookDirection):PlayerState
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
-	runPlace = false;
+	runPlace = RunPlaceKind::ground;
 
 	targetLookDirection = prevtargetLookDirection;
 }
@@ -33,7 +33,7 @@ PlayerRun::~PlayerRun()
 /// <param name="inputstate">入力情報</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerRun::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
+bool PlayerRun::Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
 {
 	//移動処理
 	Move(inputstate, stickstate, camera, objectCapsuleStart, objectCapsuleEnd);
@@ -60,7 +60,7 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 	float stickY = -stickstate.Y;
 
 	//入力があれば
-	if (stickX != 0.0f || stickY != 0.0f)
+	if ((stickX != 0.0f || stickY != 0.0f))
 	{
 		float stickAngle = atan2(stickY, stickX);
 
@@ -79,8 +79,8 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 	//スピード加算
 	moveVec = VScale(moveVec, Speed);
 
-	//もし斜めを歩いていたらベクトルの向きを変更
-	if (runPlace)
+	//カプセルを歩いていたらベクトルの向きを変更
+	if (runPlace == RunPlaceKind::capsule)
 	{
 		//対象カプセルの軸を取る
 		VECTOR shaft = VSub(objectCapsuleStart, objectCapsuleEnd);
@@ -98,7 +98,7 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 			underY = objectCapsuleStart.y;
 		}
 
-		//角度をとる
+		//カプセルの水平との角度をとる
 		float cal1 = sqrtf(pow(shaft.x, 2) + pow(shaft.y, 2) + pow(shaft.z, 2));//カプセルのベクトル
 		float cal2 = sqrtf(pow(shaft.x, 2) + pow(underY, 2) + pow(shaft.z, 2));//Y座標をカプセルの下にしたベクトル
 		float cosTheta = VDot(shaft, VGet(shaft.x, underY, shaft.z)) / (cal1 * cal2);
@@ -110,7 +110,7 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 		float horizonLen = sqrt(pow(moveVec.x, 2) + pow(moveVec.z, 2));
 		//y座標変更
 		moveVec.y = sin(angle) * horizonLen;
-		
+
 		if (VSize(moveVec) > 0)
 		{
 			targetLookDirection = moveVec;

@@ -86,6 +86,20 @@ void CollisionManager::Update()
 						data2.HitProcess(data1);
 					}
 				}
+
+				//ƒvƒŒƒCƒ„[‚Æ˜r‚Ì“G
+				if (data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Forearm_E1 ||
+					data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Upperarm_E1 ||
+					data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Hand_E1)
+				{
+					bool hit = CapsuleWithCapsule(data1.startPosition, data1.endPosition, data1.radius, data2.startPosition, data2.endPosition, data2.radius);
+
+					if (hit)
+					{
+						data1.HitProcess(data2);
+						data2.HitProcess(data1);
+					}
+				}
 			}
 		}
 	}

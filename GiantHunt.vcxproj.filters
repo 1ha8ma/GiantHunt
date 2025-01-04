@@ -40,6 +40,12 @@
     <Filter Include="Enemy\ArmEnemy">
       <UniqueIdentifier>{b0cf87fc-2421-4baf-ad44-d23b86eeb492}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\Parts">
+      <UniqueIdentifier>{af483a1b-fa65-44d1-8b97-c0896ede0d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\ArmEnemy\Move">
+      <UniqueIdentifier>{199d26dd-b321-4bac-9570-47f536606831}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -104,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="PlayerClimb.cpp">
       <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyParts.cpp">
+      <Filter>Enemy\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyMove.cpp">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="PlayerClimb.h">
       <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyParts.h">
+      <Filter>Enemy\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyMove.h">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 Camera::Camera()
 {
 	input = new Input();
+	calculation = new Calculation();
 }
 
 /// <summary>
@@ -98,7 +99,7 @@ void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
 		}
 		lookTargetPos = targetCameraPosition;
 
-		lookPosition = Calculation::Lerp(lookTargetPos, lookPosition, 0.01, t);
+		lookPosition = calculation->Lerp(lookTargetPos, lookPosition, 0.01, t);
 	}
 	else
 	{

@@ -54,6 +54,7 @@ SceneBase* GameScene::Update()
 {
 	camera->Update(player->GetPosition(), VGet(2000.0f, 2000.0f, 6550.0f));
 	player->Update(*camera);
+	armEnemy->Update();
 
 	//“–‚½‚è”»’è
 	collisionManager->Update();

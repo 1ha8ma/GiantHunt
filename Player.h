@@ -1,6 +1,6 @@
 #pragma once
+#include"PlayerStateProcessBase.h"
 
-class PlayerStateProcessBase;
 class Input;
 class CollisonManager;
 struct CollisionData;
@@ -65,35 +65,33 @@ private:
 	Input* input;
 	CollisionManager* collisionManager;
 	CollisionData collisionData;
-	
-
 
 	//ステータス
 	int HP;				//体力
 	int gripPoint;		//握力ゲージ
 
 	//入力
-	int inputstate;					//入力情報
-	DINPUT_JOYSTATE stickstate;		//スティック入力情報
+	int inputstate;									//入力情報
+	DINPUT_JOYSTATE stickstate;						//スティック入力情報
 
-	int modelHandle;				//モデルハンドル
-	VECTOR position;				//ポジション
-	VECTOR drawPosition;			//描画用ポジション
-	VECTOR capStart;				//カプセル始点(頭)
-	VECTOR capEnd;					//カプセル終点(足)
-	float angle;					//描画角度
-	VECTOR moveVec;					//移動量
-	VECTOR targetLookDirection;		//モデルの向く目標方向 
-	State nowstateKind;				//現在の状態
-	bool onGround;					//足がついているか
-	bool isCatch;					//掴める状態か
-	bool runPlace;					//走っている場所 false:地面 true:カプセル上
+	int modelHandle;								//モデルハンドル
+	VECTOR position;								//ポジション
+	VECTOR drawPosition;							//描画用ポジション
+	VECTOR capStart;								//カプセル始点(頭)
+	VECTOR capEnd;									//カプセル終点(足)
+	float angle;									//描画角度
+	VECTOR moveVec;									//移動量
+	VECTOR targetLookDirection;						//モデルの向く目標方向 
+	State nowstateKind;								//現在の状態
+	bool onGround;									//足がついているか
+	bool isCatch;									//掴める状態か
+	bool isStand;									//立てる状態か
+	PlayerStateProcessBase::RunPlaceKind runPlace;	//走っている場所
 
-	float fallSpeed;				//落下速度
+	float fallSpeed;								//落下速度
+	bool changeStateflg;							//状態からの状態変更指示がある場合
 
 	//当たっているオブジェクトのデータ
 	VECTOR hitObjectCapStart;
 	VECTOR hitObjectCapEnd;
-
-	bool changeStateflg;			//状態からの状態変更指示がある場合
 };

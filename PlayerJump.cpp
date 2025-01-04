@@ -43,7 +43,7 @@ void PlayerJump::Initialize()
 /// <param name="inputstate">入力情報</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerJump::Update(int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
+bool PlayerJump::Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
 {
 	Move();
 	//アニメーション再生

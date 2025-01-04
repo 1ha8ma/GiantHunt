@@ -10,7 +10,7 @@ public:
 	//初期化
 	void Initialize()override {};
 	//更新
-	bool Update(int inputstate, DINPUT_JOYSTATE stickstate,const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)override;
+	bool Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate,const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)override;
 
 private:
 	const float Speed = 20.0f;      //スピード
