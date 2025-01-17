@@ -46,6 +46,18 @@
     <Filter Include="Enemy\ArmEnemy\Move">
       <UniqueIdentifier>{199d26dd-b321-4bac-9570-47f536606831}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\ArmEnemy\Move\Base">
+      <UniqueIdentifier>{34fdda42-4718-4eae-9443-d40999d21f21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{787af00f-5ad8-4bc4-b0af-28d7984a26e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Base">
+      <UniqueIdentifier>{c98cae2f-6012-4024-97c0-75194c600e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{7b319599-3193-4017-8a83-d1635ef69d8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -59,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="FPS.cpp">
       <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBase.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Main</Filter>
@@ -114,8 +123,38 @@
     <ClCompile Include="EnemyParts.cpp">
       <Filter>Enemy\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="ArmEnemyMove.cpp">
+    <ClCompile Include="ArmEnemyMoveBase.cpp">
+      <Filter>Enemy\ArmEnemy\Move\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyMowingDown.cpp">
       <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyIdle.cpp">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemySwing.cpp">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSquat.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPiercing.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>Scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="FPS.h">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>Main</Filter>
@@ -188,8 +224,38 @@
     <ClInclude Include="EnemyParts.h">
       <Filter>Enemy\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="ArmEnemyMove.h">
+    <ClInclude Include="ArmEnemyMoveBase.h">
+      <Filter>Enemy\ArmEnemy\Move\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyMowingDown.h">
       <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyIdle.h">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemySwing.h">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSquat.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPiercing.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>Scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

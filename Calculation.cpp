@@ -43,3 +43,16 @@ VECTOR Calculation::RodriguesRotationFormula(VECTOR shaft, float angle, VECTOR p
 
 	return newVec;
 }
+
+/// <summary>
+/// 2“_‚Ì‹——£(3ŽŸŒ³)
+/// </summary>
+/// <param name="pos1">“_1</param>
+/// <param name="pos2">“_2</param>
+/// <returns>‹——£</returns>
+float Calculation::LengthTwoPoint3D(VECTOR pos1, VECTOR pos2)
+{
+	float calc1 = pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2) + pow(pos2.z - pos1.z, 2);
+	float length = sqrtf(calc1);
+	return length;
+}

@@ -1,5 +1,6 @@
 #include<math.h>
 #include"DxLib.h"
+#include"CollisionData.h"
 #include"Camera.h"
 #include"PlayerRun.h"
 
@@ -30,15 +31,19 @@ PlayerRun::~PlayerRun()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="inputstate">入力情報</param>
+/// <param name="position">ポジション</param>
+/// <param name="angle">角度</param>
+/// <param name="inputstate">入力状態</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerRun::Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
+/// <param name="objectCollision">衝突オブジェクト情報</param>
+/// <returns>ステート変更</returns>
+bool PlayerRun::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
 {
 	//移動処理
-	Move(inputstate, stickstate, camera, objectCapsuleStart, objectCapsuleEnd);
+	Move(inputstate, stickstate, camera, objectCollision.startPosition, objectCollision.endPosition);
 	//アニメーション再生
-	PlayAnimation(0.4f,!moveflg);
+	PlayAnimation(0.4f, !moveflg);
 
 	return false;
 }

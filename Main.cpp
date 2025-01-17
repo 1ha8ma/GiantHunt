@@ -1,4 +1,5 @@
 #include"DxLib.h"
+#include"EffekseerForDXLib.h"
 #include"Loader.h"
 #include"FPS.h"
 #include"GameManager.h"
@@ -18,6 +19,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//ライブラリ初期化
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
 	DxLib_Init();
+	Effekseer_Init(8000);
+	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
+	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
+	SetUseZBuffer3D(TRUE);
 
 	//ウィンドウモード名前変更
 	SetMainWindowText("GiantHunt");
@@ -59,6 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	//終了
+	Effkseer_End();
 	DxLib_End();
 
 }

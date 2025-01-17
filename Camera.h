@@ -12,7 +12,11 @@ public:
 	void Initialize(VECTOR playerpos);
 	//更新
 	void Update(VECTOR playerPosition,VECTOR targetCameraPosition);
+	
+	//演出
+	void PlayShakingVertical(float shakingPower, int shakingDirectionChangeflame, int flame);
 
+	//GetSet
 	float GetangleH() { return angleH; }
 	float GetangleV() { return angleV; }
 	VECTOR GetLookPosition() { return lookPosition; }
@@ -23,6 +27,11 @@ private:
 	const float CameraPlayerTargetHeight = 100.0f;	//プレイヤーのどれだけ高いところを見るか
 	const float PlayerDistance = 300;				//プレイヤーとの距離
 	const float CollisionSize = 50.0f;				//カメラの当たり判定サイズ
+
+	//演出更新
+	void UpdateProduction(VECTOR playerPosition);
+	//上下揺れ
+	void ShakingVertical(VECTOR playerPosition);
 
 	//他クラス
 	Input* input;
@@ -35,4 +44,15 @@ private:
 	VECTOR lookTargetPos;	//目標の注視点座標
 	float t;				//Lerp用
 	bool lerpflg;			//Lerp開始フラグ
+
+	//演出
+	bool productionflg;					//演出中フラグ
+	int totalflame;						//演出フレーム
+	//縦揺れ
+	int changeflame;					//切り替えまでのフレーム
+	bool shakingDirection;				//揺れる方向フラグ
+	bool shakingVerticalflg;			//縦揺れフラグ
+	float shakingPower;					//揺れの強さ
+	int shakingDirectionChangeflame;	//揺れる方向を変更するフレーム
+	int playflame;						//再生時間
 };

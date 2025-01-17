@@ -8,6 +8,7 @@ class ArmEnemyStage;
 class Player;
 class Wall;
 class Wood;
+class GameUI;
 
 class GameScene :public SceneBase
 {
@@ -27,4 +28,8 @@ private:
 	Wall* wall;
 	ArmEnemy* armEnemy;
 	Wood* wood;
+	GameUI* ui;
+
+	bool gameOver;
+	bool gameClear;
 };

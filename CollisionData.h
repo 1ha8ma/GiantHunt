@@ -5,15 +5,20 @@
 //オブジェクトの種類
 enum class ObjectTag :int
 {
+	//ステージ
+	Stage,
+
 	//プレイヤー
-	Player,
-	Attack_P,
+	PlayerWholeBody,	//全身
+	PlayerFoot,			//足
+	Attack_P,			//攻撃
 
 	//腕の敵
-	Upperarm_E1,	  //上腕
-	Forearm_E1,		  //前腕
+	Upperarm_E1,		//上腕
+	Forearm_E1,			//前腕
 	Hand_E1,			//手
 	Attack_E1,			//攻撃
+	WeakPoint_E1,		//弱点
 
 	//巨人
 	LeftArm_E2,			//左腕
@@ -23,6 +28,7 @@ enum class ObjectTag :int
 	Body_E2,			//胴体
 	Head_E2,			//頭
 	Attack_E2,			//攻撃
+	WeakPoint_E2,		//弱点
 
 	//木
 	Wood1,				//上
@@ -43,9 +49,16 @@ struct CollisionData
 	VECTOR endPosition;     //カプセル終点
 	float radius;           //カプセル半径
 
+	//四角ステージ用(ポジション)
+	float stageLeft;
+	float stageRight;
+	float stageFront;
+	float stageBack;
+
 	//攻撃力
 	int attackPower;
 
-	std::function<void(CollisionData)> HitProcess;   //当たった時に行われる処理
-	bool isCollisionActive;						//当たり判定を適用させたいかどうか
+	std::function<void(CollisionData)> HitProcess;		//当たった時に行われる処理
+	std::function<void(VECTOR)> WallHitProcess;			//ステージ壁衝突時の処理
+	bool isCollisionActive;								//当たり判定を適用させたいかどうか
 };

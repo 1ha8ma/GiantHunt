@@ -2,12 +2,12 @@
 #include"CollisionData.h"
 
 class CollisionManager;
+class Effect;
 
 class EnemyParts
 {
 public:
-
-	EnemyParts(ObjectTag tag, int modelHandle,int frameIndex,float capsuleLength,float capsuleRadius,VECTOR frameVec);
+	EnemyParts(ObjectTag tag, int modelHandle,int frameIndex,int formerFrameIndex,float capsuleRadius);
 	~EnemyParts();
 
 	void Initialize();
@@ -16,24 +16,26 @@ public:
 
 	void OnHitObject(CollisionData hitObjectData);
 
+	//ダメージを渡す
+	int TakeDamage() { return damage; }
+
 	//Get.Set
-	bool GetIsPlayerRid() { return isPlayerRide; }
+	bool GetIsPlayerRide() { return isPlayerRide; }
 
 private:
 	void UpdateCollisionData();
 
+	Effect* effect;
 	CollisionManager* collisionManager;
 	CollisionData collisionData;
 
 	int modelHandle;			//モデルハンドル
 	int frameIndex;				//フレーム番号
-	float capsuleLength;		//カプセルの長さ
+	int formerFrameIndex;		//カプセルの元になるフレーム
 	ObjectTag tag;				//場所のタグ
-	VECTOR initFramePosition;	//最初のフレームのポジション
-	VECTOR framePosition;		//フレームのポジション
-	VECTOR frameVec;			//フレームのベクトル
 	VECTOR capsuleStart;		//カプセル始点
 	VECTOR capsuleEnd;			//カプセル終点
 	float capsuleRadius;		//カプセル半径
 	bool isPlayerRide;			//プレイヤーが乗っているか
+	int damage;					//与えるダメージ
 };

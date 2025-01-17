@@ -1,5 +1,6 @@
 #include"SceneBase.h"
-#include"GameScene.h"
+#include"TitleScene.h"
+//#include"GameScene.h"
 
 /// <summary>
 /// 最初のシーンを設定
@@ -7,5 +8,5 @@
 /// <returns>シーン</returns>
 SceneBase* SceneBase::InitializeBase()
 {
-	return new GameScene();
+	return new TitleScene();
 }

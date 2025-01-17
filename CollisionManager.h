@@ -21,6 +21,8 @@ public:
 	//“–‚½‚è”»’èî•ñ’Ç‰Á
 	static void AddCollisionData(CollisionData* data);
 
+	static void RemoveCollisionData(CollisionData* data);
+
 private:
 	CollisionManager();
 

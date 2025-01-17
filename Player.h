@@ -14,18 +14,21 @@ public:
 	//初期化
 	void Initialize();
 	//更新
-	void Update(const Camera& camera);
+	bool Update(const Camera& camera);
 	//描画
 	void Draw();
 
-	//ポジション反映
-	void ReflectPosition();
 	//衝突した時の処理
-	void OnHitObject(CollisionData hitObjectData);
+	void BodyOnHitObject(CollisionData hitObjectData);
+	void FootOnHitObject(CollisionData hitObjectData);
+	//壁衝突時の処理
+	void WallHitProcess(VECTOR sinkIntoDepth);
 
 	//GetSet
 	VECTOR GetPosition() { return position; }
 	float GetAngle() { return angle; }
+	int GetHP() { return HP; }
+	int GetGripPoint() { return gripPoint; }
 
 private:
 	//状態
@@ -34,16 +37,19 @@ private:
 		Run,			//走る
 		Jump,			//ジャンプ
 		NormalAttack,	//通常攻撃
-		ThrustAttack,	//突き刺し攻撃
 		Climb,			//登り
-		Hanging,		//ぶら下がり
+		Squat,			//しゃがみ
+		Piercing,		//突き刺し攻撃
 		Roll,			//転げる
 	};
 
 	const float AngleSpeed = 0.2f;			//角度変更速度
-	const float CapsuleRadius = 50.0f;		//カプセル半径
-	const int AttackPower = 100;			//攻撃力
+	const float WholeBodyCapsuleRadius = 50.0f;	//全身カプセル半径
+	const float FootCapsuleRadius = 20.0f;	//足カプセル半径
 	const float Gravity = 0.5f;				//重力
+	const int MaxHP = 100;					//最大HP
+	const int MaxGripPoint = 400;			//最大握力
+	const int MinusGripPoint = 1;			//減らす握力量
 
 	//角度更新
 	void UpdateAngle();
@@ -58,13 +64,17 @@ private:
 	//描画位置修正
 	void CorrectionDrawPosition();
 	//押し戻し
-	void CollisionPushBack(CollisionData hitCollisionData);
+	void CollisionPushBack(CollisionData partsData,CollisionData hitCollisionData);
+	//連続入力防止
+	void PreventionContinuousInput();
 	
 	//他クラス
 	PlayerStateProcessBase* nowstate;
 	Input* input;
 	CollisionManager* collisionManager;
-	CollisionData collisionData;
+	CollisionData bodyCollisionData;
+	CollisionData footCollisionData;
+	CollisionData hitObjectData;
 
 	//ステータス
 	int HP;				//体力
@@ -75,20 +85,28 @@ private:
 	DINPUT_JOYSTATE stickstate;						//スティック入力情報
 
 	int modelHandle;								//モデルハンドル
-	VECTOR position;								//ポジション
 	VECTOR drawPosition;							//描画用ポジション
-	VECTOR capStart;								//カプセル始点(頭)
-	VECTOR capEnd;									//カプセル終点(足)
-	float angle;									//描画角度
+	//当たり判定
+	VECTOR position;								//ポジション
+	VECTOR wholebodyCapStart;						//カプセル始点(上)
+	VECTOR wholebodyCapEnd;							//カプセル終点(下)
+	VECTOR footCapStart;							//足カプセル
+	VECTOR footCapEnd;								//足カプセル
+	//その他
+	float angle;									//プレイヤーの向き
 	VECTOR moveVec;									//移動量
 	VECTOR targetLookDirection;						//モデルの向く目標方向 
 	State nowstateKind;								//現在の状態
 	bool onGround;									//足がついているか
+	bool onFootObject;								//足がオブジェクトに着いている
 	bool isCatch;									//掴める状態か
 	bool isStand;									//立てる状態か
 	PlayerStateProcessBase::RunPlaceKind runPlace;	//走っている場所
+	bool gameOverflg;								//ゲームオーバーフラグ
+	bool canInputX;									//攻撃連続入力防止
 
 	float fallSpeed;								//落下速度
+	int fallFrame;									//落下時間
 	bool changeStateflg;							//状態からの状態変更指示がある場合
 
 	//当たっているオブジェクトのデータ

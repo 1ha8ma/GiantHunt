@@ -1,0 +1,137 @@
+#include"DxLib.h"
+#include"CollisionData.h"
+#include"CollisionManager.h"
+#include"Camera.h"
+#include"ArmEnemyMowingDown.h"
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="modelHandle"></param>
+ArmEnemyMowingDown::ArmEnemyMowingDown(int modelHandle, float modelScale,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle, modelScale)
+{
+	moveState = 0;
+	moveEnd = false;
+	rotate.x = -0.5;
+	rotate.z = 0;
+	attackCapsuleStart = VGet(0, 0, 0);
+	attackCapsuleEnd = VGet(0, 0, 0);
+	onAttackCollision = false;
+	attackHit = false;
+	collisionData.HitProcess = std::bind(&ArmEnemyMowingDown::OnHitObject, this, std::placeholders::_1);
+
+	collisionManager = collisionManager->GetInstance();
+	collisionManager->AddCollisionData(&collisionData);
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+ArmEnemyMowingDown::~ArmEnemyMowingDown()
+{
+	collisionManager->RemoveCollisionData(&collisionData);
+}
+
+/// <summary>
+/// 更新
+/// </summary>
+bool ArmEnemyMowingDown::Update(Camera* camera)
+{
+	switch (moveState)
+	{
+	case 0:
+	{
+		rotate.x += 0.01;
+		rotate.z += 0.01;
+		onAttackCollision = false;
+
+		if (rotate.x > 0.2)
+		{
+			moveState++;
+		}
+	}
+	break;
+	case 1:
+	{
+		rotate.x -= 0.01;
+		rotate.z -= 0.01;
+		if (!attackHit)
+		{
+			onAttackCollision = true;
+		}
+		else
+		{
+			onAttackCollision = false;
+		}
+
+		if (rotate.x < -0.7)
+		{
+			//上下揺れ
+			camera->PlayShakingVertical(1, 10, 50);
+			//振動
+			StartJoypadVibration(DX_INPUT_PAD1, 200, 900, -1);
+			moveState++;
+		}
+	}
+	break;
+	case 2:
+	{
+		rotate.x += 0.005;
+		onAttackCollision = false;
+
+		if (rotate.x > -0.2)
+		{
+			moveState++;
+			moveEnd = true;
+		}
+	}
+	break;
+	}
+
+	MATRIX Mrotate = MMult(MGetRotX(rotate.x), MGetRotZ(rotate.z));
+	MV1SetFrameUserLocalMatrix(modelHandle, (int)ArmEnemyFrameIndex::Upperarm, Mrotate);
+
+	//攻撃当たり判定
+	attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger1);
+	attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger2);
+
+	UpdateCollisionData();
+
+	return moveEnd;
+}
+
+/// <summary>
+/// 描画
+/// </summary>
+void ArmEnemyMowingDown::Draw()
+{
+	if (onAttackCollision)
+	{
+		DrawCapsule3D(attackCapsuleStart, attackCapsuleEnd, AttackCapsuleRadius, 8, GetColor(173, 255, 47), GetColor(173, 255, 47), false);
+	}
+}
+
+/// <summary>
+/// オブジェクト衝突時の処理
+/// </summary>
+/// <param name="objectData">衝突したオブジェクトのデータ</param>
+void ArmEnemyMowingDown::OnHitObject(CollisionData objectData)
+{
+	if (objectData.tag == ObjectTag::PlayerWholeBody)
+	{
+		attackHit = true;
+	}
+}
+
+/// <summary>
+/// 当たり判定情報
+/// </summary>
+void ArmEnemyMowingDown::UpdateCollisionData()
+{
+	collisionData.tag = ObjectTag::Attack_E1;
+	collisionData.startPosition = attackCapsuleStart;
+	collisionData.endPosition = attackCapsuleEnd;
+	collisionData.radius = AttackCapsuleRadius;
+	collisionData.attackPower = AttackPower;
+	collisionData.isCollisionActive = onAttackCollision;
+}

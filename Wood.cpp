@@ -34,7 +34,8 @@ Wood::Wood()
 /// </summary>
 Wood::~Wood()
 {
-	
+	collisionManager->RemoveCollisionData(&capsule1CollisionData);
+	collisionManager->RemoveCollisionData(&capsule2CollisionData);
 }
 
 /// <summary>

@@ -1,5 +1,6 @@
 #include"DxLib.h"
 #include"CollisionManager.h"
+#include"Effect.h"
 #include"EnemyParts.h"
 
 /// <summary>
@@ -11,36 +12,38 @@
 /// <param name="capsuleLength">カプセルの長さ</param>
 /// <param name="capsuleRadius">カプセル半径</param>
 /// <param name="frameVec">フレームの座標からの向き</param>
-EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int frameIndex, float capsuleLength, float capsuleRadius,VECTOR frameVec)
+EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int formerFrameIndex, int frameIndex,float capsuleRadius)
 {
+	//ハンドルコピー
 	this->modelHandle = modelHandle;
 	//タグ設定
 	this->tag = tag;
-	//ボーンのポジション取得
-	this->frameIndex = frameIndex;
-	framePosition = MV1GetFramePosition(modelHandle, frameIndex);
-	initFramePosition = framePosition;
 
-	//フレームの向きをコピー
-	this->frameVec = frameVec;
-	
+	//フレーム番号取得
+	this->frameIndex = frameIndex;
+	this->formerFrameIndex = formerFrameIndex;
+
 	//カプセル設定
 	this->capsuleRadius = capsuleRadius;
-	this->capsuleLength = capsuleLength;
-	capsuleStart = VScale(frameVec, capsuleLength);
-	capsuleStart = VAdd(capsuleStart, framePosition);
-	capsuleEnd = VScale(frameVec, -capsuleLength);
-	capsuleEnd = VAdd(capsuleEnd, framePosition);
+	capsuleStart = MV1GetFramePosition(modelHandle, frameIndex);
+	capsuleEnd = MV1GetFramePosition(modelHandle, formerFrameIndex);
 	
-	collisionManager = collisionManager->GetInstance();
-
 	//private変数初期化
 	isPlayerRide = false;
 
 	//当たり判定情報追加
+	collisionManager = collisionManager->GetInstance();
 	collisionData.HitProcess = std::bind(&EnemyParts::OnHitObject, this, std::placeholders::_1);
 	UpdateCollisionData();
 	collisionManager->AddCollisionData(&collisionData);
+
+	//弱点ならエフェクトを付ける
+	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	{
+		effect = new Effect();
+
+		effect->PlayEffect(Effect::EffectKind::WeakPoint, capsuleStart, VGet(10, 10, 10), VGet(0, 0, 0), 1.0f);
+	}
 }
 
 /// <summary>
@@ -48,7 +51,7 @@ EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int frameIndex, float cap
 /// </summary>
 EnemyParts::~EnemyParts()
 {
-
+	collisionManager->RemoveCollisionData(&collisionData);
 }
 
 /// <summary>
@@ -64,28 +67,43 @@ void EnemyParts::Initialize()
 /// </summary>
 void EnemyParts::Update()
 {
-	//ボーンのベクトル取得
-	framePosition = MV1GetFramePosition(modelHandle, frameIndex);
-
 	//カプセル設定
-	capsuleStart = VScale(frameVec, capsuleLength);
-	capsuleStart = VAdd(capsuleStart, framePosition);
-	capsuleEnd = VScale(frameVec, -capsuleLength);
-	capsuleEnd = VAdd(capsuleEnd, framePosition);
+	//フレームと親フレームの間
+	capsuleStart = MV1GetFramePosition(modelHandle, frameIndex);
+	capsuleEnd = MV1GetFramePosition(modelHandle, formerFrameIndex);
 
 	//当たり判定情報更新
 	UpdateCollisionData();
 
+	//弱点ならエフェクトを付ける
+	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	{
+		bool playing = effect->IsPlayEffect(Effect::EffectKind::WeakPoint);
+
+		if (!playing)
+		{
+			effect->PlayEffect(Effect::EffectKind::WeakPoint, capsuleStart, VGet(50, 50, 50), VGet(0, 0, 0), 1.0f);
+		}
+
+		effect->Update(capsuleStart, VGet(0, 0, 0));
+	}
+
+	damage = 0;
 	isPlayerRide = false;
 }
 
 /// <summary>
-/// 描画(当たり判定確認用)
+/// 描画
 /// </summary>
 void EnemyParts::Draw()
 {
-	DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);
+	//DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);
 	//DrawSphere3D(framePosition, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);//ポジションの点
+
+	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	{
+		effect->Draw();
+	}
 }
 
 /// <summary>
@@ -95,9 +113,15 @@ void EnemyParts::Draw()
 void EnemyParts::OnHitObject(CollisionData hitObjectData)
 {
 	//プレイヤーが乗っている時の処理
-	if (hitObjectData.tag == ObjectTag::Player)
+	if (hitObjectData.tag == ObjectTag::PlayerWholeBody)
 	{
 		isPlayerRide = true;
+	}
+
+	//プレイヤーの攻撃だった場合
+	if (hitObjectData.tag == ObjectTag::Attack_P)
+	{
+		damage = hitObjectData.attackPower;
 	}
 }
 

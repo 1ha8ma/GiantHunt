@@ -1,5 +1,4 @@
 #include"DxLib.h"
-//#include"CollisionData.h"
 #include"CollisionManager.h"
 
 //初期化
@@ -54,6 +53,29 @@ void CollisionManager::AddCollisionData(CollisionData* data)
 }
 
 /// <summary>
+/// 当たり判定情報削除
+/// </summary>
+/// <param name="data">データ</param>
+void CollisionManager::RemoveCollisionData(CollisionData* data)
+{
+	int itr = 0;
+	for (int i = 0; i < collisionDataList.size(); i++)
+	{
+		if (collisionDataList[i] == data)
+		{
+			break;
+		}
+		else
+		{
+			itr++;
+		}
+	}
+
+	//削除
+	collisionDataList.erase(collisionDataList.begin() + itr);
+}
+
+/// <summary>
 /// 全ての当たり判定処理
 /// </summary>
 void CollisionManager::Update()
@@ -75,8 +97,27 @@ void CollisionManager::Update()
 			//当たり判定を行って欲しいか確認
 			if (data1.isCollisionActive && data2.isCollisionActive)
 			{
-				//プレイヤーと木
-				if (data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Wood1 || data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Wood2)
+				//カプセルどうし
+				if (/*プレイヤーと木*/
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Wood1 || data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Wood2 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Wood1 || data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Wood2 ||
+					/*プレイヤーと腕の敵*/
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Forearm_E1 ||
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Upperarm_E1 ||
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Hand_E1 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Forearm_E1 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Upperarm_E1 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Hand_E1 ||
+					/*プレイヤーと敵の攻撃*/
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Attack_E1 ||
+					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Attack_E2 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Attack_E1 ||
+					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Attack_E2 ||
+					/*プレイヤーの攻撃と腕の敵*/
+					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Upperarm_E1 ||
+					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Forearm_E1 ||
+					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Hand_E1
+					)
 				{
 					bool hit = CapsuleWithCapsule(data1.startPosition, data1.endPosition, data1.radius, data2.startPosition, data2.endPosition, data2.radius);
 
@@ -86,20 +127,57 @@ void CollisionManager::Update()
 						data2.HitProcess(data1);
 					}
 				}
+			}
+		}
+	}
 
-				//プレイヤーと腕の敵
-				if (data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Forearm_E1 ||
-					data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Upperarm_E1 ||
-					data1.tag == ObjectTag::Player && data2.tag == ObjectTag::Hand_E1)
-				{
-					bool hit = CapsuleWithCapsule(data1.startPosition, data1.endPosition, data1.radius, data2.startPosition, data2.endPosition, data2.radius);
+	//プレイヤーと壁との当たり判定
+	CollisionData wallData;
+	bool wallHit = false;
+	for (int i = 0; i < collisionDataList.size(); i++)
+	{
+		ObjectTag tag = collisionDataList[i]->tag;
+		if (tag == ObjectTag::Stage)
+		{
+			wallData = *collisionDataList[i];
+			break;
+		}
+	}
+	for (int i = 0; i < collisionDataList.size(); i++)
+	{
+		CollisionData data = *collisionDataList[i];
 
-					if (hit)
-					{
-						data1.HitProcess(data2);
-						data2.HitProcess(data1);
-					}
-				}
+		if (data.tag == ObjectTag::PlayerWholeBody)
+		{
+			VECTOR correction = VGet(0, 0, 0);
+			if (data.position.x > wallData.stageRight)
+			{
+				float dif = data.position.x - wallData.stageRight;
+				correction = VAdd(correction, VGet(-dif, 0, 0));
+				wallHit = true;
+			}
+			if (data.position.x < wallData.stageLeft)
+			{
+				float dif = wallData.stageLeft - data.position.x;
+				correction = VAdd(correction, VGet(dif, 0, 0));
+				wallHit = true;
+			}
+			if (data.position.z > wallData.stageFront)
+			{
+				float dif = data.position.z - wallData.stageFront;
+				correction = VAdd(correction, VGet(0, 0, -dif));
+				wallHit = true;
+			}
+			if (data.position.z < wallData.stageBack)
+			{
+				float dif = wallData.stageBack - data.position.z;
+				correction = VAdd(correction, VGet(0, 0, dif));
+				wallHit = true;
+			}
+
+			if (wallHit)
+			{
+				data.WallHitProcess(correction);
 			}
 		}
 	}

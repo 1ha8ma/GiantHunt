@@ -18,10 +18,13 @@ public:
 		BossEnemyStage,		//ボス戦ステージ
 
 		//2D
+		GameOverBackImage,	//ゲームオーバー背景
+		TitleBackImage,		//タイトル背景
 
 		//音
 
 		//エフェクト
+		WeakPointEffect,	//弱点
 	};
 
 	//ハンドルゲット

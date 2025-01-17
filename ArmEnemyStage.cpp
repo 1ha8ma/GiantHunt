@@ -1,5 +1,7 @@
 #include"DxLib.h"
 #include"Loader.h"
+#include"CollisionData.h"
+#include"CollisionManager.h"
 #include"ArmEnemyStage.h"
 
 /// <summary>
@@ -16,4 +18,21 @@ ArmEnemyStage::ArmEnemyStage()
 
 	MV1SetScale(modelHandle, VGet(stageScale, stageScale, stageScale));
 	MV1SetPosition(modelHandle, position);
+
+	//当たり判定
+	collisionManager = collisionManager->GetInstance();
+	collisionData.stageLeft = StageLeft;
+	collisionData.stageRight = StageRight;
+	collisionData.stageFront = StageFront;
+	collisionData.stageBack = StageBack;
+
+	collisionManager->AddCollisionData(&collisionData);
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+ArmEnemyStage::~ArmEnemyStage()
+{
+	collisionManager->RemoveCollisionData(&collisionData);
 }

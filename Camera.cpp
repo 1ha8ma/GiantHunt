@@ -11,6 +11,10 @@ Camera::Camera()
 {
 	input = new Input();
 	calculation = new Calculation();
+
+	//private変数
+	productionflg = false;
+	shakingDirection = true;
 }
 
 /// <summary>
@@ -19,7 +23,7 @@ Camera::Camera()
 void Camera::Initialize(VECTOR playerPosition)
 {
 	//距離設定
-	SetCameraNearFar(10.0f, 10000.0f);
+	SetCameraNearFar(100.0f, 20000.0f);
 
 	position = VGet(0, 2000, -1500);
 	lookPosition = playerPosition;
@@ -114,8 +118,12 @@ void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
 		lookPosition.y = playerPosition.y + CameraPlayerTargetHeight;
 		lookPosition.z += sin(angleH);
 	}
+	else if (productionflg)
+	{
+		
+	}
 	//視点移動なしターゲットカメラなしの通常時
-	else if (!lerpflg)
+	else if (!lerpflg && !productionflg)
 	{
 		lookPosition = playerPosition;
 		lookPosition.y += CameraPlayerTargetHeight;
@@ -125,8 +133,84 @@ void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
 	//NOTE:最後プレイヤーのY座標を高くしたものを足すようにしたのはlookPositionを足すとターゲットカメラにしたときにターゲットの場所に移動してしまうから
 	MATRIX rotY = MGetRotY(angleH + DX_PI_F / 2);
 	MATRIX rotZ = MGetRotZ(angleV);
+	
 	position = VAdd(VTransform(VTransform(VGet(PlayerDistance, 0.0f, 0.0f), rotZ), rotY), VAdd(playerPosition, VGet(0.0f, CameraPlayerTargetHeight, 0.0f)));
+	//演出更新
+	UpdateProduction(playerPosition);
 
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
+/// 演出更新
+/// </summary>
+void Camera::UpdateProduction(VECTOR playerPosition)
+{
+	ShakingVertical(playerPosition);
+}
+
+/// <summary>
+/// 縦揺れ
+/// </summary>
+/// <param name="shakingPower">揺れの強さ</param>
+/// <param name="shakingDirectionChangeflame">揺れる方向を変更するフレーム</param>
+/// <param name="flame">再生フレーム</param>
+void Camera::PlayShakingVertical(float shakingPower, int shakingDirectionChangeflame, int flame)
+{
+	//演出中でなければ開始
+	if (!productionflg)
+	{
+		totalflame = 0;
+		changeflame = 0;
+		this->shakingPower = shakingPower;
+		this->shakingDirectionChangeflame = shakingDirectionChangeflame;
+		this->playflame = flame;
+		shakingDirection = true;
+
+		productionflg = true;
+		shakingVerticalflg = true;
+	}
+}
+
+/// <summary>
+/// 縦揺れ
+/// </summary>
+/// <param name="shakingPower">揺れの強さ</param>
+/// <param name="shakingDirectionChangeflame">揺れる方向を変更するフレーム</param>
+/// <param name="flame">再生時間</param>
+void Camera::ShakingVertical(VECTOR playerPosition)
+{
+	if (shakingVerticalflg)
+	{
+		lookPosition = playerPosition;
+		lookPosition.y += CameraPlayerTargetHeight;
+		//揺れ
+		if (shakingDirection)
+		{
+			lookPosition.y += shakingPower * changeflame;
+		}
+		else
+		{
+			lookPosition.y -= shakingPower * changeflame;
+		}
+
+		//揺れる方向変更
+		if (changeflame != 0 && changeflame % shakingDirectionChangeflame == 0)
+		{
+			shakingDirection = !shakingDirection;
+			changeflame = 0;
+		}
+
+		//フレーム加算
+		changeflame++;
+		totalflame++;
+
+		//終了
+		if (totalflame >= playflame)
+		{
+			productionflg = false;
+			shakingVerticalflg = false;
+		}
+	}
 }

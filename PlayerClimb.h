@@ -11,14 +11,14 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
-	bool Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)override;
+	bool Update(VECTOR position,float angle,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera,CollisionData objectCollision)override;
 
 private:
 	const float RotateSpeed = 0.01;	//回転速度
 	const float Speed = 5;			//移動速度
 
 	//移動処理
-	void Move(VECTOR position,DINPUT_JOYSTATE stickstate, Camera camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd);
+	void Move(VECTOR position, DINPUT_JOYSTATE stickstate, Camera camera, CollisionData objectCollision);
 
 	Calculation* calculation;
 

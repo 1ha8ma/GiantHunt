@@ -1,4 +1,5 @@
 #include<math.h>
+#include"CollisionData.h"
 #include"DxLib.h"
 #include"Camera.h"
 #include"PlayerStateProcessBase.h"

@@ -1,6 +1,4 @@
-﻿  ArmEnemy.cpp
+﻿  Effect.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  GameScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  コードを生成中...
+C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   GiantHunt.vcxproj -> C:\Users\hamar\Desktop\GiantHunt\x64\Debug\GiantHunt.exe

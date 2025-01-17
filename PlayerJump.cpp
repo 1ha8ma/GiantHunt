@@ -1,5 +1,6 @@
 #include<math.h>
 #include"DxLib.h"
+#include"CollisionData.h"
 #include"Camera.h"
 #include"PlayerJump.h"
 
@@ -40,10 +41,14 @@ void PlayerJump::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="inputstate">入力情報</param>
+/// <param name="position">ポジション</param>
+/// <param name="angle">向き</param>
+/// <param name="inputstate">入力状態</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-bool PlayerJump::Update(VECTOR position,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
+/// <param name="objectCollision">衝突オブジェクト情報</param>
+/// <returns>ステート変更</returns>
+bool PlayerJump::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
 {
 	Move();
 	//アニメーション再生

@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../DxLib_h</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DxLib_h;../Effekseer_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../Dxlib_h;../Effekseer_h;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../DxLib_h</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DxLib_h;../Effekseer_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -129,20 +129,26 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../Dxlib_h;../Effekseer_h;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArmEnemy.cpp" />
-    <ClCompile Include="ArmEnemyMove.cpp" />
+    <ClCompile Include="ArmEnemyIdle.cpp" />
+    <ClCompile Include="ArmEnemyMoveBase.cpp" />
+    <ClCompile Include="ArmEnemyMowingDown.cpp" />
     <ClCompile Include="ArmEnemyStage.cpp" />
+    <ClCompile Include="ArmEnemySwing.cpp" />
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EnemyParts.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -150,35 +156,47 @@
     <ClCompile Include="PlayerClimb.cpp" />
     <ClCompile Include="PlayerJump.cpp" />
     <ClCompile Include="PlayerNormalAttack.cpp" />
+    <ClCompile Include="PlayerPiercing.cpp" />
     <ClCompile Include="PlayerRun.cpp" />
+    <ClCompile Include="PlayerSquat.cpp" />
     <ClCompile Include="PlayerStateProcessBase.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="StageBase.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Wood.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArmEnemy.h" />
-    <ClInclude Include="ArmEnemyMove.h" />
+    <ClInclude Include="ArmEnemyIdle.h" />
+    <ClInclude Include="ArmEnemyMoveBase.h" />
+    <ClInclude Include="ArmEnemyMowingDown.h" />
     <ClInclude Include="ArmEnemyStage.h" />
+    <ClInclude Include="ArmEnemySwing.h" />
     <ClInclude Include="Calculation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="EnemyParts.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GameUI.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerClimb.h" />
     <ClInclude Include="PlayerJump.h" />
     <ClInclude Include="PlayerNormalAttack.h" />
+    <ClInclude Include="PlayerPiercing.h" />
     <ClInclude Include="PlayerRun.h" />
+    <ClInclude Include="PlayerSquat.h" />
     <ClInclude Include="PlayerStateProcessBase.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="StageBase.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Wood.h" />

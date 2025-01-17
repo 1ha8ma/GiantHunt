@@ -11,4 +11,7 @@ public:
 	
 	//ƒƒhƒŠƒQƒX‚Ì‰ñ“]Œö®
 	VECTOR RodriguesRotationFormula(VECTOR shaft, float angle, VECTOR prevVec);
+
+	//2“_‚Ì‹——£(3ŸŒ³)
+	float LengthTwoPoint3D(VECTOR pos1, VECTOR pos2);
 };
