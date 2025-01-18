@@ -1,6 +1,7 @@
 #include"DxLib.h"
 #include"CollisionData.h"
 #include"CollisionManager.h"
+#include"SoundEffect.h"
 #include"Camera.h"
 #include"ArmEnemyMowingDown.h"
 
@@ -10,10 +11,16 @@
 /// <param name="modelHandle"></param>
 ArmEnemyMowingDown::ArmEnemyMowingDown(int modelHandle, float modelScale,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle, modelScale)
 {
+	//インスタンス化
+	se = new SoundEffect();
+
+	//変数初期化
 	moveState = 0;
 	moveEnd = false;
 	rotate.x = -0.5;
 	rotate.z = 0;
+
+	//当たり判定情報
 	attackCapsuleStart = VGet(0, 0, 0);
 	attackCapsuleEnd = VGet(0, 0, 0);
 	onAttackCollision = false;
@@ -70,6 +77,8 @@ bool ArmEnemyMowingDown::Update(Camera* camera)
 			camera->PlayShakingVertical(1, 10, 50);
 			//振動
 			StartJoypadVibration(DX_INPUT_PAD1, 200, 900, -1);
+			//se再生
+			se->PlaySE(SoundEffect::SEKind::MowinDownAttack);
 			moveState++;
 		}
 	}

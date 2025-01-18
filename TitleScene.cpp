@@ -2,7 +2,10 @@
 #include"Loader.h"
 #include"Input.h"
 #include"Utility.h"
+#include"CollisionData.h"
 #include"GameScene.h"
+#include"ArmEnemyStage.h"
+#include"ArmEnemy.h"
 #include"TitleScene.h"
 
 /// <summary>
@@ -49,7 +52,7 @@ SceneBase* TitleScene::Update()
 	//Bƒ{ƒ^ƒ““ü—Í
 	if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
 	{
-		return new GameScene();
+		return new GameScene(new ArmEnemyStage(), new ArmEnemy());
 	}
 
 	return this;

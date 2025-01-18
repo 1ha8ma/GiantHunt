@@ -23,6 +23,7 @@ private:
 	const float MaxSwingUp = 1.3f;			//最大振り上げ地点
 	const float SwingUpSpeed = 0.01f;		//振り上げ速度
 	const float SwingDownSpeed = 0.5f;		//振り下ろし速度
+	const float ChargeMagnification = 2;	//チャージ倍率
 
 	//当たり判定情報更新
 	void UpdateCollisionData();

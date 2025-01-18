@@ -58,6 +58,12 @@
     <Filter Include="Effect">
       <UniqueIdentifier>{7b319599-3193-4017-8a83-d1635ef69d8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{ed8d781e-24da-486f-b40b-ee19c89f4d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyBase">
+      <UniqueIdentifier>{40034a65-e313-446e-a55a-72c3ab2fe020}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -155,6 +161,15 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BGM.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>Enemy\EnemyBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +271,15 @@
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BGM.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>Enemy\EnemyBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

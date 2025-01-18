@@ -36,7 +36,13 @@ void Loader::Load()
 	handle[GameOverBackImage] = LoadGraph("2D/GameOverBack.jpg");
 	handle[TitleBackImage] = LoadGraph("2D/TitleBack.jpg");
 
-	//音
+	//BGM
+	handle[ArmEnemyBGM] = LoadSoundMem("Sound/BGM/ArmEnemyBGM.mp3");
+
+	//SE
+	handle[MowinDownSE] = LoadSoundMem("Sound/SE/MowingDownSE.mp3");
+	handle[NormalAttackSE] = LoadSoundMem("Sound/SE/NormalAttackSE.mp3");
+	handle[SwingSE] = LoadSoundMem("Sound/SE/SwingSE.mp3");
 
 	//エフェクト
 	handle[WeakPointEffect] = LoadEffekseerEffect("Effect/WeakPoint.efkefc", 1.0f);

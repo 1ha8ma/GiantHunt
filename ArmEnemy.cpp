@@ -70,11 +70,14 @@ void ArmEnemy::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-void ArmEnemy::Update(VECTOR playerPos,Camera* camera)
+bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 {
 	//プレイヤーの乗っている関係初期化
 	playerRidePlace = RidePlace::None;
 	playerRideflg = false;
+
+	//HPが無くなったか
+	bool HPoutflg = false;
 
 	for (int i = 0; i < parts.size(); i++)
 	{
@@ -119,6 +122,12 @@ void ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 		HP = 0;
 	}
 
+	//HP確認
+	if (HP == 0)
+	{
+		HPoutflg = true;
+	}
+
 	//手をターゲットカメラに設定
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
 	//動き更新
@@ -128,6 +137,8 @@ void ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	ChangeMove(playerPos);
 
 	MV1SetPosition(modelHandle, position);
+
+	return HPoutflg;
 }
 
 /// <summary>

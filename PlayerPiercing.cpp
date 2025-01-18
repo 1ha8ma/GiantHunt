@@ -107,7 +107,7 @@ void PlayerPiercing::PiercingAttack(int inputstate)
 	//Xƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚é‚ÆUŒ‚
 	if (canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
 	{
-		attackPower = LowestAttackPower + attackChargeFlame / 5;
+		attackPower = LowestAttackPower + (attackChargeFlame * ChargeMagnification);
 
 		attack = true;
 	}

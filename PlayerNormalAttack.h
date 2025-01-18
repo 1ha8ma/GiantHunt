@@ -3,6 +3,7 @@
 
 struct CollisionData;
 class CollisionManager;
+class SoundEffect;
 
 class PlayerNormalAttack :public PlayerStateProcessBase
 {
@@ -30,6 +31,7 @@ private:
 	//他クラス
 	CollisionManager* collisionManager;
 	CollisionData attackCollisionData;
+	SoundEffect* se;
 
 	bool stateChangeflg;			//ステート変更フラグ
 	bool animEndflg;				//アニメーション終了

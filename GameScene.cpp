@@ -1,11 +1,9 @@
 #include"DxLib.h"
 #include"EffekseerForDXLib.h"
-#include"Camera.h"
 #include"CollisionManager.h"
-#include"ArmEnemy.h"
-#include"ArmEnemyStage.h"
-#include"Wall.h"
-#include"Wood.h"
+#include"Camera.h"
+#include"EnemyBase.h"
+#include"StageBase.h"
 #include"Player.h"
 #include"GameUI.h"
 #include"GameOverScene.h"
@@ -14,18 +12,19 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-GameScene::GameScene()
+/// <param name="stage">ステージインスタンス</param>
+/// <param name="enemy">敵インスタンス</param>
+GameScene::GameScene(StageBase* stage, EnemyBase* enemy)
 {
 	//インスタンス化
 	collisionManager = collisionManager->GetInstance();
 	camera = new Camera();
-	armEnemyStage = new ArmEnemyStage();
+	this->stage = stage;
 	player = new Player();
-	wall = new Wall();
-	armEnemy = new ArmEnemy();
-	wood = new Wood();
-	ui = new GameUI(armEnemy->GetHP(),player->GetHP(),player->GetGripPoint());
+	this->enemy = enemy;
+	ui = new GameUI(this->enemy->GetHP(), player->GetHP(), player->GetGripPoint());
 
+	//変数初期化
 	gameOver = false;
 	gameClear = false;
 }
@@ -36,11 +35,9 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	delete camera;
-	delete armEnemyStage;
+	delete stage;
 	delete player;
-	delete wall;
-	delete armEnemy;
-	delete wood;
+	delete enemy;
 	delete ui;
 }
 
@@ -62,10 +59,12 @@ SceneBase* GameScene::Update()
 	//エフェクトカメラ同期
 	Effekseer_Sync3DSetting();
 
-	camera->Update(player->GetPosition(), armEnemy->GetTargetCameraPosition());
+	//クラス更新
+	stage->Update();
+	camera->Update(player->GetPosition(), enemy->GetTargetCameraPosition());
 	gameOver = player->Update(*camera);
-	armEnemy->Update(player->GetPosition(),camera);
-	ui->Update(armEnemy->GetHP(), player->GetHP(), player->GetGripPoint());
+	gameClear = enemy->Update(player->GetPosition(), camera);
+	ui->Update(enemy->GetHP(), player->GetHP(), player->GetGripPoint());
 
 	//当たり判定
 	collisionManager->Update();
@@ -87,10 +86,8 @@ SceneBase* GameScene::Update()
 /// </summary>
 void GameScene::Draw()
 {
-	armEnemyStage->Draw();
-	wall->Draw();
-	wood->Draw();
+	stage->Draw();
 	player->Draw();
-	armEnemy->Draw();
+	enemy->Draw();
 	ui->Draw();
 }

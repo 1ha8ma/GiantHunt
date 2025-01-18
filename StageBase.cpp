@@ -45,7 +45,7 @@ VECTOR StageBase::PushBackPosition(VECTOR position, VECTOR moveVec)
 /// <summary>
 /// •`‰æ
 /// </summary>
-void StageBase::Draw()
-{
-	MV1DrawModel(modelHandle);
-}
+//void StageBase::Draw()
+//{
+//	MV1DrawModel(modelHandle);
+//}

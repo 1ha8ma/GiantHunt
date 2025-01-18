@@ -3,6 +3,7 @@
 
 class CollisionManager;
 struct CollisionData;
+class SoundEffect;
 
 class ArmEnemyMowingDown :public ArmEnemyMoveBase
 {
@@ -22,7 +23,9 @@ private:
 	void UpdateCollisionData();
 
 	CollisionManager* collisionManager;		
-	CollisionData collisionData;			//当たり判定情報
+	CollisionData collisionData;			//攻撃当たり判定情報
+	SoundEffect* se;
+
 	VECTOR attackCapsuleStart;				//攻撃カプセル始点
 	VECTOR attackCapsuleEnd;				//攻撃カプセル終点
 	bool moveEnd;							//動き終了

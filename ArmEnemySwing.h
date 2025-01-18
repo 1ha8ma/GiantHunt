@@ -1,6 +1,8 @@
 #pragma once
 #include"ArmEnemyMoveBase.h"
 
+class SoundEffect;
+
 class ArmEnemySwing :public ArmEnemyMoveBase
 {
 public:
@@ -12,6 +14,8 @@ public:
 
 private:
 	const VECTOR BasicRotate = VGet(0.0f, 0.0f, 0.0f);	//Šî–{‚Ì‰ñ“]—Ê
+
+	SoundEffect* se;
 
 	bool moveEnd;
 };

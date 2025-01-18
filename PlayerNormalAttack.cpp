@@ -1,6 +1,7 @@
 #include"DxLib.h"
 #include"CollisionData.h"
 #include"CollisionManager.h"
+#include"SoundEffect.h"
 #include"Camera.h"
 #include"PlayerNormalAttack.h"
 
@@ -20,6 +21,9 @@ PlayerNormalAttack::PlayerNormalAttack(int modelHandle, VECTOR prevtargetLookDir
 	//目標の方向を前の方向にする
 	targetLookDirection = prevtargetLookDirection;
 
+	//インスタンス化
+	se = new SoundEffect();
+
 	//private変数初期化
 	stateChangeflg = false;
 	animEndflg = false;
@@ -30,6 +34,9 @@ PlayerNormalAttack::PlayerNormalAttack(int modelHandle, VECTOR prevtargetLookDir
 	collisionManager = collisionManager->GetInstance();
 	attackCollisionData.HitProcess = std::bind(&PlayerNormalAttack::OnHitObject, this, std::placeholders::_1);
 	collisionManager->AddCollisionData(&attackCollisionData);
+
+	//SE再生
+	se->PlaySE(SoundEffect::SEKind::NormalAttack);
 }
 
 /// <summary>

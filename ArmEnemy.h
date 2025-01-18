@@ -1,26 +1,24 @@
 #pragma once
 #include<vector>
+#include"EnemyBase.h"
 
 class EnemyParts;
 class ArmEnemyMoveBase;
 class Calculation;
 
-class ArmEnemy
+class ArmEnemy:public EnemyBase
 {
 public:
 	ArmEnemy();
 	~ArmEnemy();
 
 	//初期化
-	void Initialize();
+	void Initialize()override;
 	//更新
-	void Update(VECTOR playerPos,Camera* camera);
+	bool Update(VECTOR playerPos, Camera* camera)override;
 	//描画
-	void Draw();
+	void Draw()override;
 
-	VECTOR GetPosition() { return position; }
-	VECTOR GetTargetCameraPosition() { return targetCameraPosition; }
-	int GetHP() { return HP; }
 private:
 	//乗っている場所
 	enum class RidePlace :int
@@ -47,17 +45,11 @@ private:
 	ArmEnemyMoveBase* move;
 	Calculation* calclation;
 
-	//ステータス
-	int HP;
-
 	std::vector<EnemyParts*> parts;			//パーツ
-	int modelHandle;						//モデルハンドル
-	VECTOR position;						//描画ポジション
 	RidePlace playerRidePlace;				//プレイヤーが乗っている場所
-	VECTOR targetCameraPosition;			//ターゲットカメラ用ポジション
 	bool moveChangeflg;						//状態からの動き変更指示フラグ
 	MoveKind nowMoveKind;					//現在の動きの種類
 	int playerRideFlame;					//プレイヤーが乗っている時間
-	bool playerRideflg;//プレイヤーが乗っているフラグ
+	bool playerRideflg;						//プレイヤーが乗っているフラグ
 	bool swingflg;							//振り回しフラグ
 };

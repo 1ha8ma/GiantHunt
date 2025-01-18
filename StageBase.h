@@ -3,10 +3,16 @@
 class StageBase
 {
 public:
+	StageBase() {};
+	virtual ~StageBase() {};
+
 	//ポジションを押し戻し
 	VECTOR PushBackPosition(VECTOR position, VECTOR moveVec);
+
+	//更新
+	virtual void Update()abstract;
 	//描画
-	void Draw();
+	virtual void Draw()abstract;
 
 protected:
 	const VECTOR centerPosition = VGet(0.0f, 0.0f, 0.0f);	//中心点

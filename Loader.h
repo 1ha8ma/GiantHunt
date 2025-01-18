@@ -21,7 +21,13 @@ public:
 		GameOverBackImage,	//ゲームオーバー背景
 		TitleBackImage,		//タイトル背景
 
-		//音
+		//BGM
+		ArmEnemyBGM,		//腕の敵戦
+
+		//SE
+		MowinDownSE,		//振り下ろし攻撃SE
+		NormalAttackSE,		//通常攻撃SE
+		SwingSE,			//振りまわりSE
 
 		//エフェクト
 		WeakPointEffect,	//弱点

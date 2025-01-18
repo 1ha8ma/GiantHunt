@@ -139,10 +139,12 @@
     <ClCompile Include="ArmEnemyMowingDown.cpp" />
     <ClCompile Include="ArmEnemyStage.cpp" />
     <ClCompile Include="ArmEnemySwing.cpp" />
+    <ClCompile Include="BGM.cpp" />
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyParts.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="PlayerSquat.cpp" />
     <ClCompile Include="PlayerStateProcessBase.cpp" />
     <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -173,11 +176,13 @@
     <ClInclude Include="ArmEnemyMowingDown.h" />
     <ClInclude Include="ArmEnemyStage.h" />
     <ClInclude Include="ArmEnemySwing.h" />
+    <ClInclude Include="BGM.h" />
     <ClInclude Include="Calculation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyParts.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameManager.h" />
@@ -195,6 +200,7 @@
     <ClInclude Include="PlayerSquat.h" />
     <ClInclude Include="PlayerStateProcessBase.h" />
     <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="StageBase.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Utility.h" />

@@ -3,17 +3,15 @@
 
 class Camera;
 class CollisionManager;
-class ArmEnemy;
-class ArmEnemyStage;
+class EnemyBase;
+class StageBase;
 class Player;
-class Wall;
-class Wood;
 class GameUI;
 
 class GameScene :public SceneBase
 {
 public:
-	GameScene();
+	GameScene(StageBase* stage, EnemyBase* enemy);
 	~GameScene()override;
 
 	void Initialize()override;
@@ -23,11 +21,9 @@ public:
 private:
 	Camera* camera;
 	CollisionManager* collisionManager;
-	ArmEnemyStage* armEnemyStage;
+	StageBase* stage;
 	Player* player;
-	Wall* wall;
-	ArmEnemy* armEnemy;
-	Wood* wood;
+	EnemyBase* enemy;
 	GameUI* ui;
 
 	bool gameOver;
