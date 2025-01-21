@@ -8,10 +8,20 @@ class Camera
 public:
 	Camera();
 
-	//初期化
-	void Initialize(VECTOR playerpos);
+	//スタートシーン初期化
+	void StartSceneInitialize();
+	//スタートシーン更新
+	void UpdateStartScene();
+
+	//ゲームシーン初期化
+	void GameInitialize(VECTOR playerpos);
 	//更新
-	void Update(VECTOR playerPosition,VECTOR targetCameraPosition);
+	void UpdateGame(VECTOR playerPosition,VECTOR targetCameraPosition);
+
+	//ゲームオーバーシーン初期化
+	void InitializeGameOver(VECTOR playerPosition);
+	//ゲームオーバーシーン更新
+	void UpdateGameOver();
 	
 	//演出
 	void PlayShakingVertical(float shakingPower, int shakingDirectionChangeflame, int flame);

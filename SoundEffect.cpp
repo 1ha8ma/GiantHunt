@@ -16,6 +16,8 @@ SoundEffect::SoundEffect()
 	ChangeVolumeSoundMem(255 * (int)Ratio::MowingAttack / 100, handle[SEKind::MowinDownAttack]);
 	handle[SEKind::Swing] = loader->GetHandle(Loader::Kind::SwingSE);
 	ChangeVolumeSoundMem(255 * (int)Ratio::Swing / 100, handle[SEKind::Swing]);
+	handle[SEKind::HitWeakPoint] = loader->GetHandle(Loader::Kind::HitWeakPointSE);
+	ChangeVolumeSoundMem(255 * (int)Ratio::HitWeakPoint / 100, handle[SEKind::HitWeakPoint]);
 }
 
 /// <summary>

@@ -11,6 +11,10 @@ BGM::BGM(BGMKind kind)
 	Loader* loader = loader->GetInstance();
 
 	//ƒnƒ“ƒhƒ‹“Ç‚Ýž‚ÝE‰¹—Ê’²®
+	handle[BGMKind::Title] = loader->GetHandle(Loader::Kind::TitleBGM);
+	ChangeVolumeSoundMem(255 * (int)Ratio::Title / 100, handle[BGMKind::ArmEnemyStage]);
+	handle[BGMKind::GameOver] = loader->GetHandle(Loader::Kind::GameOverBGM);
+	ChangeVolumeSoundMem(255 * (int)Ratio::GameOver / 100, handle[BGMKind::ArmEnemyStage]);
 	handle[BGMKind::ArmEnemyStage] = loader->GetHandle(Loader::Kind::ArmEnemyBGM);
 	ChangeVolumeSoundMem(255 * (int)Ratio::ArmEnemyStage / 100, handle[BGMKind::ArmEnemyStage]);
 

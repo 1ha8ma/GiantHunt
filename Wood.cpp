@@ -45,8 +45,9 @@ void Wood::Draw()
 {
 	MV1DrawModel(modelHandle);
 
-	DrawCapsule3D(cap1Start, cap1End, CapsuleRadius, 8, GetColor(127, 127, 0), GetColor(127, 127, 0), FALSE);
-	DrawCapsule3D(cap2Start, cap2End, CapsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+	//Šm”F—p
+	//DrawCapsule3D(cap1Start, cap1End, CapsuleRadius, 8, GetColor(127, 127, 0), GetColor(127, 127, 0), FALSE);
+	//DrawCapsule3D(cap2Start, cap2End, CapsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
 }
 
 /// <summary>

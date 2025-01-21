@@ -37,13 +37,17 @@ void Loader::Load()
 	handle[TitleBackImage] = LoadGraph("2D/TitleBack.jpg");
 
 	//BGM
+	handle[TitleBGM] = LoadSoundMem("Sound/BGM/TitleBGM.mp3");
+	handle[GameOverBGM] = LoadSoundMem("Sound/BGM/GameOverBGM.mp3");
 	handle[ArmEnemyBGM] = LoadSoundMem("Sound/BGM/ArmEnemyBGM.mp3");
 
 	//SE
 	handle[MowinDownSE] = LoadSoundMem("Sound/SE/MowingDownSE.mp3");
 	handle[NormalAttackSE] = LoadSoundMem("Sound/SE/NormalAttackSE.mp3");
 	handle[SwingSE] = LoadSoundMem("Sound/SE/SwingSE.mp3");
+	handle[HitWeakPointSE] = LoadSoundMem("Sound/SE/HitWeakPointSE.mp3");
 
 	//エフェクト
 	handle[WeakPointEffect] = LoadEffekseerEffect("Effect/WeakPoint.efkefc", 1.0f);
+	handle[HitWeakPointEffect] = LoadEffekseerEffect("Effect/HitWeakPoint.efkefc", 1.0f);
 }

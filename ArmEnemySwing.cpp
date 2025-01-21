@@ -14,12 +14,16 @@ ArmEnemySwing::ArmEnemySwing(int modelHandle, float modelScale,VECTOR prevRotate
 	se = new SoundEffect();
 	
 	//privateïœêîèâä˙âª
-	rotate = prevRotate;
+	//rotate = prevRotate;
+	rotate = VGet(0, 0, 0);
 	moveEnd = false;
 	moveState = 0;
 
 	//seçƒê∂
 	se->PlaySE(SoundEffect::SEKind::Swing);
+
+	//êUìÆ
+	StartJoypadVibration(DX_INPUT_PAD1, 150, -1, -1);
 }
 
 /// <summary>
@@ -27,7 +31,8 @@ ArmEnemySwing::ArmEnemySwing(int modelHandle, float modelScale,VECTOR prevRotate
 /// </summary>
 ArmEnemySwing::~ArmEnemySwing()
 {
-
+	//êUìÆÇé~ÇﬂÇÈ
+	StopJoypadVibration(DX_INPUT_PAD1, -1);
 }
 
 /// <summary>
@@ -69,6 +74,7 @@ bool ArmEnemySwing::Update(Camera* camera)
 	break;
 	}
 
+	
 	MATRIX Mrotate = MGetRotZ(rotate.z);
 	//Mrotate = MMult(Mrotate, MGetRotX(rotate.x));
 

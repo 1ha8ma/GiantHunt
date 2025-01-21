@@ -11,6 +11,7 @@ Effect::Effect()
 	Loader* loader = loader->GetInstance();
 
 	effectHandle[EffectKind::WeakPoint] = loader->GetHandle(Loader::Kind::WeakPointEffect);
+	effectHandle[EffectKind::HitWeakPoint] = loader->GetHandle(Loader::Kind::HitWeakPointEffect);
 
 	Initialize();
 }
@@ -77,7 +78,7 @@ void Effect::PlayEffect(EffectKind kind, VECTOR playPosition, VECTOR initScale, 
 	//表示角度設定
 	SetRotationPlayingEffekseer3DEffect(playingEffectHandle.back(), rotate.x, rotate.y, rotate.z);
 	//色変更
-	if (kind == EffectKind::WeakPoint)
+	if (kind == EffectKind::WeakPoint || kind == EffectKind::HitWeakPoint)
 	{
 		SetColorPlayingEffekseer3DEffect(playingEffectHandle.back(), 0, 255, 255, 255);
 	}
@@ -88,12 +89,15 @@ void Effect::PlayEffect(EffectKind kind, VECTOR playPosition, VECTOR initScale, 
 /// <summary>
 /// 更新
 /// </summary>
-void Effect::Update(VECTOR playPosition, VECTOR rotate)
+/// <param name="kind">ポジション等を更新させたい種類</param>
+/// <param name="playPosition">再生ポジション</param>
+/// <param name="rotate">再生角度</param>
+void Effect::Update(EffectKind kind,VECTOR playPosition, VECTOR rotate)
 {
 	for (int i = 0; i < playingEffectHandle.size(); i++)
 	{
-		//弱点ならポジションを更新
-		if (playingEffectKind[i] == EffectKind::WeakPoint)
+		//指定と同じものを更新
+		if (playingEffectKind[i] == kind)
 		{
 			//表示角度設定
 			SetRotationPlayingEffekseer3DEffect(playingEffectHandle[i], rotate.x, rotate.y, rotate.z);
@@ -138,4 +142,36 @@ bool Effect::IsPlayEffect(EffectKind kind)
 	}
 
 	return playing;
+}
+
+/// <summary>
+/// エフェクト削除(無限ループエフェクト用)
+/// </summary>
+/// <param name="kind">削除するエフェクト</param>
+void Effect::RemoveEffect(EffectKind kind)
+{
+	//エフェクト終了
+	for (int i = 0; i < playingEffectHandle.size(); i++)
+	{
+		//Effekseerでは再生を止める事はできても描画を消すことが出来なかったため下に飛ばしている
+		if (playingEffectKind[i] == kind)
+		{
+			SetPosPlayingEffekseer3DEffect(playingEffectHandle[i], 0.0f, -10000.0f, 0.0f);
+			StopEffekseer3DEffect(playingEffectHandle[i]);
+
+			break;
+		}
+	}
+	UpdateEffekseer3D();
+
+	//情報削除
+	playingEffectHandle.clear();
+	playingEffectKind.clear();
+	playingEffectScale.clear();
+	for (int i = 0; i < playingEffectHandle.size(); i++)
+	{
+		playingEffectHandle.erase(playingEffectHandle.begin() + i);
+		playingEffectKind.erase(playingEffectKind.begin() + i);
+		playingEffectScale.erase(playingEffectScale.begin() + i);
+	}
 }

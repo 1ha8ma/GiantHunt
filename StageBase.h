@@ -9,6 +9,7 @@ public:
 	//ポジションを押し戻し
 	VECTOR PushBackPosition(VECTOR position, VECTOR moveVec);
 
+	virtual void InitializeGameOver()abstract;
 	//更新
 	virtual void Update()abstract;
 	//描画

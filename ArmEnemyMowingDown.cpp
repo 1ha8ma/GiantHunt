@@ -101,8 +101,11 @@ bool ArmEnemyMowingDown::Update(Camera* camera)
 	MV1SetFrameUserLocalMatrix(modelHandle, (int)ArmEnemyFrameIndex::Upperarm, Mrotate);
 
 	//çUåÇìñÇΩÇËîªíË
-	attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger1);
-	attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger2);
+	//attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger1);
+	//attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Finger2);
+
+	attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Hand);
+	attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Hand);
 
 	UpdateCollisionData();
 

@@ -22,15 +22,19 @@ public:
 		TitleBackImage,		//タイトル背景
 
 		//BGM
+		TitleBGM,			//タイトルBGM
+		GameOverBGM,		//ゲームオーバーBGM
 		ArmEnemyBGM,		//腕の敵戦
 
 		//SE
 		MowinDownSE,		//振り下ろし攻撃SE
 		NormalAttackSE,		//通常攻撃SE
 		SwingSE,			//振りまわりSE
+		HitWeakPointSE,		//弱点ヒットSE
 
 		//エフェクト
 		WeakPointEffect,	//弱点
+		HitWeakPointEffect,	//弱点ヒットエフェクト
 	};
 
 	//ハンドルゲット

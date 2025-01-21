@@ -11,28 +11,56 @@ Camera::Camera()
 {
 	input = new Input();
 	calculation = new Calculation();
+}
 
-	//private変数
-	productionflg = false;
-	shakingDirection = true;
+/// <summary>
+/// スタートシーン初期
+/// </summary>
+void Camera::StartSceneInitialize()
+{
+	//距離設定
+	SetCameraNearFar(100.0f, 20000.0f);
+
+	position = VGet(5000, 2500, -1500);
+	lookPosition = VGet(500, 1000, 1000);
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }
 
 /// <summary>
 /// 初期化
 /// </summary>
-void Camera::Initialize(VECTOR playerPosition)
+void Camera::GameInitialize(VECTOR playerPosition)
 {
 	//距離設定
 	SetCameraNearFar(100.0f, 20000.0f);
 
+	//private変数
 	position = VGet(0, 2000, -1500);
 	lookPosition = playerPosition;
 	lookPosition.y += CameraPlayerTargetHeight;
 	angleH = 0.0f;
 	angleV = 0.0f;
-
+	productionflg = false;
+	shakingDirection = true;
 	t = 0;
 	lerpflg = false;
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
+/// スタートシーンでの更新
+/// </summary>
+void Camera::UpdateStartScene()
+{
+	if (position.y >= 1000)
+	{
+		position.y -= 5;
+	}
+
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }
@@ -42,7 +70,7 @@ void Camera::Initialize(VECTOR playerPosition)
 /// </summary>
 /// <param name="playerPosition">プレイヤーポジション</param>
 /// <param name="targetCameraPosition">ターゲットカメラポジション</param>
-void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
+void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition)
 {
 	//注視点移動
 	bool inputflg = false;
@@ -137,6 +165,39 @@ void Camera::Update(VECTOR playerPosition, VECTOR targetCameraPosition)
 	position = VAdd(VTransform(VTransform(VGet(PlayerDistance, 0.0f, 0.0f), rotZ), rotY), VAdd(playerPosition, VGet(0.0f, CameraPlayerTargetHeight, 0.0f)));
 	//演出更新
 	UpdateProduction(playerPosition);
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
+/// ゲームオーバーシーン初期化
+/// </summary>
+/// <param name="playerPosition"></param>
+void Camera::InitializeGameOver(VECTOR playerPosition)
+{
+	//距離設定
+	SetCameraNearFar(10.0f, 10000.0f);
+
+	//XXX:ポジションと注視点のポジションのXZを同じにすると画面が黒くなって何も映らなくなるが少しずらすと映る
+	position = playerPosition;
+	position.x += 10;
+	position.z += 10;
+	position.y += 100;
+
+	//注視点
+	lookPosition = playerPosition;
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
+/// ゲームオーバーシーン更新
+/// </summary>
+void Camera::UpdateGameOver()
+{
+	position.y += 3.0f;
 
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);

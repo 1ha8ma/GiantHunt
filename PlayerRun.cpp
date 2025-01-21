@@ -112,8 +112,13 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 		float deg = angle * (180 / DX_PI_F);//確認用
 
 		//平面の長さ
-		float horizonLen = sqrt(pow(moveVec.x, 2) + pow(moveVec.z, 2));
+		//float horizonLen = sqrt(pow(moveVec.x, 2) + pow(moveVec.z, 2));
 		//y座標変更
+		//moveVec.y = sin(angle) * horizonLen;
+
+		//平面moveVecの長さ
+		float horizonLen = VSize(moveVec);
+		//Y座標変更
 		moveVec.y = sin(angle) * horizonLen;
 
 		if (VSize(moveVec) > 0)

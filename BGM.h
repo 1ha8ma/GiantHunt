@@ -7,10 +7,10 @@ public:
 	//BGMの種類
 	enum class BGMKind :int
 	{
-		Title,			//タイトル
-		ArmEnemyStage,	//腕の敵戦
-		Win,			//勝利シーン
-		Lose,			//負けシーン
+		Title,				//タイトル
+		GameOver,			//負けシーン
+		ArmEnemyStage,		//腕の敵戦
+		Win,				//勝利シーン
 	};
 
 	BGM(BGMKind kind);
@@ -26,6 +26,8 @@ private:
 	//音量割合
 	enum class Ratio :int
 	{
+		Title = 100,
+		GameOver = 100,
 		ArmEnemyStage = 80,
 	};
 

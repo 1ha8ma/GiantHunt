@@ -1,4 +1,6 @@
 #pragma once
+#include"CollisionData.h"
+#include"Camera.h"
 
 class PlayerStateProcessBase
 {
@@ -17,7 +19,12 @@ public:
 	/// <param name="stickstate">スティック入力情報</param>
 	/// <param name="camera">カメラ</param>
 	/// <returns>ステートからのステート変更指示</returns>
-	virtual bool Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision) abstract;
+	virtual bool Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision) { return false; }
+
+	/// <summary>
+	/// ゲームオーバーシーン更新
+	/// </summary>
+	virtual void UpdateGameOver() {};
 
 	/// <summary>
 	/// 描画(確認用)
@@ -48,6 +55,7 @@ protected:
 		NormalAttack,	//通常攻撃
 		Climb,			//登り
 		Squat,			//しゃがみ
+		FallDown,		//倒れる
 	};
 
 	//フレーム番号

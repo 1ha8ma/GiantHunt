@@ -138,6 +138,7 @@
     <ClCompile Include="ArmEnemyMoveBase.cpp" />
     <ClCompile Include="ArmEnemyMowingDown.cpp" />
     <ClCompile Include="ArmEnemyStage.cpp" />
+    <ClCompile Include="ArmEnemyStartScene.cpp" />
     <ClCompile Include="ArmEnemySwing.cpp" />
     <ClCompile Include="BGM.cpp" />
     <ClCompile Include="Calculation.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerClimb.cpp" />
+    <ClCompile Include="PlayerFallDown.cpp" />
     <ClCompile Include="PlayerJump.cpp" />
     <ClCompile Include="PlayerNormalAttack.cpp" />
     <ClCompile Include="PlayerPiercing.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="ArmEnemyMoveBase.h" />
     <ClInclude Include="ArmEnemyMowingDown.h" />
     <ClInclude Include="ArmEnemyStage.h" />
+    <ClInclude Include="ArmEnemyStartScene.h" />
     <ClInclude Include="ArmEnemySwing.h" />
     <ClInclude Include="BGM.h" />
     <ClInclude Include="Calculation.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerClimb.h" />
+    <ClInclude Include="PlayerFallDown.h" />
     <ClInclude Include="PlayerJump.h" />
     <ClInclude Include="PlayerNormalAttack.h" />
     <ClInclude Include="PlayerPiercing.h" />

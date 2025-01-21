@@ -14,13 +14,14 @@
 /// </summary>
 /// <param name="stage">ステージインスタンス</param>
 /// <param name="enemy">敵インスタンス</param>
-GameScene::GameScene(StageBase* stage, EnemyBase* enemy)
+GameScene::GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* player)
 {
 	//インスタンス化
 	collisionManager = collisionManager->GetInstance();
-	camera = new Camera();
+	this->camera = camera;
 	this->stage = stage;
-	player = new Player();
+	this->player = player;
+	this->player->InitializeGame();
 	this->enemy = enemy;
 	ui = new GameUI(this->enemy->GetHP(), player->GetHP(), player->GetGripPoint());
 
@@ -34,10 +35,10 @@ GameScene::GameScene(StageBase* stage, EnemyBase* enemy)
 /// </summary>
 GameScene::~GameScene()
 {
-	delete camera;
+	/*delete camera;
 	delete stage;
 	delete player;
-	delete enemy;
+	delete enemy;*/
 	delete ui;
 }
 
@@ -46,8 +47,9 @@ GameScene::~GameScene()
 /// </summary>
 void GameScene::Initialize()
 {
-	camera->Initialize(player->GetPosition());
 	collisionManager->Initialize();
+
+	camera->GameInitialize(player->GetPosition());
 }
 
 /// <summary>
@@ -61,8 +63,8 @@ SceneBase* GameScene::Update()
 
 	//クラス更新
 	stage->Update();
-	camera->Update(player->GetPosition(), enemy->GetTargetCameraPosition());
-	gameOver = player->Update(*camera);
+	camera->UpdateGame(player->GetPosition(), enemy->GetTargetCameraPosition());
+	gameOver = player->UpdateGame(*camera);
 	gameClear = enemy->Update(player->GetPosition(), camera);
 	ui->Update(enemy->GetHP(), player->GetHP(), player->GetGripPoint());
 
@@ -75,7 +77,7 @@ SceneBase* GameScene::Update()
 	//ゲームオーバー
 	if (gameOver)
 	{
-		return new GameOverScene();
+		return new GameOverScene(stage, enemy, camera, player);
 	}
 
 	return this;

@@ -11,7 +11,7 @@ class GameUI;
 class GameScene :public SceneBase
 {
 public:
-	GameScene(StageBase* stage, EnemyBase* enemy);
+	GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* player);
 	~GameScene()override;
 
 	void Initialize()override;

@@ -64,6 +64,21 @@
     <Filter Include="Enemy\EnemyBase">
       <UniqueIdentifier>{40034a65-e313-446e-a55a-72c3ab2fe020}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Title">
+      <UniqueIdentifier>{0ed7feba-e100-401d-82d1-42015a7b135e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\GameOver">
+      <UniqueIdentifier>{10bfaf12-6e0c-45f4-8317-91c1b33f84d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Game">
+      <UniqueIdentifier>{bf142e25-0cd3-4e7e-aef4-254c63fa6432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Game\GameScene">
+      <UniqueIdentifier>{58f9f729-d1f1-4e1c-b9d6-893c9bb6b6cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Game\StartScene">
+      <UniqueIdentifier>{bbc723d6-e2cf-4fad-8c61-5e07568e3f83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -80,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
@@ -150,12 +162,6 @@
     <ClCompile Include="PlayerPiercing.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SceneBase.cpp">
       <Filter>Scene\Base</Filter>
     </ClCompile>
@@ -170,6 +176,21 @@
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
       <Filter>Enemy\EnemyBase</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Scene\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene\Game\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyStartScene.cpp">
+      <Filter>Scene\Game\StartScene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFallDown.cpp">
+      <Filter>Player\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +211,6 @@
     </ClInclude>
     <ClInclude Include="CollisionData.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
@@ -260,12 +278,6 @@
     <ClInclude Include="PlayerPiercing.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SceneBase.h">
       <Filter>Scene\Base</Filter>
     </ClInclude>
@@ -280,6 +292,21 @@
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>Enemy\EnemyBase</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Scene\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene\Game\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyStartScene.h">
+      <Filter>Scene\Game\StartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFallDown.h">
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

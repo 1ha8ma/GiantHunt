@@ -1,6 +1,5 @@
 #include"DxLib.h"
 #include"Loader.h"
-#include"CollisionData.h"
 #include"CollisionManager.h"
 #include"BGM.h"
 #include"Wood.h"
@@ -47,6 +46,14 @@ ArmEnemyStage::~ArmEnemyStage()
 	delete wood;
 	delete wall;
 	delete bgm;
+}
+
+/// <summary>
+/// ゲームオーバーシーン初期化
+/// </summary>
+void ArmEnemyStage::InitializeGameOver()
+{
+	bgm->StopBGM();
 }
 
 /// <summary>

@@ -1,7 +1,5 @@
 #include<math.h>
-#include"CollisionData.h"
 #include"DxLib.h"
-#include"Camera.h"
 #include"PlayerStateProcessBase.h"
 
 /// <summary>
@@ -38,10 +36,10 @@ void PlayerStateProcessBase::PlayAnimation(float playSpeed,bool stop)
 }
 
 /// <summary>
-/// アニメーション再生(1回のみ)
+/// アニメーション再生(1度のみ)
 /// </summary>
 /// <param name="playSpeed">再生速度</param>
-/// <param name="playingflg">再生するか</param>
+/// <returns>アニメーションが終了したか</returns>
 bool PlayerStateProcessBase::PlayAnimationOnce(float playSpeed)
 {
 	bool animEndflg = false;

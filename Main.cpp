@@ -36,6 +36,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Loader* loader = loader->GetInstance();
 	loader->Load();
 
+	//フォント変更
+	ChangeFont("源界明朝", DX_CHARSET_DEFAULT);
+
 	//インスタンス化
 	FPS* fps = new FPS();
 	GameManager* game = new GameManager();

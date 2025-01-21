@@ -1,8 +1,8 @@
 #pragma once
 #include"StageBase.h"
+#include"CollisionData.h"
 
 class CollisionManager;
-struct CollisionData;
 class Wood;
 class Wall;
 class BGM;
@@ -13,6 +13,7 @@ public:
 	ArmEnemyStage();
 	~ArmEnemyStage()override;
 
+	void InitializeGameOver()override;
 	void Update()override;
 	void Draw()override;
 private:

@@ -116,8 +116,10 @@ void CollisionManager::Update()
 					/*ƒvƒŒƒCƒ„[‚ÌUŒ‚‚Æ˜r‚Ì“G*/
 					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Upperarm_E1 ||
 					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Forearm_E1 ||
-					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Hand_E1
+					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Hand_E1 ||
+					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::WeakPoint_E1
 					)
+			
 				{
 					bool hit = CapsuleWithCapsule(data1.startPosition, data1.endPosition, data1.radius, data2.startPosition, data2.endPosition, data2.radius);
 

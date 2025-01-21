@@ -1,16 +1,15 @@
 #include"DxLib.h"
-#include"CollisionData.h"
 #include"Loader.h"
 #include"Camera.h"
 #include"Input.h"
 #include"CollisionManager.h"
-#include"CollisionData.h"
 #include"PlayerRun.h"
 #include"PlayerJump.h"
 #include"PlayerNormalAttack.h"
 #include"PlayerClimb.h"
 #include"PlayerSquat.h"
 #include"PlayerPiercing.h"
+#include"PlayerFallDown.h"
 #include"Player.h"
 
 /// <summary>
@@ -21,16 +20,47 @@ Player::Player()
 	Loader* loader = loader->GetInstance();
 
 	modelHandle = loader->GetHandle(Loader::Kind::PlayerModel);
-	position = VGet(0.0f, 0.0f, 0.0f);
+
+	//GameInitialize();
+	InitializeStartScene();
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Player::~Player()
+{
+	collisionManager->RemoveCollisionData(&bodyCollisionData);
+	collisionManager->RemoveCollisionData(&footCollisionData);
+	delete input;
+	delete nowstate;
+}
+
+/// <summary>
+/// スタートシーン初期化
+/// </summary>
+void Player::InitializeStartScene()
+{
+	nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	position = VGet(3000.0f, 0.0f, -1000.0f);
 	drawPosition = position;
 	angle = 0.0f;
+}
 
+/// <summary>
+/// ゲームシーン初期化
+/// </summary>
+void Player::InitializeGame()
+{
+	//インスタンス化
 	nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
 	input = new Input();
-	nowstateKind = State::Run;
-	collisionManager = collisionManager->GetInstance();
 
 	//private変数初期化
+	nowstateKind = State::Run;
+	position = VGet(3000.0f, 0.0f, -1000.0f);
+	drawPosition = position;
+	angle = 0.0f;
 	HP = MaxHP;
 	gripPoint = MaxGripPoint;
 	onGround = true;
@@ -46,6 +76,7 @@ Player::Player()
 	onFootObject = true;
 
 	//当たり判定
+	collisionManager = collisionManager->GetInstance();
 	//衝突後の処理を渡す
 	bodyCollisionData.HitProcess = std::bind(&Player::BodyOnHitObject, this, std::placeholders::_1);
 	bodyCollisionData.WallHitProcess = std::bind(&Player::WallHitProcess, this, std::placeholders::_1);
@@ -59,30 +90,11 @@ Player::Player()
 }
 
 /// <summary>
-/// デストラクタ
-/// </summary>
-Player::~Player()
-{
-	collisionManager->RemoveCollisionData(&bodyCollisionData);
-	collisionManager->RemoveCollisionData(&footCollisionData);
-	delete nowstate;
-	delete input;
-}
-
-/// <summary>
-/// 初期化
-/// </summary>
-void Player::Initialize()
-{
-
-}
-
-/// <summary>
 /// 更新
 /// </summary>
 /// <param name="camera">カメラインスタンス</param>
 /// <returns>ゲームオーバー</returns>
-bool Player::Update(const Camera& camera)
+bool Player::UpdateGame(const Camera& camera)
 {
 	//入力
 	inputstate = input->GetInputState();
@@ -149,6 +161,24 @@ bool Player::Update(const Camera& camera)
 }
 
 /// <summary>
+/// ゲームオーバーシーン初期化
+/// </summary>
+void Player::InitializeGameOver()
+{
+	delete nowstate;
+	nowstateKind = State::FallDown;
+	nowstate = new PlayerFallDown(modelHandle);
+}
+
+/// <summary>
+/// ゲームオーバーシーン更新
+/// </summary>
+void Player::UpdateGameOver()
+{
+	nowstate->UpdateGameOver();
+}
+
+/// <summary>
 /// 描画
 /// </summary>
 void Player::Draw()
@@ -157,9 +187,9 @@ void Player::Draw()
 	MV1DrawModel(modelHandle);
 
 	//確認用
-	DrawCapsule3D(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
-	DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);
-	nowstate->Draw();
+	//DrawCapsule3D(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
+	//DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);
+	//nowstate->Draw();
 }
 
 /// <summary>
@@ -302,7 +332,15 @@ void Player::ChangeState()
 		nowstate = new PlayerJump(modelHandle, moveVec);
 	}
 
-	//通常攻撃
+	//突き刺し攻撃
+	if (nowstateKind == State::Squat && canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
+	{
+		delete nowstate;
+		nowstateKind = State::Piercing;
+		nowstate = new PlayerPiercing(modelHandle, targetLookDirection);
+	}
+
+	//通常攻撃　(突き刺し攻撃の後に判定しないと一度通常攻撃に入ってしまう)
 	if (nowstateKind != State::NormalAttack && nowstateKind != State::Piercing && nowstateKind != State::Jump && canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
 	{
 		delete nowstate;
@@ -325,14 +363,6 @@ void Player::ChangeState()
 		nowstateKind = State::Squat;
 		nowstate = new PlayerSquat(modelHandle, targetLookDirection);
 	}
-
-	//突き刺し攻撃
-	if (nowstateKind == State::Squat && canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
-	{
-		delete nowstate;
-		nowstateKind = State::Piercing;
-		nowstate = new PlayerPiercing(modelHandle, targetLookDirection);
-	}
 }
 
 /// <summary>
@@ -349,7 +379,7 @@ void Player::CheckOnGround()
 		//一定時間落下していたら落下ダメージ
 		if (fallFrame >= 100)
 		{
-			HP -= fallFrame / 100;
+			HP -= fallFrame / 50;
 			//振動
 			StartJoypadVibration(DX_INPUT_PAD1, 500, 100, -1);
 		}

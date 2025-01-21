@@ -8,7 +8,7 @@ public:
 	{
 		Upperarm = 16,	//上腕
 		Forearm = 18,	//前腕
-		Hand = 29,		//手
+		Hand = 30,		//手(中指第二関節)
 		Finger1 = 22,	//親指
 		Finger2 = 40,	//小指の先
 	};

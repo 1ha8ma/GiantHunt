@@ -29,6 +29,7 @@ private:
 		NormalAttack = 80,
 		MowingAttack = 100,
 		Swing = 100,
+		HitWeakPoint = 100,
 	};
 
 	std::map<SEKind, int> handle;	//ƒnƒ“ƒhƒ‹

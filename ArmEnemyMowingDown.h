@@ -16,7 +16,7 @@ public:
 
 	void OnHitObject(CollisionData objectData);
 private:
-	const float AttackCapsuleRadius = 200.0f;
+	const float AttackCapsuleRadius = 800.0f; //指から指の当たり判定にするなら200
 	const int AttackPower = 20;
 
 	//当たり判定情報更新

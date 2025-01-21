@@ -1,9 +1,11 @@
 #pragma once
 #include"PlayerStateProcessBase.h"
+#include"CollisionData.h"
+#include"CollisionManager.h"
 
 class Input;
-class CollisonManager;
-struct CollisionData;
+//class CollisonManager;
+class Camera;
 
 class Player
 {
@@ -11,10 +13,20 @@ public:
 	Player();
 	~Player();
 
-	//初期化
-	void Initialize();
-	//更新
-	bool Update(const Camera& camera);
+	//スタートシーン初期化
+	void InitializeStartScene();
+	//スタートシーン終了処理
+	void StartSceneEnd() { delete nowstate; }
+
+	//ゲーム初期化
+	void InitializeGame();
+	//ゲーム更新
+	bool UpdateGame(const Camera& camera);
+
+	//ゲームオーバーシーン初期化
+	void InitializeGameOver();
+	//ゲームオーバーシーン更新
+	void UpdateGameOver();
 	//描画
 	void Draw();
 
@@ -41,6 +53,7 @@ private:
 		Squat,			//しゃがみ
 		Piercing,		//突き刺し攻撃
 		Roll,			//転げる
+		FallDown,		//倒れる
 	};
 
 	const float AngleSpeed = 0.2f;			//角度変更速度

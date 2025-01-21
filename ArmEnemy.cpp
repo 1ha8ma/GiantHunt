@@ -40,7 +40,7 @@ ArmEnemy::ArmEnemy()
 	parts.push_back(new EnemyParts(ObjectTag::Upperarm_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm-1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm, 600));
 	parts.push_back(new EnemyParts(ObjectTag::Forearm_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, 500));
 	parts.push_back(new EnemyParts(ObjectTag::Hand_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, 300));
-	parts.push_back(new EnemyParts(ObjectTag::WeakPoint_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, 300));
+	parts.push_back(new EnemyParts(ObjectTag::WeakPoint_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, 320));
 
 	move = new ArmEnemyIdle(modelHandle, ModelScale, VGet(0, 0, 0));
 	nowMoveKind = MoveKind::Idle;
@@ -153,7 +153,7 @@ void ArmEnemy::Draw()
 	{
 		parts[i]->Draw();
 	}
-	move->Draw();
+	//move->Draw();
 }
 
 /// <summary>
