@@ -5,7 +5,7 @@ class SceneBase
 public:
 	SceneBase() {};
 	virtual ~SceneBase() {};
-	//‰Šú‰»
+	//Å‰‚Ì‰Šú‰»
 	static SceneBase* InitializeBase();
 	//ƒV[ƒ“‚²‚Æ‚Ì‰Šú‰»
 	virtual void Initialize() abstract;

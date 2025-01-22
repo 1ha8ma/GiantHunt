@@ -18,6 +18,10 @@ SoundEffect::SoundEffect()
 	ChangeVolumeSoundMem(255 * (int)Ratio::Swing / 100, handle[SEKind::Swing]);
 	handle[SEKind::HitWeakPoint] = loader->GetHandle(Loader::Kind::HitWeakPointSE);
 	ChangeVolumeSoundMem(255 * (int)Ratio::HitWeakPoint / 100, handle[SEKind::HitWeakPoint]);
+	handle[SEKind::CursorMove] = loader->GetHandle(Loader::Kind::CursorMoveSE);
+	ChangeVolumeSoundMem(255 * (int)Ratio::CursorMove / 100, handle[SEKind::CursorMove]);
+	handle[SEKind::Crick] = loader->GetHandle(Loader::Kind::CrickSE);
+	ChangeVolumeSoundMem(255 * (int)Ratio::Crick / 100, handle[SEKind::Crick]);
 }
 
 /// <summary>

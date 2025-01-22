@@ -57,6 +57,14 @@ void ArmEnemyStage::InitializeGameOver()
 }
 
 /// <summary>
+/// ゲームクリア初期化
+/// </summary>
+void ArmEnemyStage::InitializeGameClear()
+{
+	bgm->StopBGM();
+}
+
+/// <summary>
 /// 更新
 /// </summary>
 void ArmEnemyStage::Update()

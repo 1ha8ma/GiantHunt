@@ -7,6 +7,7 @@
 #include"ArmEnemyIdle.h"
 #include"ArmEnemyMowingDown.h"
 #include"ArmEnemySwing.h"
+#include"ArmEnemyFallDown.h"
 #include"ArmEnemy.h"
 
 /// <summary>
@@ -19,7 +20,7 @@ ArmEnemy::ArmEnemy()
 	modelHandle = loader->GetHandle(Loader::Kind::ArmEnemyModel);
 
 	//ステータス初期化
-	HP = StartHP;
+	HP = MaxHP;
 
 	//private変数初期化
 	calclation = new Calculation();
@@ -139,6 +140,39 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	MV1SetPosition(modelHandle, position);
 
 	return HPoutflg;
+}
+
+/// <summary>
+/// 倒された後の初期化
+/// </summary>
+void ArmEnemy::InitializeFallDown()
+{
+	VECTOR prevRotate = move->GetRotate();
+	delete move;
+	nowMoveKind = MoveKind::FallDown;
+	move = new ArmEnemyFallDown(modelHandle, ModelScale);
+}
+
+/// <summary>
+/// 倒された後の更新
+/// </summary>
+/// <returns>動きが終わったか</returns>
+bool ArmEnemy::UpdateFallDown(Camera* camera)
+{
+	bool moveEnd = false;
+	moveEnd = move->UpdateFallDown(camera);
+
+	//パーツ、エフェクトの更新
+	for (int i = 0; i < parts.size(); i++)
+	{
+		parts[i]->Update();
+	}
+
+	//手をターゲットカメラに設定
+	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+
+	MV1SetPosition(modelHandle, position);
+	return moveEnd;
 }
 
 /// <summary>

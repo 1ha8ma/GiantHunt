@@ -1,6 +1,5 @@
 #include<vector>
 #include"DxLib.h"
-#include"Camera.h"
 #include"ArmEnemyMoveBase.h"
 
 /// <summary>

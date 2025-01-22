@@ -1,5 +1,6 @@
 #pragma once
 #include"SceneBase.h"
+#include"Time.h"
 
 class Camera;
 class CollisionManager;
@@ -11,7 +12,7 @@ class GameUI;
 class GameScene :public SceneBase
 {
 public:
-	GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* player);
+	GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* player,Time::StageTag tag);
 	~GameScene()override;
 
 	void Initialize()override;
@@ -25,6 +26,7 @@ private:
 	Player* player;
 	EnemyBase* enemy;
 	GameUI* ui;
+	Time* time;
 
 	bool gameOver;
 	bool gameClear;

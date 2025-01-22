@@ -17,6 +17,10 @@ BGM::BGM(BGMKind kind)
 	ChangeVolumeSoundMem(255 * (int)Ratio::GameOver / 100, handle[BGMKind::ArmEnemyStage]);
 	handle[BGMKind::ArmEnemyStage] = loader->GetHandle(Loader::Kind::ArmEnemyBGM);
 	ChangeVolumeSoundMem(255 * (int)Ratio::ArmEnemyStage / 100, handle[BGMKind::ArmEnemyStage]);
+	handle[BGMKind::GameClear] = loader->GetHandle(Loader::Kind::GameClearBGM);
+	ChangeVolumeSoundMem(255 * (int)Ratio::GameClear / 100, handle[BGMKind::GameClear]);
+	handle[BGMKind::Ranking] = loader->GetHandle(Loader::Kind::RankingBGM);
+	ChangeVolumeSoundMem(255 * (int)Ratio::Ranking / 100, handle[BGMKind::Ranking]);
 
 	//‰Šú‰»
 	playingBGM = handle[kind];

@@ -35,17 +35,23 @@ void Loader::Load()
 	//2D
 	handle[GameOverBackImage] = LoadGraph("2D/GameOverBack.jpg");
 	handle[TitleBackImage] = LoadGraph("2D/TitleBack.jpg");
+	handle[RankingArmEnemyImage] = LoadGraph("2D/RankingArmEnemy.png");
+	handle[ClearTextBackImage] = LoadGraph("2D/ClearTextBack.png");
 
 	//BGM
 	handle[TitleBGM] = LoadSoundMem("Sound/BGM/TitleBGM.mp3");
 	handle[GameOverBGM] = LoadSoundMem("Sound/BGM/GameOverBGM.mp3");
 	handle[ArmEnemyBGM] = LoadSoundMem("Sound/BGM/ArmEnemyBGM.mp3");
+	handle[GameClearBGM] = LoadSoundMem("Sound/BGM/GameClearBGM.mp3");
+	handle[RankingBGM] = LoadSoundMem("Sound/BGM/RankingBGM.mp3");
 
 	//SE
 	handle[MowinDownSE] = LoadSoundMem("Sound/SE/MowingDownSE.mp3");
 	handle[NormalAttackSE] = LoadSoundMem("Sound/SE/NormalAttackSE.mp3");
 	handle[SwingSE] = LoadSoundMem("Sound/SE/SwingSE.mp3");
 	handle[HitWeakPointSE] = LoadSoundMem("Sound/SE/HitWeakPointSE.mp3");
+	handle[CursorMoveSE] = LoadSoundMem("Sound/SE/CursorMoveSE.mp3");
+	handle[CrickSE] = LoadSoundMem("Sound/SE/CrickSE.mp3");
 
 	//エフェクト
 	handle[WeakPointEffect] = LoadEffekseerEffect("Effect/WeakPoint.efkefc", 1.0f);

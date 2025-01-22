@@ -10,6 +10,7 @@ public:
 	VECTOR PushBackPosition(VECTOR position, VECTOR moveVec);
 
 	virtual void InitializeGameOver()abstract;
+	virtual void InitializeGameClear()abstract;
 	//çXêV
 	virtual void Update()abstract;
 	//ï`âÊ

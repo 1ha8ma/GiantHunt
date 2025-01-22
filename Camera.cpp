@@ -204,6 +204,38 @@ void Camera::UpdateGameOver()
 }
 
 /// <summary>
+/// ゲームクリアシーン初期化
+/// </summary>
+/// <param name="cameraPosition">設置するカメラポジション</param>
+/// <param name="enemyPosition">注視点になる敵のポジション</param>
+void Camera::InitializeGameClear(VECTOR cameraPosition, VECTOR enemyPosition)
+{
+	//距離設定
+	SetCameraNearFar(100.0f, 20000.0f);
+
+	position = cameraPosition;
+	lookPosition = enemyPosition;
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
+/// ゲームクリアシーン更新
+/// </summary>
+/// <param name="enemyPosition">注視点になる敵のポジション</param>
+void Camera::UpdateGameClear(VECTOR enemyPosition)
+{
+	lookPosition = enemyPosition;
+
+	//演出更新
+	UpdateProduction(enemyPosition);
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
+}
+
+/// <summary>
 /// 演出更新
 /// </summary>
 void Camera::UpdateProduction(VECTOR playerPosition)

@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetUseZBuffer3D(TRUE);
 
 	//ウィンドウモード名前変更
-	SetMainWindowText("GiantHunt");
+	SetMainWindowText("KnightsAndGiants");
 	//ダブルバッファリングを有効
 	SetDrawScreen(DX_SCREEN_BACK);
 

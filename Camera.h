@@ -22,6 +22,11 @@ public:
 	void InitializeGameOver(VECTOR playerPosition);
 	//ゲームオーバーシーン更新
 	void UpdateGameOver();
+
+	//ゲームクリアシーン初期化
+	void InitializeGameClear(VECTOR cameraPosition, VECTOR enemyPosition);
+	//ゲームクリアシーン更新
+	void UpdateGameClear(VECTOR enemyPosition);
 	
 	//演出
 	void PlayShakingVertical(float shakingPower, int shakingDirectionChangeflame, int flame);

@@ -16,6 +16,12 @@ public:
 	void Initialize()override;
 	//更新
 	bool Update(VECTOR playerPos, Camera* camera)override;
+
+	//倒された後の初期化
+	void InitializeFallDown()override;
+	//倒された後の更新
+	bool UpdateFallDown(Camera* camera)override;
+
 	//描画
 	void Draw()override;
 
@@ -35,9 +41,10 @@ private:
 		Idle,		//待機
 		MowingDown,	//薙ぎ払い
 		Swing,		//振り回し
+		FallDown,	//倒れる
 	};
 
-	const int StartHP = 1000;		//開始時HP
+	const int MaxHP = 1000;			//最大HP
 	const float ModelScale = 40.0f;	//モデルの描画サイズ
 
 	void ChangeMove(VECTOR playerPos);

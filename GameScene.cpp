@@ -7,6 +7,7 @@
 #include"Player.h"
 #include"GameUI.h"
 #include"GameOverScene.h"
+#include"GameClearScene.h"
 #include"GameScene.h"
 
 /// <summary>
@@ -14,7 +15,7 @@
 /// </summary>
 /// <param name="stage">ステージインスタンス</param>
 /// <param name="enemy">敵インスタンス</param>
-GameScene::GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* player)
+GameScene::GameScene(StageBase* stage, EnemyBase* enemy, Camera* camera, Player* player, Time::StageTag tag)
 {
 	//インスタンス化
 	collisionManager = collisionManager->GetInstance();
@@ -23,6 +24,8 @@ GameScene::GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* p
 	this->player = player;
 	this->player->InitializeGame();
 	this->enemy = enemy;
+	this->time = time->GetInstance();
+	time->SetTag(tag);
 	ui = new GameUI(this->enemy->GetHP(), player->GetHP(), player->GetGripPoint());
 
 	//変数初期化
@@ -35,10 +38,6 @@ GameScene::GameScene(StageBase* stage, EnemyBase* enemy,Camera* camera,Player* p
 /// </summary>
 GameScene::~GameScene()
 {
-	/*delete camera;
-	delete stage;
-	delete player;
-	delete enemy;*/
 	delete ui;
 }
 
@@ -50,6 +49,9 @@ void GameScene::Initialize()
 	collisionManager->Initialize();
 
 	camera->GameInitialize(player->GetPosition());
+
+	//タイマースタート
+	time->StartTimer();
 }
 
 /// <summary>
@@ -77,7 +79,15 @@ SceneBase* GameScene::Update()
 	//ゲームオーバー
 	if (gameOver)
 	{
+		time->StopTimer(false);
 		return new GameOverScene(stage, enemy, camera, player);
+	}
+	//ゲームクリア
+	if (gameClear)
+	{
+		bool rankIn = time->StopTimer(true);
+		int thisTime = time->GetTime();
+		return new GameClearScene(stage, enemy, camera, player, rankIn, thisTime);
 	}
 
 	return this;

@@ -1,4 +1,5 @@
 #pragma once
+#include"Camera.h"
 
 class ArmEnemyMoveBase
 {
@@ -16,8 +17,10 @@ public:
 	ArmEnemyMoveBase(int modelHandle,float modelScale);
 	virtual ~ArmEnemyMoveBase() {};
 	
-	virtual bool Update(Camera* camera)abstract;
-	virtual void Draw()abstract;
+	virtual bool Update(Camera* camera) { return false; }
+	virtual bool UpdateFallDown(Camera* camera) { return false; }
+	virtual void Draw()abstract;	//Šm”F—p
+
 
 	VECTOR GetRotate() { return rotate; }
 

@@ -32,6 +32,7 @@ GameOverScene::GameOverScene(StageBase* stage, EnemyBase* enemy, Camera* camera,
 	canInputB = false;
 	drawGameOver = false;
 	flame = 0;
+	backImageAlpha = 0;
 }
 
 /// <summary>
@@ -83,13 +84,20 @@ SceneBase* GameOverScene::Update()
 	}
 	else
 	{
+		backImageAlpha += 2;
+
+		if (backImageAlpha >= 255)
+		{
+			backImageAlpha = 255;
+		}
+
 		//Bボタン入力可能
 		if (!canInputB && (Input::InputNumber::BButton & input->GetInputState()) != Input::InputNumber::BButton)
 		{
 			canInputB = true;
 		}
 		//Bボタン入力
-		if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		if (backImageAlpha == 255 && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
 		{
 			return new TitleScene();
 		}
@@ -106,16 +114,17 @@ SceneBase* GameOverScene::Update()
 /// </summary>
 void GameOverScene::Draw()
 {
-	if (!drawGameOver)
+	stage->Draw();
+	enemy->Draw();
+	player->Draw();
+	if (drawGameOver)
 	{
-		stage->Draw();
-		enemy->Draw();
-		player->Draw();
-	}
-	else
-	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, backImageAlpha);
 		DrawExtendGraph(0, 0, SCREEN_W, SCREEN_H, backImage, true);
 		SetFontSize(100);
 		DrawString(500, 350, "Game Over", GetColor(240, 248, 255));
+		SetFontSize(40);
+		DrawString(600, 550, "タイトルに戻る [B]", GetColor(240, 248, 255));
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	}
 }

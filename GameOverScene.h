@@ -32,8 +32,9 @@ private:
 	Camera* camera;
 	Player* player;
 
-	int flame;
-	bool drawGameOver;
-	int backImage;	//背景画像
-	bool canInputB;	//Bボタン入力可能
+	int flame;			//ゲームオーバーに入ってからの時間
+	bool drawGameOver;	//ゲームオーバー表示フラグ
+	int backImage;		//背景画像
+	bool canInputB;		//Bボタン入力可能
+	int backImageAlpha;	//背景透過度
 };

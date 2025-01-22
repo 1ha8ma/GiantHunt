@@ -24,7 +24,8 @@ public:
 	bool GetIsPlayerRide() { return isPlayerRide; }
 
 private:
-	const int PlayHitWeakPointEffectFlame = 300;
+	const int PlayHitWeakPointEffectFlame = 300;	//弱点ヒットエフェクトの再生時間
+	const int WeakPointDamageMultiplier = 2;		//弱点のダメージ倍率
 
 	//当たり判定情報更新
 	void UpdateCollisionData();

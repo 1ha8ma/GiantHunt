@@ -6,6 +6,7 @@
 #include"ArmEnemyStage.h"
 #include"Player.h"
 #include"GameScene.h"
+#include"Time.h"
 #include"ArmEnemyStartScene.h"
 
 /// <summary>
@@ -48,6 +49,7 @@ SceneBase* ArmEnemyStartScene::Update()
 	//XV
 	camera->UpdateStartScene();
 
+	//•‘Ñ‚ğ”Z‚­‚·‚é
 	if (blackBandAlpha < 255)
 	{
 		blackBandAlpha += 3;
@@ -61,7 +63,7 @@ SceneBase* ArmEnemyStartScene::Update()
 	if (flame == 300)
 	{
 		player->StartSceneEnd();
-		return new GameScene(stage, enemy, camera, player);
+		return new GameScene(stage, enemy, camera, player, Time::StageTag::ArmEnemy);
 	}
 
 	flame++;

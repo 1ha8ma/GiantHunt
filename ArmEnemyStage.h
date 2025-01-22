@@ -14,6 +14,7 @@ public:
 	~ArmEnemyStage()override;
 
 	void InitializeGameOver()override;
+	void InitializeGameClear()override;
 	void Update()override;
 	void Draw()override;
 private:

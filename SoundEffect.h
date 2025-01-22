@@ -12,6 +12,8 @@ public:
 		Swing,				//振り回し
 		HitWeakPoint,		//弱点に当たった時
 		Jump,				//ジャンプ
+		CursorMove,			//カーソル移動
+		Crick,				//決定
 	};
 
 	SoundEffect();
@@ -30,6 +32,8 @@ private:
 		MowingAttack = 100,
 		Swing = 100,
 		HitWeakPoint = 100,
+		CursorMove = 100,
+		Crick = 100,
 	};
 
 	std::map<SEKind, int> handle;	//ハンドル

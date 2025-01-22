@@ -4,9 +4,11 @@
 #include"Utility.h"
 #include"CollisionData.h"
 #include"BGM.h"
+#include"SoundEffect.h"
 #include"ArmEnemyStartScene.h"
 #include"ArmEnemyStage.h"
 #include"ArmEnemy.h"
+#include"RankingScene.h"
 #include"TitleScene.h"
 
 /// <summary>
@@ -20,11 +22,16 @@ TitleScene::TitleScene()
 	//インスタンス化
 	input = new Input();
 	bgm = new BGM(BGM::BGMKind::Title);
+	se = new SoundEffect();
 
 	//private変数初期化
 	canInputB = false;
+	canInputStick = false;
 	inputOrderAlpha = 255;
 	inputOrderflg = true;
+	trianglePosY = 220;
+	state = State::Title;
+	cursor = (int)Cursor::ArmEnemyStage;
 }
 
 /// <summary>
@@ -33,7 +40,9 @@ TitleScene::TitleScene()
 TitleScene::~TitleScene()
 {
 	bgm->StopBGM();
+	delete input;
 	delete bgm;
+	delete se;
 }
 
 /// <summary>
@@ -50,43 +59,90 @@ void TitleScene::Initialize()
 /// <returns>次のステート</returns>
 SceneBase* TitleScene::Update()
 {
+	//bgm再生
+	bgm->PlayBGM(BGM::BGMKind::Title);
+
 	//Bボタン入力可能
 	if (!canInputB && (Input::InputNumber::BButton & input->GetInputState()) != Input::InputNumber::BButton)
 	{
 		canInputB = true;
 	}
-
-	//bgm再生
-	bgm->PlayBGM(BGM::BGMKind::Title);
-	
-	//入力指示点滅
-	if (inputOrderflg)
+	//スティック入力情報
+	DINPUT_JOYSTATE stick = input->GetStickInput();
+	if (stick.Y == 0)
 	{
-		inputOrderAlpha -= 2;
-
-		if (inputOrderAlpha <= 100)
-		{
-			inputOrderAlpha = 100;
-			inputOrderflg = false;
-		}
-	}
-	else
-	{
-		inputOrderAlpha += 2;
-
-		if (inputOrderAlpha >= 255)
-		{
-			inputOrderAlpha = 255;
-			inputOrderflg = true;
-		}
+		canInputStick = true;
 	}
 
-
-	//Bボタン入力
-	if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+	switch (state)
 	{
-		//return new GameScene(new ArmEnemyStage(), new ArmEnemy());
-		return new ArmEnemyStartScene();
+	case State::Title:
+	{
+		//入力指示点滅
+		if (inputOrderflg)
+		{
+			inputOrderAlpha -= 2;
+
+			if (inputOrderAlpha <= 100)
+			{
+				inputOrderAlpha = 100;
+				inputOrderflg = false;
+			}
+		}
+		else
+		{
+			inputOrderAlpha += 2;
+
+			if (inputOrderAlpha >= 255)
+			{
+				inputOrderAlpha = 255;
+				inputOrderflg = true;
+			}
+		}
+
+		//Bボタン入力
+		if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		{
+			se->PlaySE(SoundEffect::SEKind::Crick);
+			canInputB = false;
+			state = State::Select;
+		}
+	}
+	break;
+	case State::Select:
+	{
+		//上入力
+		if (cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
+		{
+			se->PlaySE(SoundEffect::SEKind::CursorMove);
+			canInputStick = false;
+			trianglePosY -= 100;
+			cursor--;
+		}
+		//下入力
+		if (cursor != (int)Cursor::CheckRanking && canInputStick && stick.Y > 0)
+		{
+			se->PlaySE(SoundEffect::SEKind::CursorMove);
+			canInputStick = false;
+			trianglePosY += 100;
+			cursor++;
+		}
+
+		//Bボタン入力
+		if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		{
+			se->PlaySE(SoundEffect::SEKind::Crick);
+			if (cursor == (int)Cursor::ArmEnemyStage)
+			{
+				return new ArmEnemyStartScene();
+			}
+			if (cursor == (int)Cursor::CheckRanking)
+			{
+				return new RankingScene();
+			}
+		}
+	}
+	break;
 	}
 
 	return this;
@@ -99,14 +155,32 @@ void TitleScene::Draw()
 {
 	//背景
 	DrawExtendGraph(0, 0, SCREEN_W, SCREEN_H, titleBackImage, TRUE);
-	//タイトル名
-	SetFontSize(150);
-	DrawString(200, 200, "騎士と巨人", GetColor(0, 0, 0));
 
-	//ボタン指示
-	//透明度変更
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, inputOrderAlpha);
-	SetFontSize(50);
-	DrawString(500, 500, "Press B Button",GetColor(0,0,0));
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);//透明度を元に戻す
+	switch (state)
+	{
+	case State::Title:
+	{
+		//タイトル名
+		SetFontSize(150);
+		DrawString(200, 200, "騎士と巨人", GetColor(0, 0, 0));
+
+		//ボタン指示
+		//透明度変更
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, inputOrderAlpha);
+		SetFontSize(50);
+		DrawString(500, 500, "Press B Button", GetColor(0, 0, 0));
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);//透明度を元に戻す
+	}
+	break;
+	case State::Select:
+	{
+		SetFontSize(50);
+		DrawString(100, 200, "Game Start", GetColor(0, 0, 0));
+		DrawString(100, 300, "ランキング", GetColor(0, 0, 0));
+
+		//三角形
+		DrawTriangle(20, trianglePosY - 20, 20, trianglePosY + 20, 70, trianglePosY, GetColor(0, 0, 0), TRUE);
+	}
+	break;
+	}
 }

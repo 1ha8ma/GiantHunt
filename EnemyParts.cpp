@@ -131,7 +131,7 @@ void EnemyParts::Draw()
 	{
 		effect->Draw();
 	}
-
+ 
 	//確認用
 	//DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);
 	//DrawSphere3D(framePosition, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);//ポジションの点
@@ -155,11 +155,11 @@ void EnemyParts::OnHitObject(CollisionData hitObjectData)
 		//弱点の場合
 		if (tag == ObjectTag::WeakPoint_E1)
 		{
-			effect->PlayEffect(Effect::EffectKind::HitWeakPoint, capsuleStart, VGet(120.0f, 120.0f, 120.0f), VGet(0, 0, 0), 1.0f);
 			se->PlaySE(SoundEffect::SEKind::HitWeakPoint);
-			damage = hitObjectData.attackPower * 2;
+			damage = hitObjectData.attackPower * WeakPointDamageMultiplier;
 			if (!hitWeakPointEffectflg)
 			{
+				effect->PlayEffect(Effect::EffectKind::HitWeakPoint, capsuleStart, VGet(120.0f, 120.0f, 120.0f), VGet(0, 0, 0), 1.0f);
 				hitWeakPointEffectflame = 0;
 				hitWeakPointEffectflg = true;
 			}

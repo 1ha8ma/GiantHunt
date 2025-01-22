@@ -9,8 +9,9 @@ public:
 	{
 		Title,				//タイトル
 		GameOver,			//負けシーン
+		GameClear,			//勝利シーン
 		ArmEnemyStage,		//腕の敵戦
-		Win,				//勝利シーン
+		Ranking,			//ランキング画面
 	};
 
 	BGM(BGMKind kind);
@@ -29,6 +30,8 @@ private:
 		Title = 100,
 		GameOver = 100,
 		ArmEnemyStage = 80,
+		GameClear = 100,
+		Ranking = 80,
 	};
 
 	std::map<BGMKind, int> handle;	//ハンドル
