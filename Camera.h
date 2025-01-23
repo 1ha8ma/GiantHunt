@@ -56,7 +56,6 @@ private:
 	VECTOR lookPosition;	//注視点
 	float angleH;			//平面角度
 	float angleV;			//垂直角度
-	VECTOR lookTargetPos;	//目標の注視点座標
 	float t;				//Lerp用
 	bool lerpflg;			//Lerp開始フラグ
 

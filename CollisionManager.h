@@ -15,13 +15,14 @@ public:
 	//インスタンスゲット
 	static CollisionManager* GetInstance();
 
-	//インスタンス削除
-	static void DeleteInstance();
-
 	//当たり判定情報追加
 	static void AddCollisionData(CollisionData* data);
 
+	//当たり判定情報の取り除き
 	static void RemoveCollisionData(CollisionData* data);
+
+	//取りたい当たり判定情報を取る
+	static CollisionData GetCollisionData(CollisionData data);
 
 private:
 	CollisionManager();

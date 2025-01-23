@@ -88,6 +88,9 @@
     <Filter Include="Scene\Ranking">
       <UniqueIdentifier>{d031cf2b-8e5e-4a72-8945-e29ede372ed5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Tutorial">
+      <UniqueIdentifier>{de070161-887a-43e7-94c0-c1c84e52b5a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -212,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="GameClearScene.cpp">
       <Filter>Scene\GameClear</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialScene.cpp">
+      <Filter>Scene\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="GameClearScene.h">
       <Filter>Scene\GameClear</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialScene.h">
+      <Filter>Scene\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

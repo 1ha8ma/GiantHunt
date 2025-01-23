@@ -50,12 +50,12 @@ SceneBase* ArmEnemyStartScene::Update()
 	camera->UpdateStartScene();
 
 	//çïë—ÇîZÇ≠Ç∑ÇÈ
-	if (blackBandAlpha < 255)
+	if (blackBandAlpha < MaxBlackBandAlpha)
 	{
 		blackBandAlpha += 3;
-		if (blackBandAlpha >= 255)
+		if (blackBandAlpha >= MaxBlackBandAlpha)
 		{
-			blackBandAlpha = 255;
+			blackBandAlpha = MaxBlackBandAlpha;
 		}
 	}
 
@@ -84,5 +84,5 @@ void ArmEnemyStartScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, blackBandAlpha);
 	DrawBox(0, 0, SCREEN_W, 100, GetColor(0, 0, 0), TRUE);
 	DrawBox(0, SCREEN_H - 100, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MaxAlpha);
 }

@@ -129,9 +129,8 @@ void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition)
 			t = 0;
 			lerpflg = true;
 		}
-		lookTargetPos = targetCameraPosition;
 
-		lookPosition = calculation->Lerp(lookTargetPos, lookPosition, 0.01, t);
+		lookPosition = calculation->Lerp(targetCameraPosition, lookPosition, 0.01, t);
 	}
 	else
 	{

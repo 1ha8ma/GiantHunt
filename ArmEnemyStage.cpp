@@ -11,20 +11,25 @@
 /// </summary>
 ArmEnemyStage::ArmEnemyStage()
 {
-	Loader* loader = loader->GetInstance();
-
-	modelHandle = loader->GetHandle(Loader::Kind::ArmEnemyStage);
-	circleRadius = 2000.0f;
-	position = VGet(0.0f, 0.0f, 0.0f);
-	stageScale = 25.0f;
-
-	MV1SetScale(modelHandle, VGet(stageScale, stageScale, stageScale));
-	MV1SetPosition(modelHandle, position);
-
 	//インスタンス化
 	wood = new Wood();
 	wall = new Wall();
 	bgm = new BGM(BGM::BGMKind::ArmEnemyStage);
+	Loader* loader = loader->GetInstance();
+
+	//変数初期化
+	modelHandle = loader->GetHandle(Loader::Kind::ArmEnemyStage);
+	skyDomeHandle = loader->GetHandle(Loader::Kind::SkyDome);
+	stagePosition = VGet(0.0f, 0.0f, 0.0f);
+	stageScale = 25.0f;
+
+	//ステージ設定
+	MV1SetScale(modelHandle, VGet(stageScale, stageScale, stageScale));
+	MV1SetPosition(modelHandle, stagePosition);
+
+	//スカイドーム設定
+	MV1SetScale(skyDomeHandle, VGet(SkyDomeScale, SkyDomeScale, SkyDomeScale));
+	MV1SetPosition(skyDomeHandle, VGet(1000, 0, -1000));
 
 	//当たり判定
 	collisionManager = collisionManager->GetInstance();
@@ -77,6 +82,7 @@ void ArmEnemyStage::Update()
 /// </summary>
 void ArmEnemyStage::Draw()
 {
+	MV1DrawModel(skyDomeHandle);
 	MV1DrawModel(modelHandle);
 	wall->Draw();
 	wood->Draw();

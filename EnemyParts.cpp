@@ -36,6 +36,7 @@ EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int frameIndex1, int fram
 	isPlayerRide = false;
 	hitWeakPointEffectflg = false;
 	hitWeakPointEffectflame = 0;
+	moveVec = VGet(0, 0, 0);
 
 	//当たり判定情報追加
 	collisionManager = collisionManager->GetInstance();
@@ -118,6 +119,11 @@ void EnemyParts::Update()
 		hitWeakPointEffectflame++;
 	}
 
+	//動く前の中点
+	movePrevPos = VAdd(capsuleStart, capsuleEnd);
+	movePrevPos = VScale(movePrevPos, 0.5f);
+
+	//変数初期化
 	damage = 0;
 	isPlayerRide = false;
 }
@@ -134,7 +140,7 @@ void EnemyParts::Draw()
  
 	//確認用
 	//DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);
-	//DrawSphere3D(framePosition, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);//ポジションの点
+	//DrawSphere3D(movePrevPos, capsuleRadius, 8, GetColor(102, 0, 255), GetColor(102, 0, 255), false);//ポジションの点
 }
 
 /// <summary>
@@ -181,6 +187,25 @@ void EnemyParts::UpdateCollisionData()
 	collisionData.startPosition = capsuleStart;
 	collisionData.endPosition = capsuleEnd;
 	collisionData.radius = capsuleRadius;
+	collisionData.moveVec = moveVec;
 	collisionData.attackPower = 0;
 	collisionData.isCollisionActive = true;
+}
+
+/// <summary>
+/// 動いた後のポジション
+/// </summary>
+void EnemyParts::CalculationMoveVec()
+{
+	capsuleStart = MV1GetFramePosition(modelHandle, frameIndex1);
+	capsuleEnd = MV1GetFramePosition(modelHandle, frameIndex2);
+	moveAfterPos = VAdd(capsuleStart, capsuleEnd);
+	moveAfterPos = VScale(moveAfterPos, 0.5f);
+
+	moveVec = VSub(moveAfterPos, movePrevPos);
+
+	if (VSize(moveVec) != 0)
+	{
+		int aa = 0;
+	}
 }

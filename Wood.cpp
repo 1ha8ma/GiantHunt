@@ -69,6 +69,7 @@ void Wood::RegisterCollisionData()
 	capsule1CollisionData.startPosition = cap1Start;
 	capsule1CollisionData.endPosition = cap1End;
 	capsule1CollisionData.radius = CapsuleRadius;
+	capsule1CollisionData.moveVec = VGet(0, 0, 0);
 	capsule1CollisionData.isCollisionActive = true;
 
 	//ƒJƒvƒZƒ‹2
@@ -77,5 +78,6 @@ void Wood::RegisterCollisionData()
 	capsule2CollisionData.startPosition = cap2Start;
 	capsule2CollisionData.endPosition = cap2End;
 	capsule2CollisionData.radius = CapsuleRadius;
+	capsule2CollisionData.moveVec = VGet(0, 0, 0);
 	capsule2CollisionData.isCollisionActive = true;
 }

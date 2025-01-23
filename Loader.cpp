@@ -31,12 +31,14 @@ void Loader::Load()
 	handle[WallModel] = MV1LoadModel("3D/Wall.mv1");
 	handle[ArmEnemyModel] = MV1LoadModel("3D/monster.mv1");
 	handle[WoodModel] = MV1LoadModel("3D/Wood.mv1");
+	handle[SkyDome] = MV1LoadModel("3D/Dome_Y901.x");
 
 	//2D
 	handle[GameOverBackImage] = LoadGraph("2D/GameOverBack.jpg");
 	handle[TitleBackImage] = LoadGraph("2D/TitleBack.jpg");
 	handle[RankingArmEnemyImage] = LoadGraph("2D/RankingArmEnemy.png");
 	handle[ClearTextBackImage] = LoadGraph("2D/ClearTextBack.png");
+	handle[TutorialBackImage] = LoadGraph("2D/TutorialBack.jpg");
 
 	//BGM
 	handle[TitleBGM] = LoadSoundMem("Sound/BGM/TitleBGM.mp3");

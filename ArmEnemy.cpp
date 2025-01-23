@@ -133,6 +133,10 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
 	//動き更新
 	moveChangeflg = move->Update(camera);
+	for (int i = 0; i < parts.size(); i++)
+	{
+		parts[i]->CalculationMoveVec();
+	}
 
 	//動きの変更確認
 	ChangeMove(playerPos);

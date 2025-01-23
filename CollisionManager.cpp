@@ -210,3 +210,22 @@ bool CollisionManager::CapsuleWithCapsule(VECTOR capsuleStart1, VECTOR capsuleEn
 
 	return hit;
 }
+
+/// <summary>
+/// 取りたい当たり判定情報を取る(当たった時だけでなくその後も最新の情報が欲しい時に使用)
+/// </summary>
+/// <param name="data">取りたい情報のデータ</param>
+/// <returns>データ</returns>
+CollisionData CollisionManager::GetCollisionData(CollisionData data)
+{
+	int i;
+	for (i = 0; i < collisionDataList.size(); i++)
+	{
+		if (collisionDataList[i]->tag == data.tag)
+		{
+			break;
+		}
+	}
+
+	return *collisionDataList[i];
+}

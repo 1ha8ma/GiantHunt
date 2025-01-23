@@ -49,6 +49,9 @@ struct CollisionData
 	VECTOR endPosition;     //カプセル終点
 	float radius;           //カプセル半径
 
+	//動いた量
+	VECTOR moveVec;			//動くカプセル用
+
 	//四角ステージ用(ポジション)
 	float stageLeft;
 	float stageRight;

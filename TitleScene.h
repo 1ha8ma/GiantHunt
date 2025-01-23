@@ -28,6 +28,7 @@ private:
 	{
 		ArmEnemyStage,	//腕の敵ステージ
 		CheckRanking,	//ランキング確認
+		Tutorial,		//チュートリアル
 	};
 	
 	//他クラス

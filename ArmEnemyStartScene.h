@@ -17,7 +17,9 @@ public:
 	void Draw()override;
 
 private:
+	const int MaxBlackBandAlpha = 255;	//•‘ÑÅ‘å”Z‚³
 
+	//‘¼ƒNƒ‰ƒX
 	Camera* camera;
 	Player* player;
 	ArmEnemy* enemy;

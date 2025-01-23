@@ -9,38 +9,40 @@ public:
 	enum Kind
 	{
 		//3D
-		PlayerModel,			//プレイヤー
-		ArmEnemyModel,			//腕の敵
-		WallModel,				//壁
-		BossEnemyModel,			//ボス
-		WoodModel,				//木
-		ArmEnemyStage,			//腕の敵戦ステージ
-		BossEnemyStage,			//ボス戦ステージ
+		PlayerModel,					//プレイヤー
+		ArmEnemyModel,					//腕の敵
+		WallModel,						//壁
+		BossEnemyModel,					//ボス
+		WoodModel,						//木
+		ArmEnemyStage,					//腕の敵戦ステージ
+		BossEnemyStage,					//ボス戦ステージ
+		SkyDome,						//スカイドーム
 
 		//2D
-		GameOverBackImage,		//ゲームオーバー背景
-		TitleBackImage,			//タイトル背景
-		RankingArmEnemyImage,	//ランキング画面の腕の敵背景
-		ClearTextBackImage,		//クリア画面のテキスト背景
+		GameOverBackImage,				//ゲームオーバー背景
+		TitleBackImage,					//タイトル背景
+		RankingArmEnemyImage,			//ランキング画面の腕の敵背景
+		ClearTextBackImage,				//クリア画面のテキスト背景
+		TutorialBackImage,				//操作説明背景
 
 		//BGM
-		TitleBGM,				//タイトルBGM
-		GameOverBGM,			//ゲームオーバーBGM
-		ArmEnemyBGM,			//腕の敵戦
-		GameClearBGM,			//ゲームクリアBGM
-		RankingBGM,				//ランキング画面BGM
+		TitleBGM,						//タイトルBGM
+		GameOverBGM,					//ゲームオーバーBGM
+		ArmEnemyBGM,					//腕の敵戦
+		GameClearBGM,					//ゲームクリアBGM
+		RankingBGM,						//ランキング画面BGM
 
 		//SE
-		MowinDownSE,			//振り下ろし攻撃SE
-		NormalAttackSE,			//通常攻撃SE
-		SwingSE,				//振りまわりSE
-		HitWeakPointSE,			//弱点ヒットSE
-		CrickSE,				//決定SE
-		CursorMoveSE,			//カーソル移動SE
+		MowinDownSE,					//振り下ろし攻撃SE
+		NormalAttackSE,					//通常攻撃SE
+		SwingSE,						//振りまわりSE
+		HitWeakPointSE,					//弱点ヒットSE
+		CrickSE,						//決定SE
+		CursorMoveSE,					//カーソル移動SE
 
 		//エフェクト
-		WeakPointEffect,		//弱点
-		HitWeakPointEffect,		//弱点ヒットエフェクト
+		WeakPointEffect,				//弱点
+		HitWeakPointEffect,				//弱点ヒットエフェクト
 	};
 
 	//ハンドルゲット

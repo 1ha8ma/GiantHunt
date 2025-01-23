@@ -15,7 +15,14 @@ VECTOR Calculation::Lerp(VECTOR targetPos, VECTOR nowPos, float speed, float &t)
 	copypos = VAdd(copypos, VScale((VSub(targetPos, copypos)), t));
 
 	//‹ß‚Ã‚¯‚é
-	t += speed;
+	if (t < 1)
+	{
+		t += speed;
+		if (t >= 1)
+		{
+			t = 1;
+		}
+	}
 
 	return copypos;
 }

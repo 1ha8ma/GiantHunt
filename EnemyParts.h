@@ -15,10 +15,12 @@ public:
 	void Update();
 	void Draw();
 
+	//オブジェクトに衝突した時の処理
 	void OnHitObject(CollisionData hitObjectData);
-
 	//ダメージを渡す
 	int TakeDamage() { return damage; }
+	//moveVec計算
+	void CalculationMoveVec();
 
 	//Get.Set
 	bool GetIsPlayerRide() { return isPlayerRide; }
@@ -36,14 +38,17 @@ private:
 	CollisionData collisionData;
 
 	int modelHandle;					//モデルハンドル
-	int frameIndex1;						//フレーム番号
-	int frameIndex2;				//カプセルの元になるフレーム
+	int frameIndex1;					//フレーム番号1
+	int frameIndex2;					//フレーム番号2   1と2の座標からカプセルを作る
 	ObjectTag tag;						//場所のタグ
 	VECTOR capsuleStart;				//カプセル始点
 	VECTOR capsuleEnd;					//カプセル終点
 	float capsuleRadius;				//カプセル半径
 	bool isPlayerRide;					//プレイヤーが乗っているか
 	int damage;							//与えるダメージ
+	VECTOR movePrevPos;					//動く前のポジション
+	VECTOR moveAfterPos;				//動いた後のポジション
+	VECTOR moveVec;						//動く前と後での差
 
 	//弱点の場合
 	bool hitWeakPointEffectflg;			//弱点ヒットエフェクトフラグ

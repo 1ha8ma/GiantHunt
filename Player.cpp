@@ -21,7 +21,6 @@ Player::Player()
 
 	modelHandle = loader->GetHandle(Loader::Kind::PlayerModel);
 
-	//GameInitialize();
 	InitializeStartScene();
 }
 
@@ -106,8 +105,12 @@ bool Player::UpdateGame(const Camera& camera)
 	//ステート更新に必要な情報を渡す
 	nowstate->SetRunPlace(runPlace);
 	nowstate->SetCapsule(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius);
+	if (nowstateKind == State::Climb)
+	{
+		hitObjectData = collisionManager->GetCollisionData(hitObjectData);
+	}
 	//ステート更新
-	changeStateflg = nowstate->Update(position, angle, inputstate, stickstate, camera, hitObjectData);
+	changeStateflg = nowstate->Update(position, angle, inputstate, stickstate, camera,hitObjectData);
 
 	//移動
 	moveVec = nowstate->GetmoveVec();
@@ -393,7 +396,7 @@ void Player::CheckOnGround()
 	}
 
 	//足がついていなければ落下
-	if (!onGround)
+	if (!onGround && nowstateKind != State::Climb)
 	{
 		fallFrame++;
 		fallSpeed += Gravity;

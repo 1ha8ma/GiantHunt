@@ -19,6 +19,10 @@ public:
 	void Draw()override;
 
 private:
+	const int MaxTextBackAlpha = 200;	//テキスト背景の最大濃さ
+	const int MaxBlackBandAlpha = 255;	//黒帯の最大濃さ
+
+	//他クラス
 	Input* input;
 	BGM* bgm;
 	StageBase* stage;
@@ -31,5 +35,6 @@ private:
 	bool enemyMoveEnd;		//敵の動き終了
 	bool rankIn;			//ランクイン
 	int clearTextBackImage;	//テキスト背景
+	int textBackAlpha;		//テキスト背景透明度
 	int time;				//その回のタイム
 };

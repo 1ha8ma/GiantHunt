@@ -38,6 +38,7 @@ GameClearScene::GameClearScene(StageBase* stage, EnemyBase* enemy, Camera* camer
 	canInputB = false;
 	blackBandAlpha = 0;
 	enemyMoveEnd = false;
+	textBackAlpha = 0;
 }
 
 /// <summary>
@@ -79,12 +80,22 @@ SceneBase* GameClearScene::Update()
 	camera->UpdateGameClear(enemy->GetTargetCameraPosition());
 
 	//黒帯を濃くする
-	if (blackBandAlpha < 255)
+	if (blackBandAlpha < MaxBlackBandAlpha)
 	{
 		blackBandAlpha += 3;
-		if (blackBandAlpha >= 255)
+		if (blackBandAlpha >= MaxBlackBandAlpha)
 		{
-			blackBandAlpha = 255;
+			blackBandAlpha = MaxBlackBandAlpha;
+		}
+	}
+
+	//テキストボックスを濃くする
+	if (enemyMoveEnd && textBackAlpha < MaxTextBackAlpha)
+	{
+		textBackAlpha += 3;
+		if (textBackAlpha >= MaxTextBackAlpha)
+		{
+			textBackAlpha = MaxTextBackAlpha;
 		}
 	}
 
@@ -117,21 +128,25 @@ void GameClearScene::Draw()
 	if (enemyMoveEnd)
 	{
 		//結果表示
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, textBackAlpha);
 		DrawExtendGraph(400, 100, 1200, 800, clearTextBackImage, TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, MaxAlpha);
 
-		SetFontSize(80);
-		DrawString(650, 230, "討伐完了", GetColor(255, 255, 255));
-		if (rankIn)
+		//テキスト背景が最大まで濃くなったら表示
+		if (textBackAlpha == MaxTextBackAlpha)
 		{
-			SetFontSize(60);
-			DrawString(670, 400, "ランクイン", GetColor(255, 255, 255));
+			SetFontSize(80);
+			DrawString(650, 230, "討伐完了", GetColor(255, 255, 255));
+			if (rankIn)
+			{
+				SetFontSize(60);
+				DrawString(670, 400, "ランクイン", GetColor(255, 255, 255));
+			}
+			SetFontSize(50);
+			DrawFormatString(600, 500, GetColor(255, 255, 255), "タイム・・・%d 秒", time);
+			SetFontSize(30);
+			DrawString(700, 700, "タイトルに戻る [B]", GetColor(255, 255, 255));
 		}
-		SetFontSize(50);
-		DrawFormatString(600, 500, GetColor(255, 255, 255), "タイム・・・%d 秒", time);
-		SetFontSize(30);
-		DrawString(700, 700, "タイトルに戻る [B]", GetColor(255, 255, 255));
 	}
 
 	//上下黒帯
@@ -139,5 +154,5 @@ void GameClearScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, blackBandAlpha);
 	DrawBox(0, 0, SCREEN_W, 100, GetColor(0, 0, 0), TRUE);
 	DrawBox(0, SCREEN_H - 100, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MaxAlpha);
 }

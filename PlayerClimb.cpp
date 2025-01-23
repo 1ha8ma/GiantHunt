@@ -127,4 +127,7 @@ void PlayerClimb::Move(VECTOR position, DINPUT_JOYSTATE stickstate, Camera camer
 		VECTOR speedVec = VScale(shaftVec, -Speed);
 		moveVec = VAdd(moveVec, speedVec);
 	}
+
+	//オブジェクトのmoveVecを加算
+	moveVec = VAdd(moveVec, objectCollision.moveVec);
 }

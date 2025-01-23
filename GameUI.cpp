@@ -12,6 +12,22 @@ GameUI::GameUI(int enemyHP, int playerHP, int playerGrip)
 	startEnemyHP = enemyHP;
 	startPlayerHP = playerHP;
 	startPlayerGrip = playerGrip;
+
+	//1フレーム前のステータス
+	prevEnemyHP = enemyHP;
+	prevPlayerHP = playerHP;
+
+	//その他変数初期化
+	enemyTakeDamage = false;
+	playerTakeDamage = false;
+	enemyTakeDamageFlame = 0;
+	playerTakeDamageFlame = 0;
+	enemyColorR = 75;
+	enemyColorG = 75;
+	enemyColorB = 75;
+	playerColorR = 75;
+	playerColorG = 75;
+	playerColorB = 75;
 }
 
 /// <summary>
@@ -35,10 +51,72 @@ void GameUI::Update(int enemyHP, int playerHP, int playerGrip)
 	this->playerHP = playerHP;
 	this->playerGrip = playerGrip;
 
+	//ダメージを受けたか確認
+	if (enemyHP != prevEnemyHP)
+	{
+		//enemyHPBackbarColor = GetColor(224, 255, 255);
+		enemyTakeDamageFlame = 0;
+		enemyTakeDamage = true;
+	}
+	if (playerHP != prevPlayerHP)
+	{
+		//playerHPBackbarColor = GetColor(255, 224, 255);
+		playerTakeDamageFlame = 0;
+		playerTakeDamage = true;
+	}
+
+	//ダメージを受けていたら演出
+	if (enemyTakeDamage)
+	{
+		//色変更
+		enemyColorR += 4;
+		if (enemyColorR > 224) { enemyColorR = 224; }
+		enemyColorG += 5;
+		if (enemyColorG > 255) { enemyColorG = 255; }
+		enemyColorB += 5;
+		if (enemyColorB > 255) { enemyColorB = 255; }
+
+		enemyTakeDamageFlame++;
+
+		//一定フレーム経ったら
+		if (enemyTakeDamageFlame >= 40)
+		{
+			enemyColorR = 75;
+			enemyColorG = 75;
+			enemyColorB = 75;
+			enemyTakeDamage = false;
+		}
+	}
+	if (playerTakeDamage)
+	{
+		//色変更
+		playerColorR += 5;
+		if (playerColorR > 255) { playerColorR = 255; }
+		playerColorG += 4;
+		if (playerColorG > 224) { playerColorG = 224; }
+		playerColorB += 5;
+		if (playerColorB > 255) { playerColorB = 255; }
+
+		playerTakeDamageFlame++;
+
+		//一定フレーム経ったら
+		if (playerTakeDamageFlame >= 40)
+		{
+			playerColorR = 75;
+			playerColorG = 75;
+			playerColorB = 75;
+			playerTakeDamage = false;
+		}
+	}
+
 	//割合計算
 	enemyHPPer = this->enemyHP / startEnemyHP;
 	playerHPPer = this->playerHP / startPlayerHP;
 	playerGripPer = this->playerGrip / startPlayerGrip;
+
+	//1フレーム前として記憶
+	prevEnemyHP = enemyHP;
+	prevPlayerHP = playerHP;
 }
 
 /// <summary>
@@ -47,12 +125,12 @@ void GameUI::Update(int enemyHP, int playerHP, int playerGrip)
 void GameUI::Draw()
 {
 	//敵HP
-	DrawBox(50, 38, 50 + EnemyHPLength, 57, GetColor(75, 75, 75),TRUE);
+	DrawBox(50, 37, 50 + EnemyHPLength, 58, GetColor(enemyColorR,enemyColorG,enemyColorB), TRUE);
 	DrawBox(50, 40, 50 + EnemyHPLength * enemyHPPer, 55, GetColor(0, 191, 255), TRUE);
 	//プレイヤーHP
-	DrawBox(1200, 798, 1200+ PlayerHPLength, 827, GetColor(75, 75, 75), TRUE);
-	DrawBox(1200, 800, 1200 + PlayerHPLength*playerHPPer, 825, GetColor(220, 20, 60), TRUE);
+	DrawBox(1200, 797, 1200 + PlayerHPLength, 828, GetColor(playerColorR,playerColorG,playerColorB), TRUE);
+	DrawBox(1200, 800, 1200 + PlayerHPLength * playerHPPer, 825, GetColor(220, 20, 60), TRUE);
 	//プレイヤー握力
-	DrawCircle(1400, 700, PlayerGripSize+2, GetColor(75, 75, 75), TRUE);
-	DrawCircle(1400, 700, PlayerGripSize * playerGripPer, GetColor(240, 230, 140), TRUE);
+	DrawCircle(1450, 730, PlayerGripSize + 3, GetColor(75, 75, 75), TRUE);
+	DrawCircle(1450, 730, PlayerGripSize * playerGripPer, GetColor(240, 230, 140), TRUE);
 }

@@ -9,6 +9,7 @@
 #include"ArmEnemyStage.h"
 #include"ArmEnemy.h"
 #include"RankingScene.h"
+#include"TutorialScene.h"
 #include"TitleScene.h"
 
 /// <summary>
@@ -120,7 +121,7 @@ SceneBase* TitleScene::Update()
 			cursor--;
 		}
 		//下入力
-		if (cursor != (int)Cursor::CheckRanking && canInputStick && stick.Y > 0)
+		if (cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
 		{
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
@@ -139,6 +140,10 @@ SceneBase* TitleScene::Update()
 			if (cursor == (int)Cursor::CheckRanking)
 			{
 				return new RankingScene();
+			}
+			if (cursor == (int)Cursor::Tutorial)
+			{
+				return new TutorialScene();
 			}
 		}
 	}
@@ -177,6 +182,7 @@ void TitleScene::Draw()
 		SetFontSize(50);
 		DrawString(100, 200, "Game Start", GetColor(0, 0, 0));
 		DrawString(100, 300, "ランキング", GetColor(0, 0, 0));
+		DrawString(100, 400, "操作説明", GetColor(0, 0, 0));
 
 		//三角形
 		DrawTriangle(20, trianglePosY - 20, 20, trianglePosY + 20, 70, trianglePosY, GetColor(0, 0, 0), TRUE);
