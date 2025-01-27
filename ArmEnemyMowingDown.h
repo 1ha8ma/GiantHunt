@@ -8,7 +8,7 @@ class SoundEffect;
 class ArmEnemyMowingDown :public ArmEnemyMoveBase
 {
 public:
-	ArmEnemyMowingDown(int modelHandle,float modelScale,VECTOR prevRotate);
+	ArmEnemyMowingDown(int modelHandle,VECTOR prevRotate);
 	~ArmEnemyMowingDown()override;
 
 	bool Update(Camera* camera)override;

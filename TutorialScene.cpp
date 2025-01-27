@@ -71,7 +71,7 @@ void TutorialScene::Draw()
 	SetFontSize(40);
 	DrawString(200, 150, "左スティック・・・移動", GetColor(0, 0, 0));
 	DrawString(200, 230, "右スティック・・・視点移動", GetColor(0, 0, 0));
-	DrawString(200, 310, "B・・・ジャンプ", GetColor(0, 0, 0));
+	DrawString(200, 310, "A・・・ジャンプ", GetColor(0, 0, 0));
 	DrawString(200, 390, "X・・・攻撃", GetColor(0, 0, 0));
 	DrawString(200, 470, "LB・・・ターゲットカメラ", GetColor(0, 0, 0));
 	DrawString(200, 550, "RB・・・掴まり、しゃがみ", GetColor(0, 0, 0));

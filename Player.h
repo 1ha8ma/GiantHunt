@@ -56,13 +56,13 @@ private:
 		FallDown,		//倒れる
 	};
 
-	const float AngleSpeed = 0.2f;			//角度変更速度
-	const float WholeBodyCapsuleRadius = 50.0f;	//全身カプセル半径
-	const float FootCapsuleRadius = 20.0f;	//足カプセル半径
-	const float Gravity = 0.5f;				//重力
-	const int MaxHP = 100;					//最大HP
-	const int MaxGripPoint = 400;			//最大握力
-	const int MinusGripPoint = 1;			//減らす握力量
+	const float AngleSpeed = 0.2f;					//角度変更速度
+	const float WholeBodyCapsuleRadius = 50.0f;		//全身カプセル半径
+	const float FootCapsuleRadius = 20.0f;			//足カプセル半径
+	const float Gravity = 0.5f;						//重力
+	const int MaxHP = 100;							//最大HP
+	const int MaxGripPoint = 400;					//最大握力
+	const int MinusGripPoint = 1;					//減らす握力量
 
 	//角度更新
 	void UpdateAngle();

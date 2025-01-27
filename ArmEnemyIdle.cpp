@@ -7,7 +7,7 @@
 /// </summary>
 /// <param name="modelHandle"></param>
 /// <param name="modelScale"></param>
-ArmEnemyIdle::ArmEnemyIdle(int modelHandle, float modelScale,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle, modelScale)
+ArmEnemyIdle::ArmEnemyIdle(int modelHandle,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle)
 {
 	rotate = prevRotate;
 	shakingflg = false;

@@ -28,9 +28,11 @@ TitleScene::TitleScene()
 	//private変数初期化
 	canInputB = false;
 	canInputStick = false;
-	inputOrderAlpha = 255;
+	inputOrderAlpha = MaxAlpha;
 	inputOrderflg = true;
 	trianglePosY = 220;
+	stringAlpha = MaxAlpha;
+	stateChange = false;
 	state = State::Title;
 	cursor = (int)Cursor::ArmEnemyStage;
 }
@@ -106,14 +108,36 @@ SceneBase* TitleScene::Update()
 		{
 			se->PlaySE(SoundEffect::SEKind::Crick);
 			canInputB = false;
-			state = State::Select;
+			stateChange = true;
+			//state = State::Select;
+		}
+
+		//ステート変更
+		if (stateChange)
+		{
+			stringAlpha -= 5;
+
+			if (stringAlpha <= 0)
+			{
+				stringAlpha = 0;
+				state = State::Select;
+			}
 		}
 	}
 	break;
 	case State::Select:
 	{
+		if (stringAlpha < 255)
+		{
+			stringAlpha += 5;
+			if (stringAlpha >= 255)
+			{
+				stringAlpha = 255;
+			}
+		}
+
 		//上入力
-		if (cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
+		if (stringAlpha == 255 && cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
 		{
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
@@ -121,7 +145,7 @@ SceneBase* TitleScene::Update()
 			cursor--;
 		}
 		//下入力
-		if (cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
+		if (stringAlpha == 255 && cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
 		{
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
@@ -130,7 +154,7 @@ SceneBase* TitleScene::Update()
 		}
 
 		//Bボタン入力
-		if (canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		if (stringAlpha == 255 && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
 		{
 			se->PlaySE(SoundEffect::SEKind::Crick);
 			if (cursor == (int)Cursor::ArmEnemyStage)
@@ -165,13 +189,17 @@ void TitleScene::Draw()
 	{
 	case State::Title:
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, stringAlpha);
 		//タイトル名
 		SetFontSize(150);
 		DrawString(200, 200, "騎士と巨人", GetColor(0, 0, 0));
 
 		//ボタン指示
 		//透明度変更
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, inputOrderAlpha);
+		if (!stateChange)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, inputOrderAlpha);
+		}
 		SetFontSize(50);
 		DrawString(500, 500, "Press B Button", GetColor(0, 0, 0));
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);//透明度を元に戻す
@@ -179,6 +207,7 @@ void TitleScene::Draw()
 	break;
 	case State::Select:
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, stringAlpha);
 		SetFontSize(50);
 		DrawString(100, 200, "Game Start", GetColor(0, 0, 0));
 		DrawString(100, 300, "ランキング", GetColor(0, 0, 0));
@@ -186,6 +215,7 @@ void TitleScene::Draw()
 
 		//三角形
 		DrawTriangle(20, trianglePosY - 20, 20, trianglePosY + 20, 70, trianglePosY, GetColor(0, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	}
 	break;
 	}

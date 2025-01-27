@@ -32,7 +32,7 @@ private:
 		MowingAttack = 100,
 		Swing = 100,
 		HitWeakPoint = 100,
-		CursorMove = 100,
+		CursorMove = 70,
 		Crick = 100,
 	};
 

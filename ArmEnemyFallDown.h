@@ -4,7 +4,7 @@
 class ArmEnemyFallDown :public ArmEnemyMoveBase
 {
 public:
-	ArmEnemyFallDown(int modelHandle,float modelScale);
+	ArmEnemyFallDown(int modelHandle);
 	~ArmEnemyFallDown()override;
 
 	bool UpdateFallDown(Camera* camera)override;

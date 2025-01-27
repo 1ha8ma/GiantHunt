@@ -8,6 +8,7 @@
 #include"ArmEnemyMowingDown.h"
 #include"ArmEnemySwing.h"
 #include"ArmEnemyFallDown.h"
+#include"ArmEnemyHandUp.h"
 #include"ArmEnemy.h"
 
 /// <summary>
@@ -29,7 +30,7 @@ ArmEnemy::ArmEnemy()
 	moveChangeflg = false;
 	playerRideFlame = 0;
 	playerRideflg = false;
-	swingflg = false;
+	playerRideMoveStartflg = false;
 
 	//描画モデル
 	MV1SetScale(modelHandle, VGet(ModelScale, ModelScale, ModelScale));
@@ -43,7 +44,7 @@ ArmEnemy::ArmEnemy()
 	parts.push_back(new EnemyParts(ObjectTag::Hand_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, 300));
 	parts.push_back(new EnemyParts(ObjectTag::WeakPoint_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, 320));
 
-	move = new ArmEnemyIdle(modelHandle, ModelScale, VGet(0, 0, 0));
+	move = new ArmEnemyIdle(modelHandle, VGet(0, 0, 0));
 	nowMoveKind = MoveKind::Idle;
 }
 
@@ -101,14 +102,14 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	}
 
 	//プレイヤーが乗っていたら
-	if (nowMoveKind != MoveKind::Swing && playerRideflg)
+	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && playerRideflg)
 	{
 		playerRideFlame++;
 
-		if (playerRideFlame > 100)
+		if (playerRideFlame > PlayerRideMoveStateFlame)
 		{
 			playerRideFlame = 0;
-			swingflg = true;
+			playerRideMoveStartflg = true;
 		}
 	}
 
@@ -154,7 +155,7 @@ void ArmEnemy::InitializeFallDown()
 	VECTOR prevRotate = move->GetRotate();
 	delete move;
 	nowMoveKind = MoveKind::FallDown;
-	move = new ArmEnemyFallDown(modelHandle, ModelScale);
+	move = new ArmEnemyFallDown(modelHandle);
 }
 
 /// <summary>
@@ -205,17 +206,19 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 
 	//待機
 	if (nowMoveKind == MoveKind::MowingDown && moveChangeflg ||
-		nowMoveKind == MoveKind::Swing && moveChangeflg
+		nowMoveKind == MoveKind::Swing && moveChangeflg ||
+		nowMoveKind == MoveKind::HandUp && moveChangeflg
 		)
 	{
-		if (nowMoveKind == MoveKind::Swing && moveChangeflg)
+		//プレイヤーが乗っている時の動きのフラグを初期化
+		if (nowMoveKind == MoveKind::Swing || nowMoveKind == MoveKind::HandUp)
 		{
-			swingflg = false;
+			playerRideMoveStartflg = false;
 		}
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
 		nowMoveKind = MoveKind::Idle;
-		move = new ArmEnemyIdle(modelHandle, ModelScale, prevRotate);
+		move = new ArmEnemyIdle(modelHandle, prevRotate);
 	}
 
 	//薙ぎ払い
@@ -224,15 +227,24 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
 		nowMoveKind = MoveKind::MowingDown;
-		move = new ArmEnemyMowingDown(modelHandle, ModelScale,prevRotate);
+		move = new ArmEnemyMowingDown(modelHandle,prevRotate);
 	}
 
-	//振り回し
-	if (nowMoveKind != MoveKind::Swing && swingflg)
+	//振り回し...プレイヤーが上腕か前腕に乗っている場合
+	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && playerRideMoveStartflg && (playerRidePlace == RidePlace::Upperarm || playerRidePlace == RidePlace::Forearm))
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
 		nowMoveKind = MoveKind::Swing;
-		move = new ArmEnemySwing(modelHandle, ModelScale,prevRotate);
+		move = new ArmEnemySwing(modelHandle, prevRotate);
+	}
+
+	//腕を上げる...プレイヤーが手に乗っている場合
+	if (nowMoveKind != MoveKind::HandUp && nowMoveKind != MoveKind::Swing && playerRideMoveStartflg && playerRidePlace == RidePlace::Hand)
+	{
+		VECTOR prevRotate = move->GetRotate();
+		delete move;
+		nowMoveKind = MoveKind::HandUp;
+		move = new ArmEnemyHandUp(modelHandle, prevRotate);
 	}
 }

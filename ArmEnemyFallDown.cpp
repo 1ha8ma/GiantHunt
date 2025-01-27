@@ -7,7 +7,7 @@
 /// </summary>
 /// <param name="modelHandle">モデルハンドル</param>
 /// <param name="modelScale">モデルスケール</param>
-ArmEnemyFallDown::ArmEnemyFallDown(int modelHandle, float modelScale) :ArmEnemyMoveBase(modelHandle, modelScale)
+ArmEnemyFallDown::ArmEnemyFallDown(int modelHandle) :ArmEnemyMoveBase(modelHandle)
 {
 	//変数初期化
 	moveState = 0;

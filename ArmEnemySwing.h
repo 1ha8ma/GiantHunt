@@ -6,14 +6,13 @@ class SoundEffect;
 class ArmEnemySwing :public ArmEnemyMoveBase
 {
 public:
-	ArmEnemySwing(int modelHandle,float modelScale,VECTOR prevRotate);
+	ArmEnemySwing(int modelHandle,VECTOR prevRotate);
 	~ArmEnemySwing()override;
 
 	bool Update(Camera* camera)override;
 	void Draw()override {};
 
 private:
-	const VECTOR BasicRotate = VGet(0.0f, 0.0f, 0.0f);	//Šî–{‚Ì‰ñ“]—Ê
 
 	SoundEffect* se;
 

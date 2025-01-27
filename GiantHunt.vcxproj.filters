@@ -219,6 +219,9 @@
     <ClCompile Include="TutorialScene.cpp">
       <Filter>Scene\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="ArmEnemyHandUp.cpp">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="TutorialScene.h">
       <Filter>Scene\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyHandUp.h">
+      <Filter>Enemy\ArmEnemy\Move</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

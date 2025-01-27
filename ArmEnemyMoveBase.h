@@ -14,22 +14,33 @@ public:
 		Finger2 = 40,	//小指の先
 	};
 
-	ArmEnemyMoveBase(int modelHandle,float modelScale);
+	ArmEnemyMoveBase(int modelHandle);
 	virtual ~ArmEnemyMoveBase() {};
 	
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <returns>動きの終了</returns>
 	virtual bool Update(Camera* camera) { return false; }
+
+	/// <summary>
+	/// 倒された後用更新
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <returns>動きの終了</returns>
 	virtual bool UpdateFallDown(Camera* camera) { return false; }
+
+	/// <summary>
+	/// 描画(確認)
+	/// </summary>
 	virtual void Draw()abstract;	//確認用
 
 
 	VECTOR GetRotate() { return rotate; }
 
 protected:
-	//フレームの回転処理
-	MATRIX FrameRotateProcess(int frameIndex, float Xaxis, float Yaxis, float Zaxis);
-
 	int modelHandle;	//モデルハンドル
-	float modelScale;	//モデルのサイズ
 	VECTOR rotate;		//回転用
 	int moveState;		//動き状態
 };

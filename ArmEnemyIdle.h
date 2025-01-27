@@ -4,7 +4,7 @@
 class ArmEnemyIdle :public ArmEnemyMoveBase
 {
 public:
-	ArmEnemyIdle(int modelHandle, float modelScale,VECTOR prevRotate);
+	ArmEnemyIdle(int modelHandle,VECTOR prevRotate);
 	~ArmEnemyIdle()override;
 
 	bool Update(Camera* camera)override;

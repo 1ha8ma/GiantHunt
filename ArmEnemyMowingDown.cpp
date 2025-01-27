@@ -9,7 +9,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle"></param>
-ArmEnemyMowingDown::ArmEnemyMowingDown(int modelHandle, float modelScale,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle, modelScale)
+ArmEnemyMowingDown::ArmEnemyMowingDown(int modelHandle,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle)
 {
 	//インスタンス化
 	se = new SoundEffect();

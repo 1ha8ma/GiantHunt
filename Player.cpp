@@ -382,7 +382,7 @@ void Player::CheckOnGround()
 		//àÍíËéûä‘óéâ∫ÇµÇƒÇ¢ÇΩÇÁóéâ∫É_ÉÅÅ[ÉW
 		if (fallFrame >= 100)
 		{
-			HP -= fallFrame / 50;
+			HP -= fallFrame / 10;
 			//êUìÆ
 			StartJoypadVibration(DX_INPUT_PAD1, 500, 100, -1);
 		}

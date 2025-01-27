@@ -8,14 +8,13 @@
 /// </summary>
 /// <param name="modelHandle">モデルハンドル</param>
 /// <param name="modelScale">モデルサイズ</param>
-ArmEnemySwing::ArmEnemySwing(int modelHandle, float modelScale,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle, modelScale)
+ArmEnemySwing::ArmEnemySwing(int modelHandle,VECTOR prevRotate) :ArmEnemyMoveBase(modelHandle)
 {
 	//インスタンス化
 	se = new SoundEffect();
 	
 	//private変数初期化
-	//rotate = prevRotate;
-	rotate = VGet(0, 0, 0);
+	rotate = prevRotate;
 	moveEnd = false;
 	moveState = 0;
 
@@ -46,6 +45,7 @@ bool ArmEnemySwing::Update(Camera* camera)
 	case 0:
 	{
 		rotate.z += 0.007;
+		rotate.x += 0.004f;
 
 		if (rotate.z > 1)
 		{
@@ -65,9 +65,9 @@ bool ArmEnemySwing::Update(Camera* camera)
 	case 2:
 	{
 		rotate.z += 0.007f;
-		if (rotate.z >= BasicRotate.z)
+		if (rotate.z >= 0.0f)
 		{
-			rotate.z = BasicRotate.z;
+			rotate.z = 0.0f;
 			moveEnd = true;
 		}
 	}
@@ -76,7 +76,7 @@ bool ArmEnemySwing::Update(Camera* camera)
 
 	
 	MATRIX Mrotate = MGetRotZ(rotate.z);
-	//Mrotate = MMult(Mrotate, MGetRotX(rotate.x));
+	Mrotate = MMult(Mrotate, MGetRotX(rotate.x));
 
 	MV1SetFrameUserLocalMatrix(modelHandle, (int)ArmEnemyFrameIndex::Upperarm, Mrotate);
 

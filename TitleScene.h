@@ -44,4 +44,6 @@ private:
 	bool inputOrderflg;			//入力指示の透明度
 	float trianglePosY;			//三角形カーソルのポジション
 	bool canInputStick;			//スティック入力可能
+	bool stateChange;			//タイトル内のステート変更
+	int stringAlpha;			//文字の透明度
 };
