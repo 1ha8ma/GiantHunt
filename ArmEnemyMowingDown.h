@@ -14,7 +14,7 @@ public:
 	bool Update(Camera* camera)override;
 	void Draw()override;
 
-	void OnHitObject(CollisionData objectData);
+	void OnHitObject(CollisionData* objectData);
 private:
 	const float AttackCapsuleRadius = 800.0f; //Žw‚©‚çŽw‚Ì“–‚½‚è”»’è‚É‚·‚é‚È‚ç200
 	const int AttackPower = 20;

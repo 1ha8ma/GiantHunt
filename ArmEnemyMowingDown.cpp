@@ -124,9 +124,9 @@ void ArmEnemyMowingDown::Draw()
 /// オブジェクト衝突時の処理
 /// </summary>
 /// <param name="objectData">衝突したオブジェクトのデータ</param>
-void ArmEnemyMowingDown::OnHitObject(CollisionData objectData)
+void ArmEnemyMowingDown::OnHitObject(CollisionData* objectData)
 {
-	if (objectData.tag == ObjectTag::PlayerWholeBody)
+	if (objectData->tag == ObjectTag::PlayerWholeBody)
 	{
 		attackHit = true;
 	}
@@ -137,7 +137,7 @@ void ArmEnemyMowingDown::OnHitObject(CollisionData objectData)
 /// </summary>
 void ArmEnemyMowingDown::UpdateCollisionData()
 {
-	collisionData.tag = ObjectTag::Attack_E1;
+	collisionData.tag = ObjectTag::EnemyAttack;
 	collisionData.startPosition = attackCapsuleStart;
 	collisionData.endPosition = attackCapsuleEnd;
 	collisionData.radius = AttackCapsuleRadius;

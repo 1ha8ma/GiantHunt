@@ -25,6 +25,8 @@ private:
 	ArmEnemy* enemy;
 	ArmEnemyStage* stage;
 
-	int flame;
-	int blackBandAlpha;		//黒帯の透明度
+	int flame;					//開始からのフレーム数
+	int blackBandAlpha;			//黒帯の透明度
+	VECTOR cameraPosition;		//カメラポジション
+	VECTOR cameraLookPosition;	//カメラ注視点
 };

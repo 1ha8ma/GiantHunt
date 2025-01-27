@@ -7,18 +7,21 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="tag">オブジェクトタグ</param>
+/// <param name="tag">当たり判定タグ</param>
+/// <param name="partsName">パーツの名前</param>
 /// <param name="modelHandle">モデルハンドル</param>
-/// <param name="frameIndex">フレーム番号</param>
-/// <param name="capsuleLength">カプセルの長さ</param>
+/// <param name="frameIndex1">カプセル用ボーン番号1</param>
+/// <param name="frameIndex2">カプセル用ボーン番号２</param>
 /// <param name="capsuleRadius">カプセル半径</param>
-/// <param name="frameVec">フレームの座標からの向き</param>
-EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int frameIndex1, int frameIndex2,float capsuleRadius)
+EnemyParts::EnemyParts(ObjectTag tag, int partsName,int modelHandle, int frameIndex1, int frameIndex2,float capsuleRadius)
 {
 	//ハンドルコピー
 	this->modelHandle = modelHandle;
 	//タグ設定
 	this->tag = tag;
+
+	//名前設定
+	this->partsName = partsName;
 
 	//フレーム番号取得
 	this->frameIndex1 = frameIndex1;
@@ -45,7 +48,7 @@ EnemyParts::EnemyParts(ObjectTag tag, int modelHandle, int frameIndex1, int fram
 	collisionManager->AddCollisionData(&collisionData);
 
 	//弱点ならエフェクトを付ける
-	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	if (tag == ObjectTag::WeakPoint)
 	{
 		effect = new Effect();
 
@@ -62,7 +65,7 @@ EnemyParts::~EnemyParts()
 	MV1ResetFrameUserLocalMatrix(modelHandle, frameIndex2);
 	collisionManager->RemoveCollisionData(&collisionData);
 	delete se;
-	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	if (tag == ObjectTag::WeakPoint)
 	{
 		effect->RemoveEffect(Effect::EffectKind::WeakPoint);
 		delete effect;
@@ -91,7 +94,7 @@ void EnemyParts::Update()
 	UpdateCollisionData();
 
 	//弱点ならエフェクトを付ける
-	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	if (tag == ObjectTag::WeakPoint)
 	{
 		bool playing = effect->IsPlayEffect(Effect::EffectKind::WeakPoint);
 
@@ -133,7 +136,7 @@ void EnemyParts::Update()
 /// </summary>
 void EnemyParts::Draw()
 {
-	if (tag == ObjectTag::WeakPoint_E1 || tag == ObjectTag::WeakPoint_E2)
+	if (tag == ObjectTag::WeakPoint)
 	{
 		effect->Draw();
 	}
@@ -147,22 +150,22 @@ void EnemyParts::Draw()
 /// 衝突後の処理
 /// </summary>
 /// <param name="hitObjectData">衝突したオブジェクト</param>
-void EnemyParts::OnHitObject(CollisionData hitObjectData)
+void EnemyParts::OnHitObject(CollisionData* hitObjectData)
 {
 	//プレイヤーが乗っている時の処理
-	if (hitObjectData.tag == ObjectTag::PlayerWholeBody)
+	if (hitObjectData->tag == ObjectTag::PlayerWholeBody)
 	{
 		isPlayerRide = true;
 	}
 
 	//プレイヤーの攻撃だった場合
-	if (hitObjectData.tag == ObjectTag::Attack_P)
+	if (hitObjectData->tag == ObjectTag::Attack_P)
 	{
 		//弱点の場合
-		if (tag == ObjectTag::WeakPoint_E1)
+		if (tag == ObjectTag::WeakPoint)
 		{
 			se->PlaySE(SoundEffect::SEKind::HitWeakPoint);
-			damage = hitObjectData.attackPower * WeakPointDamageMultiplier;
+			damage = hitObjectData->attackPower * WeakPointDamageMultiplier;
 			if (!hitWeakPointEffectflg)
 			{
 				effect->PlayEffect(Effect::EffectKind::HitWeakPoint, capsuleStart, VGet(120.0f, 120.0f, 120.0f), VGet(0, 0, 0), 1.0f);
@@ -173,7 +176,7 @@ void EnemyParts::OnHitObject(CollisionData hitObjectData)
 		//その他
 		else
 		{
-			damage = hitObjectData.attackPower;
+			damage = hitObjectData->attackPower;
 		}
 	}
 }

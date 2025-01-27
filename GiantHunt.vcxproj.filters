@@ -82,14 +82,23 @@
     <Filter Include="Scene\GameClear">
       <UniqueIdentifier>{885d84b0-ecd1-45d1-a018-30f7b0da58b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy\ArmEnemy\Effect">
-      <UniqueIdentifier>{7b319599-3193-4017-8a83-d1635ef69d8b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Ranking">
       <UniqueIdentifier>{d031cf2b-8e5e-4a72-8945-e29ede372ed5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene\Tutorial">
       <UniqueIdentifier>{de070161-887a-43e7-94c0-c1c84e52b5a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\Enemy2">
+      <UniqueIdentifier>{d0b655cd-4c02-448a-871c-3600c57f03e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\StartScene\ArmEnemyStartScene">
+      <UniqueIdentifier>{c4c71a12-d914-4819-8821-1709076eeb66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\StartScene\Enemy2StartScene">
+      <UniqueIdentifier>{a9655e9f-cba7-4912-969d-fce4c4981e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{7b319599-3193-4017-8a83-d1635ef69d8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,7 +187,7 @@
       <Filter>Scene\Base</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
-      <Filter>Enemy\ArmEnemy\Effect</Filter>
+      <Filter>Effect</Filter>
     </ClCompile>
     <ClCompile Include="BGM.cpp">
       <Filter>Sound</Filter>
@@ -197,9 +206,6 @@
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene\Game\GameScene</Filter>
-    </ClCompile>
-    <ClCompile Include="ArmEnemyStartScene.cpp">
-      <Filter>Scene\StartScene</Filter>
     </ClCompile>
     <ClCompile Include="PlayerFallDown.cpp">
       <Filter>Player\PlayerState</Filter>
@@ -221,6 +227,15 @@
     </ClCompile>
     <ClCompile Include="ArmEnemyHandUp.cpp">
       <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
+      <Filter>Enemy\Enemy2</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyStartScene.cpp">
+      <Filter>Scene\StartScene\ArmEnemyStartScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2StartScene.cpp">
+      <Filter>Scene\StartScene\Enemy2StartScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -312,7 +327,7 @@
       <Filter>Scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
-      <Filter>Enemy\ArmEnemy\Effect</Filter>
+      <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="BGM.h">
       <Filter>Sound</Filter>
@@ -331,9 +346,6 @@
     </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scene\Game\GameScene</Filter>
-    </ClInclude>
-    <ClInclude Include="ArmEnemyStartScene.h">
-      <Filter>Scene\StartScene</Filter>
     </ClInclude>
     <ClInclude Include="PlayerFallDown.h">
       <Filter>Player\PlayerState</Filter>
@@ -355,6 +367,15 @@
     </ClInclude>
     <ClInclude Include="ArmEnemyHandUp.h">
       <Filter>Enemy\ArmEnemy\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2.h">
+      <Filter>Enemy\Enemy2</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyStartScene.h">
+      <Filter>Scene\StartScene\ArmEnemyStartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2StartScene.h">
+      <Filter>Scene\StartScene\Enemy2StartScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

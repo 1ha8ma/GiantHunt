@@ -33,6 +33,7 @@ ArmEnemyStage::ArmEnemyStage()
 
 	//“–‚½‚è”»’è
 	collisionManager = collisionManager->GetInstance();
+	collisionData.tag = ObjectTag::Stage;
 	collisionData.stageLeft = StageLeft;
 	collisionData.stageRight = StageRight;
 	collisionData.stageFront = StageFront;

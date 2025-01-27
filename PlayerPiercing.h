@@ -30,7 +30,7 @@ private:
 	//“Ë‚«h‚µUŒ‚
 	void PiercingAttack(int inputstate);
 	//Õ“ËŒãˆ—
-	void OnHitObject(CollisionData objectData);
+	void OnHitObject(CollisionData* objectData);
 
 	CollisionManager* collisionManager;
 	CollisionData attackCollisionData;	//UŒ‚“–‚½‚è”»’èî•ñ

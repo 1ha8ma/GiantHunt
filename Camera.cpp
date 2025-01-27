@@ -14,15 +14,31 @@ Camera::Camera()
 }
 
 /// <summary>
-/// スタートシーン初期
+/// スタートシーン初期化
 /// </summary>
-void Camera::StartSceneInitialize()
+/// <param name="position">カメラポジション</param>
+/// <param name="lookPosition">カメラ注視点</param>
+void Camera::StartSceneInitialize(VECTOR position,VECTOR lookPosition)
 {
 	//距離設定
 	SetCameraNearFar(100.0f, 20000.0f);
 
-	position = VGet(5000, 2500, -1500);
-	lookPosition = VGet(500, 1000, 1000);
+	this->position = position;
+	this->lookPosition = lookPosition;
+
+	//ポジション・注視点反映
+	SetCameraPositionAndTarget_UpVecY(this->position, this->lookPosition);
+}
+
+/// <summary>
+/// スタートシーン更新
+/// </summary>
+/// <param name="position">カメラポジション</param>
+/// <param name="lookPosition">カメラ注視点</param>
+void Camera::UpdateStartScene(VECTOR position,VECTOR lookPosition)
+{
+	this->position = position;
+	this->lookPosition = lookPosition;
 
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
@@ -51,19 +67,6 @@ void Camera::GameInitialize(VECTOR playerPosition)
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }
 
-/// <summary>
-/// スタートシーンでの更新
-/// </summary>
-void Camera::UpdateStartScene()
-{
-	if (position.y >= 1000)
-	{
-		position.y -= 5;
-	}
-
-	//ポジション・注視点反映
-	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
-}
 
 /// <summary>
 /// 更新
@@ -156,7 +159,7 @@ void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition)
 		lookPosition.y += CameraPlayerTargetHeight;
 	}
 
-	//0基準→プレイヤーとの距離分X軸方向にずらす→Z軸回転で高くする→Y軸回転で場所移動→プレイヤーのY座標を高くしたものを足す
+	//0基準→プレイヤーと離したい距離分X軸方向にずらす→Z軸回転で高くする→Y軸回転で場所移動→プレイヤーのY座標を高くしたものを足す
 	//NOTE:最後プレイヤーのY座標を高くしたものを足すようにしたのはlookPositionを足すとターゲットカメラにしたときにターゲットの場所に移動してしまうから
 	MATRIX rotY = MGetRotY(angleH + DX_PI_F / 2);
 	MATRIX rotZ = MGetRotZ(angleV);

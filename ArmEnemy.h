@@ -10,7 +10,7 @@ class ArmEnemy:public EnemyBase
 {
 public:
 	ArmEnemy();
-	~ArmEnemy();
+	~ArmEnemy()override;
 
 	//初期化
 	void Initialize()override;
@@ -27,12 +27,12 @@ public:
 
 private:
 	//乗っている場所
-	enum class RidePlace :int
+	enum class PartsName :int
 	{
-		None,		//乗っていない
 		Upperarm,	//上腕
 		Forearm,	//前腕
 		Hand,		//手
+		WeakPoint,	//弱点
 	};
 
 	//動きの種類
@@ -55,7 +55,7 @@ private:
 	Calculation* calclation;
 
 	std::vector<EnemyParts*> parts;			//パーツ
-	RidePlace playerRidePlace;				//プレイヤーが乗っている場所
+	int playerRidePlace;				//プレイヤーが乗っている場所
 	bool moveChangeflg;						//状態からの動き変更指示フラグ
 	MoveKind nowMoveKind;					//現在の動きの種類
 	int playerRideFlame;					//プレイヤーが乗っている時間

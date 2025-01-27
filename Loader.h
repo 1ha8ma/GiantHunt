@@ -17,6 +17,7 @@ public:
 		ArmEnemyStage,					//腕の敵戦ステージ
 		BossEnemyStage,					//ボス戦ステージ
 		SkyDome,						//スカイドーム
+		Enemy2Model,					//2番目の敵モデル
 
 		//2D
 		GameOverBackImage,				//ゲームオーバー背景

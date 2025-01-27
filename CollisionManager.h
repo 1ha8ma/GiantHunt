@@ -21,8 +21,8 @@ public:
 	//当たり判定情報の取り除き
 	static void RemoveCollisionData(CollisionData* data);
 
-	//取りたい当たり判定情報を取る
-	static CollisionData GetCollisionData(CollisionData data);
+	//取りたいオブジェクトの当たり判定情報を取る
+	static CollisionData GetCollisionData(CollisionData *data);
 
 private:
 	CollisionManager();

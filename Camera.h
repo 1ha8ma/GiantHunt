@@ -9,9 +9,9 @@ public:
 	Camera();
 
 	//スタートシーン初期化
-	void StartSceneInitialize();
+	void StartSceneInitialize(VECTOR position,VECTOR lookPosition);
 	//スタートシーン更新
-	void UpdateStartScene();
+	void UpdateStartScene(VECTOR position, VECTOR lookPosition);
 
 	//ゲームシーン初期化
 	void GameInitialize(VECTOR playerpos);

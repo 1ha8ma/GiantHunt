@@ -107,7 +107,7 @@ bool Player::UpdateGame(const Camera& camera)
 	nowstate->SetCapsule(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius);
 	if (nowstateKind == State::Climb)
 	{
-		hitObjectData = collisionManager->GetCollisionData(hitObjectData);
+		hitObjectData = collisionManager->GetCollisionData(hitObjectDataPointer);
 	}
 	//ステート更新
 	changeStateflg = nowstate->Update(position, angle, inputstate, stickstate, camera,hitObjectData);
@@ -196,20 +196,17 @@ void Player::Draw()
 }
 
 /// <summary>
-/// 衝突した時の処理
+/// 衝突時の処理
 /// </summary>
-/// <param name="hitObjectData">衝突したもの</param>
-void Player::BodyOnHitObject(CollisionData hitObjectData)
+/// <param name="hitObjectData">衝突したオブジェクト</param>
+void Player::BodyOnHitObject(CollisionData* hitObjectData)
 {
-	//this->hitObjectData = hitObjectData;
-
 	//衝突したオブジェクトごとに処理を変更
 	//敵の攻撃
-	if (hitObjectData.tag == ObjectTag::Attack_E1 ||
-		hitObjectData.tag == ObjectTag::Attack_E2)
+	if (hitObjectData->tag == ObjectTag::EnemyAttack)
 	{
 		//HP減少
-		HP -= hitObjectData.attackPower;
+		HP -= hitObjectData->attackPower;
 
 		if (HP < 0)
 		{
@@ -217,21 +214,21 @@ void Player::BodyOnHitObject(CollisionData hitObjectData)
 		}
 	}
 
-
 	//カプセル
-	if (hitObjectData.tag == ObjectTag::Wood1 || hitObjectData.tag == ObjectTag::Wood2 ||	//木
-		hitObjectData.tag == ObjectTag::Upperarm_E1 || hitObjectData.tag == ObjectTag::Forearm_E1 || hitObjectData.tag == ObjectTag::Hand_E1)	//腕の敵
+	if (hitObjectData->tag == ObjectTag::Wood ||		//木
+		hitObjectData->tag == ObjectTag::EnemyParts)	//敵
 	{
 		//データコピー
-		this->hitObjectData = hitObjectData;
+		hitObjectDataPointer = hitObjectData;
+		this->hitObjectData = *hitObjectData;
 
 		//押し戻し
 		if (nowstateKind != State::Climb)
 		{
-			CollisionPushBack(bodyCollisionData, hitObjectData);
+			CollisionPushBack(bodyCollisionData, *hitObjectData);
 		}
 		isCatch = true;
-		runPlace= PlayerStateProcessBase::RunPlaceKind::capsule;
+		runPlace = PlayerStateProcessBase::RunPlaceKind::capsule;
 	}
 }
 
@@ -239,13 +236,14 @@ void Player::BodyOnHitObject(CollisionData hitObjectData)
 /// オブジェクト衝突時の処理(足)
 /// </summary>
 /// <param name="hitObjectData">衝突したオブジェクト</param>
-void Player::FootOnHitObject(CollisionData hitObjectData)
+void Player::FootOnHitObject(CollisionData* hitObjectData)
 {
-	if (hitObjectData.tag == ObjectTag::Wood1 || hitObjectData.tag == ObjectTag::Wood2 ||	//木
-		hitObjectData.tag == ObjectTag::Upperarm_E1 || hitObjectData.tag == ObjectTag::Forearm_E1 || hitObjectData.tag == ObjectTag::Hand_E1)	//腕の敵
+	if (hitObjectData->tag == ObjectTag::Wood ||		//木
+		hitObjectData->tag == ObjectTag::EnemyParts)	//腕の敵
 	{
 		//データコピー
-		this->hitObjectData = hitObjectData;
+		hitObjectDataPointer = hitObjectData;
+		this->hitObjectData = *hitObjectData;
 
 		onFootObject = true;
 		runPlace = PlayerStateProcessBase::RunPlaceKind::capsule;

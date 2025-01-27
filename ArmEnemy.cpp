@@ -26,7 +26,6 @@ ArmEnemy::ArmEnemy()
 	//private変数初期化
 	calclation = new Calculation();
 	position = VGet(2000.0f, -5000.0f, 6550.0f);
-	playerRidePlace = RidePlace::None;
 	moveChangeflg = false;
 	playerRideFlame = 0;
 	playerRideflg = false;
@@ -39,10 +38,10 @@ ArmEnemy::ArmEnemy()
 
 	//部位当たり判定
 	parts.clear();
-	parts.push_back(new EnemyParts(ObjectTag::Upperarm_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm-1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm, 600));
-	parts.push_back(new EnemyParts(ObjectTag::Forearm_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, 500));
-	parts.push_back(new EnemyParts(ObjectTag::Hand_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, 300));
-	parts.push_back(new EnemyParts(ObjectTag::WeakPoint_E1, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, 320));
+	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Upperarm, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm, 600));
+	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Forearm, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, 500));
+	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Hand, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, 300));
+	parts.push_back(new EnemyParts(ObjectTag::WeakPoint, (int)PartsName::WeakPoint, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, 320));
 
 	move = new ArmEnemyIdle(modelHandle, VGet(0, 0, 0));
 	nowMoveKind = MoveKind::Idle;
@@ -75,29 +74,30 @@ void ArmEnemy::Initialize()
 bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 {
 	//プレイヤーの乗っている関係初期化
-	playerRidePlace = RidePlace::None;
 	playerRideflg = false;
 
-	//HPが無くなったか
-	bool HPoutflg = false;
+	//死んでいるか
+	bool isDead = false;
 
 	for (int i = 0; i < parts.size(); i++)
 	{
 		if (parts[i]->GetIsPlayerRide())
 		{
 			playerRideflg = true;
-			if (i == 0)
+			/*if (i == 0)
 			{
-				playerRidePlace = RidePlace::Upperarm;
+				playerRidePlace = (int)PartsName::Upperarm;
 			}
 			else if (i == 1)
 			{
-				playerRidePlace = RidePlace::Forearm;
+				playerRidePlace = (int)PartsName::Forearm;
 			}
 			else if (i == 2)
 			{
-				playerRidePlace = RidePlace::Hand;
-			}
+				playerRidePlace = (int)PartsName::Hand;
+			}*/
+
+			playerRidePlace = parts[i]->GetPartsName();
 		}
 	}
 
@@ -127,7 +127,7 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	//HP確認
 	if (HP == 0)
 	{
-		HPoutflg = true;
+		isDead = true;
 	}
 
 	//手をターゲットカメラに設定
@@ -144,7 +144,7 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 
 	MV1SetPosition(modelHandle, position);
 
-	return HPoutflg;
+	return isDead;
 }
 
 /// <summary>
@@ -222,7 +222,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 	}
 
 	//薙ぎ払い
-	if (nowMoveKind == MoveKind::Idle && handForPlayerDistance < 2500 && playerRidePlace == RidePlace::None && playerPos.y < handpos.y)
+	if (nowMoveKind == MoveKind::Idle && handForPlayerDistance < 2500 && !playerRideflg && playerPos.y < handpos.y)
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
@@ -231,7 +231,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 	}
 
 	//振り回し...プレイヤーが上腕か前腕に乗っている場合
-	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && playerRideMoveStartflg && (playerRidePlace == RidePlace::Upperarm || playerRidePlace == RidePlace::Forearm))
+	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && playerRideMoveStartflg && (playerRidePlace == (int)PartsName::Upperarm || playerRidePlace == (int)PartsName::Forearm))
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
@@ -239,8 +239,8 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		move = new ArmEnemySwing(modelHandle, prevRotate);
 	}
 
-	//腕を上げる...プレイヤーが手に乗っている場合
-	if (nowMoveKind != MoveKind::HandUp && nowMoveKind != MoveKind::Swing && playerRideMoveStartflg && playerRidePlace == RidePlace::Hand)
+	//腕を上げる...プレイヤーが手か弱点に乗っている場合
+	if (nowMoveKind != MoveKind::HandUp && nowMoveKind != MoveKind::Swing && playerRideMoveStartflg && playerRidePlace == (int)PartsName::Hand || playerRidePlace == (int)PartsName::WeakPoint)
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;

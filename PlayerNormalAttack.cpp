@@ -107,12 +107,9 @@ void PlayerNormalAttack::Draw()
 /// 衝突後処理
 /// </summary>
 /// <param name="objectData">衝突したオブジェクト</param>
-void PlayerNormalAttack::OnHitObject(CollisionData objectData)
+void PlayerNormalAttack::OnHitObject(CollisionData* objectData)
 {
-	if (/*腕の敵*/
-		objectData.tag == ObjectTag::Upperarm_E1 ||
-		objectData.tag == ObjectTag::Forearm_E1 ||
-		objectData.tag == ObjectTag::Hand_E1)
+	if (objectData->tag == ObjectTag::EnemyParts || objectData->tag == ObjectTag::WeakPoint)
 	{
 		attackHit = true;
 	}

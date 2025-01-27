@@ -22,6 +22,8 @@ ArmEnemyStartScene::ArmEnemyStartScene()
 	//•Ï”‰Šú‰»
 	flame = 0;
 	blackBandAlpha = 0;
+	cameraPosition = VGet(5000, 2500, -1500);
+	cameraLookPosition = VGet(500, 1000, 1000);
 }
 
 /// <summary>
@@ -37,7 +39,7 @@ ArmEnemyStartScene::~ArmEnemyStartScene()
 /// </summary>
 void ArmEnemyStartScene::Initialize()
 {
-	camera->StartSceneInitialize();
+	camera->StartSceneInitialize(cameraPosition, cameraLookPosition);
 }
 
 /// <summary>
@@ -47,7 +49,11 @@ void ArmEnemyStartScene::Initialize()
 SceneBase* ArmEnemyStartScene::Update()
 {
 	//XV
-	camera->UpdateStartScene();
+	camera->UpdateStartScene(cameraPosition, cameraLookPosition);
+	if (cameraPosition.y >= 1000)
+	{
+		cameraPosition.y -= 5;
+	}
 
 	//•‘Ñ‚ğ”Z‚­‚·‚é
 	if (blackBandAlpha < MaxBlackBandAlpha)

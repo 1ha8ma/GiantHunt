@@ -32,6 +32,7 @@ void Loader::Load()
 	handle[ArmEnemyModel] = MV1LoadModel("3D/monster.mv1");
 	handle[WoodModel] = MV1LoadModel("3D/Wood.mv1");
 	handle[SkyDome] = MV1LoadModel("3D/Dome_Y901.x");
+	handle[Enemy2Model] = MV1LoadModel("3D/Enemy2.mv1");
 
 	//2D
 	handle[GameOverBackImage] = LoadGraph("2D/GameOverBack.jpg");

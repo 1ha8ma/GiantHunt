@@ -6,8 +6,9 @@
 #include"BGM.h"
 #include"SoundEffect.h"
 #include"ArmEnemyStartScene.h"
-#include"ArmEnemyStage.h"
-#include"ArmEnemy.h"
+#include"Enemy2StartScene.h"
+//#include"ArmEnemyStage.h"
+//#include"ArmEnemy.h"
 #include"RankingScene.h"
 #include"TutorialScene.h"
 #include"TitleScene.h"
@@ -109,7 +110,6 @@ SceneBase* TitleScene::Update()
 			se->PlaySE(SoundEffect::SEKind::Crick);
 			canInputB = false;
 			stateChange = true;
-			//state = State::Select;
 		}
 
 		//ステート変更
@@ -160,6 +160,7 @@ SceneBase* TitleScene::Update()
 			if (cursor == (int)Cursor::ArmEnemyStage)
 			{
 				return new ArmEnemyStartScene();
+				//return new Enemy2StartScene();
 			}
 			if (cursor == (int)Cursor::CheckRanking)
 			{

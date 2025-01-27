@@ -145,6 +145,8 @@
     <ClCompile Include="BGM.cpp" />
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="Enemy2StartScene.cpp" />
     <ClCompile Include="TutorialScene.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -193,6 +195,8 @@
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="Enemy2StartScene.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyParts.h" />
     <ClInclude Include="FPS.h" />

@@ -91,42 +91,34 @@ void CollisionManager::Update()
 			}
 
 			//どのタイプの当たり判定を行うか調べる
-			CollisionData data1 = *collisionDataList[i];
-			CollisionData data2 = *collisionDataList[j];
+			CollisionData* data1 = collisionDataList[i];
+			CollisionData* data2 = collisionDataList[j];
 
 			//当たり判定を行って欲しいか確認
-			if (data1.isCollisionActive && data2.isCollisionActive)
+			if (data1->isCollisionActive && data2->isCollisionActive)
 			{
 				//カプセルどうし
 				if (/*プレイヤーと木*/
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Wood1 || data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Wood2 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Wood1 || data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Wood2 ||
-					/*プレイヤーと腕の敵*/
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Forearm_E1 ||
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Upperarm_E1 ||
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Hand_E1 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Forearm_E1 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Upperarm_E1 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Hand_E1 ||
+					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::Wood ||
+					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::Wood ||
+					/*プレイヤーと敵*/
+					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyParts ||
+					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyParts ||
 					/*プレイヤーと敵の攻撃*/
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Attack_E1 ||
-					data1.tag == ObjectTag::PlayerWholeBody && data2.tag == ObjectTag::Attack_E2 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Attack_E1 ||
-					data1.tag == ObjectTag::PlayerFoot && data2.tag == ObjectTag::Attack_E2 ||
-					/*プレイヤーの攻撃と腕の敵*/
-					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Upperarm_E1 ||
-					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Forearm_E1 ||
-					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::Hand_E1 ||
-					data1.tag == ObjectTag::Attack_P && data2.tag == ObjectTag::WeakPoint_E1
+					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyAttack ||
+					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyAttack ||
+					/*プレイヤーの攻撃と敵*/
+					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::EnemyParts ||
+					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::WeakPoint
 					)
-			
+
 				{
-					bool hit = CapsuleWithCapsule(data1.startPosition, data1.endPosition, data1.radius, data2.startPosition, data2.endPosition, data2.radius);
+					bool hit = CapsuleWithCapsule(data1->startPosition, data1->endPosition, data1->radius, data2->startPosition, data2->endPosition, data2->radius);
 
 					if (hit)
 					{
-						data1.HitProcess(data2);
-						data2.HitProcess(data1);
+						data1->HitProcess(data2);
+						data2->HitProcess(data1);
 					}
 				}
 			}
@@ -212,16 +204,16 @@ bool CollisionManager::CapsuleWithCapsule(VECTOR capsuleStart1, VECTOR capsuleEn
 }
 
 /// <summary>
-/// 取りたい当たり判定情報を取る(当たった時だけでなくその後も最新の情報が欲しい時に使用)
+/// 指定のオブジェクトの当たり判定情報を取る(当たった時だけでなくその後も最新の情報が欲しい時に使用)
 /// </summary>
-/// <param name="data">取りたい情報のデータ</param>
+/// <param name="data">情報を取りたいオブジェクトのポインタ</param>
 /// <returns>データ</returns>
-CollisionData CollisionManager::GetCollisionData(CollisionData data)
+CollisionData CollisionManager::GetCollisionData(CollisionData* data)
 {
 	int i;
 	for (i = 0; i < collisionDataList.size(); i++)
 	{
-		if (collisionDataList[i]->tag == data.tag)
+		if (collisionDataList[i] == data)
 		{
 			break;
 		}

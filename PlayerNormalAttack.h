@@ -26,7 +26,7 @@ private:
 	void UpdateCollisionData();
 
 	//Õ“ËŒãˆ—
-	void OnHitObject(CollisionData objectData);
+	void OnHitObject(CollisionData* objectData);
 
 	//‘¼ƒNƒ‰ƒX
 	CollisionManager* collisionManager;

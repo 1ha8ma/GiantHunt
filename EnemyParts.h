@@ -8,7 +8,7 @@ class SoundEffect;
 class EnemyParts
 {
 public:
-	EnemyParts(ObjectTag tag, int modelHandle,int frameIndex1,int frameIndex2,float capsuleRadius);
+	EnemyParts(ObjectTag tag,int partsName, int modelHandle,int frameIndex1,int frameIndex2,float capsuleRadius);
 	~EnemyParts();
 
 	void Initialize();
@@ -16,14 +16,15 @@ public:
 	void Draw();
 
 	//オブジェクトに衝突した時の処理
-	void OnHitObject(CollisionData hitObjectData);
+	void OnHitObject(CollisionData* hitObjectData);
 	//ダメージを渡す
 	int TakeDamage() { return damage; }
 	//moveVec計算
 	void CalculationMoveVec();
 
 	//Get.Set
-	bool GetIsPlayerRide() { return isPlayerRide; }
+	bool GetIsPlayerRide() { return isPlayerRide; }	//プレイヤーが乗っているか
+	int GetPartsName() { return partsName; }		//パーツの名前
 
 private:
 	const int PlayHitWeakPointEffectFlame = 300;	//弱点ヒットエフェクトの再生時間
@@ -38,6 +39,7 @@ private:
 	CollisionData collisionData;
 
 	int modelHandle;					//モデルハンドル
+	int partsName;						//パーツの名前
 	int frameIndex1;					//フレーム番号1
 	int frameIndex2;					//フレーム番号2   1と2の座標からカプセルを作る
 	ObjectTag tag;						//場所のタグ

@@ -31,8 +31,8 @@ public:
 	void Draw();
 
 	//衝突した時の処理
-	void BodyOnHitObject(CollisionData hitObjectData);
-	void FootOnHitObject(CollisionData hitObjectData);
+	void BodyOnHitObject(CollisionData* hitObjectData);
+	void FootOnHitObject(CollisionData* hitObjectData);
 	//壁衝突時の処理
 	void WallHitProcess(VECTOR sinkIntoDepth);
 
@@ -88,6 +88,7 @@ private:
 	CollisionData bodyCollisionData;
 	CollisionData footCollisionData;
 	CollisionData hitObjectData;
+	CollisionData* hitObjectDataPointer;
 
 	//ステータス
 	int HP;				//体力
