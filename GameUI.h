@@ -3,10 +3,10 @@
 class GameUI
 {
 public:
-	GameUI(int enemyHP,int playerHP,int playerGrip);
+	GameUI(int enemyHP,int playerHP,int playerGrip,float maxPiercingRotateZ);
 	~GameUI();
 
-	void Update(int enemyHP, int playerHP, int playerGrip);
+	void Update(int enemyHP, int playerHP, int playerGrip,bool onPiercingGauge,float piercingRotateZ);
 	void Draw();
 
 private:
@@ -17,6 +17,7 @@ private:
 	float startEnemyHP;			//開始時敵HP
 	float startPlayerHP;		//開始時プレイヤーHP
 	float startPlayerGrip;		//開始時プレイヤー握力
+	float maxPiercingRotateZ;	//最大突き刺し溜め
 
 	float prevEnemyHP;			//1フレーム前の敵のHP
 	float prevPlayerHP;			//1フレーム前のプレイヤーのHP
@@ -24,15 +25,18 @@ private:
 	float enemyHP;				//現在の敵HP
 	float playerHP;				//現在のプレイヤーHP
 	float playerGrip;			//現在のプレイヤー握力
+	float piercingRotateZ;		//突き刺し腕の回転度
 
 	float enemyHPPer;			//敵HP割合
 	float playerHPPer;			//プレイヤーHP割合
 	float playerGripPer;		//プレイヤー握力割合
+	float piercingPer;
 
 	bool enemyTakeDamage;		//敵がダメージを受けた
 	bool playerTakeDamage;		//プレイヤーがダメージを受けた
 	int enemyTakeDamageFlame;	//敵がダメージを受けた後のHPバー演出のフレーム
 	int playerTakeDamageFlame;	//プレイヤーがダメージを受けた後のHPバー演出のフレーム
+	bool onPiercingGauge;		//突き刺しゲージを表示
 
 	int enemyColorR, enemyColorG, enemyColorB;
 	int playerColorR, playerColorG, playerColorB;

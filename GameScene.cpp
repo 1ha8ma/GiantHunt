@@ -26,7 +26,7 @@ GameScene::GameScene(StageBase* stage, EnemyBase* enemy, Camera* camera, Player*
 	this->enemy = enemy;
 	this->time = time->GetInstance();
 	time->SetTag(tag);
-	ui = new GameUI(this->enemy->GetHP(), player->GetHP(), player->GetGripPoint());
+	ui = new GameUI(this->enemy->GetHP(), player->GetHP(), player->GetGripPoint(), 1.3f);
 
 	//変数初期化
 	gameOver = false;
@@ -65,10 +65,10 @@ SceneBase* GameScene::Update()
 
 	//クラス更新
 	stage->Update();
-	camera->UpdateGame(player->GetPosition(), enemy->GetTargetCameraPosition());
+	camera->UpdateGame(player->GetPosition(), enemy->GetTargetCameraPosition(), player->GetCameraZoom());
 	gameOver = player->UpdateGame(*camera);
 	gameClear = enemy->Update(player->GetPosition(), camera);
-	ui->Update(enemy->GetHP(), player->GetHP(), player->GetGripPoint());
+	ui->Update(enemy->GetHP(), player->GetHP(), player->GetGripPoint(), player->GetOnPiercingGauge(), player->GetPiercingArmRotateZ());
 
 	//当たり判定
 	collisionManager->Update();

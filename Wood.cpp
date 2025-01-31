@@ -64,7 +64,7 @@ void Wood::OnHitObject()
 void Wood::RegisterCollisionData()
 {
 	//カプセル1
-	capsule1CollisionData.tag = ObjectTag::Wood;
+	capsule1CollisionData.tag = ObjectTag::StageObject;
 	capsule1CollisionData.position = cap1pos;
 	capsule1CollisionData.startPosition = cap1Start;
 	capsule1CollisionData.endPosition = cap1End;
@@ -73,7 +73,7 @@ void Wood::RegisterCollisionData()
 	capsule1CollisionData.isCollisionActive = true;
 
 	//カプセル2
-	capsule2CollisionData.tag = ObjectTag::Wood;
+	capsule2CollisionData.tag = ObjectTag::StageObject;
 	capsule2CollisionData.position = cap2pos;
 	capsule2CollisionData.startPosition = cap2Start;
 	capsule2CollisionData.endPosition = cap2End;

@@ -61,10 +61,11 @@ void PlayerNormalAttack::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="inputstate">入力情報</param>
-/// <param name="stickstate">スティック入力情報</param>
+/// <param name="playerData">プレイヤーデータ</param>
 /// <param name="camera">カメラ</param>
-bool PlayerNormalAttack::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
+/// <param name="objectCollision">衝突したオブジェクト</param>
+/// <returns>終了</returns>
+bool PlayerNormalAttack::Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)
 {
 	if (!animEndflg)//再生
 	{
@@ -86,8 +87,8 @@ bool PlayerNormalAttack::Update(VECTOR position, float angle, int inputstate, DI
 
 	//攻撃当たり判定更新
 	VECTOR capsuleCenter = MV1GetFramePosition(modelHandle, RightHandFrameNumber);
-	attackCapsuleStart = VAdd(capsuleCenter, VGet(-sin(angle + DX_PI_F) * 70, -20.0f, -cos(angle + DX_PI_F) * 70));
-	attackCapsuleEnd = VAdd(capsuleCenter, VGet(sin(angle + DX_PI_F), 0.0f, cos(angle + DX_PI_F)));
+	attackCapsuleStart = VAdd(capsuleCenter, VGet(-sin(playerData.angle + DX_PI_F) * 70, -20.0f, -cos(playerData.angle + DX_PI_F) * 70));
+	attackCapsuleEnd = VAdd(capsuleCenter, VGet(sin(playerData.angle + DX_PI_F), 0.0f, cos(playerData.angle + DX_PI_F)));
 
 	UpdateCollisionData();
 

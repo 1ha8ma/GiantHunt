@@ -5,7 +5,7 @@
 #include"EnemyParts.h"
 #include"ArmEnemyMoveBase.h"
 #include"ArmEnemyIdle.h"
-#include"ArmEnemyMowingDown.h"
+#include"ArmEnemyDropRock.h"
 #include"ArmEnemySwing.h"
 #include"ArmEnemyFallDown.h"
 #include"ArmEnemyHandUp.h"
@@ -25,11 +25,13 @@ ArmEnemy::ArmEnemy()
 
 	//private変数初期化
 	calclation = new Calculation();
-	position = VGet(2000.0f, -5000.0f, 6550.0f);
+	position = VGet(1000.0f, 2000.0f, 6550.0f);//2000,-5000,6550
 	moveChangeflg = false;
 	playerRideFlame = 0;
 	playerRideflg = false;
 	playerRideMoveStartflg = false;
+	attackCoolTimeFlame = 0;
+	attackCoolTimeflg = false;
 
 	//描画モデル
 	MV1SetScale(modelHandle, VGet(ModelScale, ModelScale, ModelScale));
@@ -71,7 +73,10 @@ void ArmEnemy::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
+/// <param name="playerPos">プレイヤーポジション</param>
+/// <param name="camera">カメラ</param>
+/// <returns>死んでいるか</returns>
+bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 {
 	//プレイヤーの乗っている関係初期化
 	playerRideflg = false;
@@ -84,19 +89,6 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 		if (parts[i]->GetIsPlayerRide())
 		{
 			playerRideflg = true;
-			/*if (i == 0)
-			{
-				playerRidePlace = (int)PartsName::Upperarm;
-			}
-			else if (i == 1)
-			{
-				playerRidePlace = (int)PartsName::Forearm;
-			}
-			else if (i == 2)
-			{
-				playerRidePlace = (int)PartsName::Hand;
-			}*/
-
 			playerRidePlace = parts[i]->GetPartsName();
 		}
 	}
@@ -124,6 +116,17 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 		HP = 0;
 	}
 
+	//攻撃が終わっている場合クールタイムを進める
+	if (attackCoolTimeflg && nowMoveKind != MoveKind::DropRock)
+	{
+		attackCoolTimeFlame++;
+
+		if (attackCoolTimeFlame == AttackCoolTime)
+		{
+			attackCoolTimeflg = false;
+		}
+	}
+
 	//HP確認
 	if (HP == 0)
 	{
@@ -133,7 +136,7 @@ bool ArmEnemy::Update(VECTOR playerPos,Camera* camera)
 	//手をターゲットカメラに設定
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
 	//動き更新
-	moveChangeflg = move->Update(camera);
+	moveChangeflg = move->Update(camera, playerPos);
 	for (int i = 0; i < parts.size(); i++)
 	{
 		parts[i]->CalculationMoveVec();
@@ -192,7 +195,7 @@ void ArmEnemy::Draw()
 	{
 		parts[i]->Draw();
 	}
-	//move->Draw();
+	move->Draw();
 }
 
 /// <summary>
@@ -205,7 +208,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 	float handForPlayerDistance = calclation->LengthTwoPoint3D(handpos, playerPos);
 
 	//待機
-	if (nowMoveKind == MoveKind::MowingDown && moveChangeflg ||
+	if (nowMoveKind == MoveKind::DropRock && moveChangeflg ||
 		nowMoveKind == MoveKind::Swing && moveChangeflg ||
 		nowMoveKind == MoveKind::HandUp && moveChangeflg
 		)
@@ -221,13 +224,15 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		move = new ArmEnemyIdle(modelHandle, prevRotate);
 	}
 
-	//薙ぎ払い
-	if (nowMoveKind == MoveKind::Idle && handForPlayerDistance < 2500 && !playerRideflg && playerPos.y < handpos.y)
+	//岩落とし
+	if (nowMoveKind == MoveKind::Idle && handForPlayerDistance > 2500 && !playerRideflg && playerPos.y < handpos.y && playerPos.y>2000 && !attackCoolTimeflg)
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
-		nowMoveKind = MoveKind::MowingDown;
-		move = new ArmEnemyMowingDown(modelHandle,prevRotate);
+		nowMoveKind = MoveKind::DropRock;
+		move = new ArmEnemyDropRock(modelHandle, prevRotate);
+		attackCoolTimeflg = true;
+		attackCoolTimeFlame = 0;
 	}
 
 	//振り回し...プレイヤーが上腕か前腕に乗っている場合

@@ -15,8 +15,7 @@ PlayerRun::PlayerRun(int modelHandle,VECTOR prevtargetLookDirection):PlayerState
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
-	runPlace = RunPlaceKind::ground;
-
+	//変数初期化
 	targetLookDirection = prevtargetLookDirection;
 }
 
@@ -37,11 +36,11 @@ PlayerRun::~PlayerRun()
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
 /// <param name="objectCollision">衝突オブジェクト情報</param>
-/// <returns>ステート変更</returns>
-bool PlayerRun::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
+/// <returns>ここでは使わない</returns>
+bool PlayerRun::Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)
 {
 	//移動処理
-	Move(inputstate, stickstate, camera, objectCollision.startPosition, objectCollision.endPosition);
+	Move(playerData, camera);
 	//アニメーション再生
 	PlayAnimation(0.4f, !moveflg);
 
@@ -54,15 +53,15 @@ bool PlayerRun::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYS
 /// <param name="inputstate">入力情報</param>
 /// <param name="stickstate">スティック入力情報</param>
 /// <param name="camera">カメラ</param>
-void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, VECTOR objectCapsuleStart, VECTOR objectCapsuleEnd)
+void PlayerRun::Move(UsePlayerData playerData, Camera camera)
 {
 	//初期化
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	moveflg = false;
 
 	//左スティックの角度を取る
-	float stickX = stickstate.X;
-	float stickY = -stickstate.Y;
+	float stickX = playerData.stickState.X;
+	float stickY = -playerData.stickState.Y;
 
 	//入力があれば
 	if ((stickX != 0.0f || stickY != 0.0f))
@@ -85,22 +84,22 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 	moveVec = VScale(moveVec, Speed);
 
 	//カプセルを歩いていたらベクトルの向きを変更
-	if (runPlace == RunPlaceKind::capsule)
+	if (playerData.runPlace == RunPlaceKind::capsule && playerData.onFoot)
 	{
 		//対象カプセルの軸を取る
-		VECTOR shaft = VSub(objectCapsuleStart, objectCapsuleEnd);
+		VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
 
 		//カプセルの下を取る
 		float underY;
-		if (objectCapsuleEnd.y <= objectCapsuleStart.y)
+		if (playerData.capsuleEnd.y <= playerData.capsuleStart.y)
 		{
 			//対象カプセルの軸を取る
-			underY = objectCapsuleEnd.y;
+			underY = playerData.capsuleEnd.y;
 		}
 		else
 		{
 			//対象カプセルの軸を取る
-			underY = objectCapsuleStart.y;
+			underY = playerData.capsuleStart.y;
 		}
 
 		//カプセルの水平との角度をとる
@@ -110,11 +109,6 @@ void PlayerRun::Move(int inputstate, DINPUT_JOYSTATE stickstate, Camera camera, 
 		float angle = acos(cosTheta);//角度変換
 
 		float deg = angle * (180 / DX_PI_F);//確認用
-
-		//平面の長さ
-		//float horizonLen = sqrt(pow(moveVec.x, 2) + pow(moveVec.z, 2));
-		//y座標変更
-		//moveVec.y = sin(angle) * horizonLen;
 
 		//平面moveVecの長さ
 		float horizonLen = VSize(moveVec);

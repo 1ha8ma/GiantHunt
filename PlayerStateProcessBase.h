@@ -8,6 +8,30 @@ public:
 	PlayerStateProcessBase(int modelHandle);
 	virtual ~PlayerStateProcessBase() {};
 
+	//走っている場所
+	enum class RunPlaceKind :int
+	{
+		air,		//空中
+		ground,		//地面上
+		capsule,	//カプセル上
+	};
+
+	/// <summary>
+	/// 動きで使用するプレイヤーのデータ
+	/// </summary>
+	struct UsePlayerData
+	{
+		int inputState;					//ボタン入力状態
+		DINPUT_JOYSTATE stickState;		//スティック入力状態
+		VECTOR position;				//ポジション
+		VECTOR capsuleStart;			//カプセル視点
+		VECTOR capsuleEnd;				//カプセル終点
+		float capsuleRadius;			//カプセル半径
+		float angle;					//角度
+		RunPlaceKind runPlace;			//走っている場所
+		bool onFoot;					//プレイヤーの足が着いているか
+	};
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -19,7 +43,9 @@ public:
 	/// <param name="stickstate">スティック入力情報</param>
 	/// <param name="camera">カメラ</param>
 	/// <returns>ステートからのステート変更指示</returns>
-	virtual bool Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision) { return false; }
+	//virtual bool Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision) { return false; }
+
+	virtual bool Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision) { return false; }
 
 	/// <summary>
 	/// ゲームオーバーシーン更新
@@ -31,20 +57,17 @@ public:
 	/// </summary>
 	virtual void Draw() {};
 
-	//走っている場所
-	enum class RunPlaceKind :int
-	{
-		air,		//空中
-		ground,		//地面上
-		capsule,	//カプセル上
-	};
 
 	//Get,Set
 	VECTOR GetmoveVec() { return moveVec; }
 	VECTOR GettargetLookDirection() { return targetLookDirection; }
-	void SetRunPlace(RunPlaceKind place) { runPlace = place; }
+	/*void SetRunPlace(RunPlaceKind place) { runPlace = place; }
+	void SetOnFoot(bool onFootObject) { onFoot = onFootObject; }*/
 	//登り用
-	void SetCapsule(VECTOR capsuleStart, VECTOR capsuleEnd, float radius) { playerCapsuleStart = capsuleStart; playerCapsuleEnd = capsuleEnd; playerCapsuleRadius = radius; }
+	//void SetCapsule(VECTOR capsuleStart, VECTOR capsuleEnd, float radius) { playerCapsuleStart = capsuleStart; playerCapsuleEnd = capsuleEnd; playerCapsuleRadius = radius; }
+	//突き刺し用
+	float GetCameraZoom() { return cameraZoom; }
+	float GetArmRotateZ() { return armRotateZ; }
 
 protected:
 	//アニメーション番号
@@ -56,6 +79,8 @@ protected:
 		Climb,			//登り
 		Squat,			//しゃがみ
 		FallDown,		//倒れる
+		Idle,			//待機
+		Falling,		//落下
 	};
 
 	//フレーム番号
@@ -83,10 +108,15 @@ protected:
 	//移動
 	VECTOR moveVec;				//移動ベクトル
 	VECTOR targetLookDirection;	//目標角度
-	RunPlaceKind runPlace;		//走っている場所　false:地面 true:カプセル上
+	//RunPlaceKind runPlace;		//走っている場所　false:地面 true:カプセル上
+	//bool onFoot;				//プレイヤーの足が着いているか
 
 	//登り用
-	VECTOR playerCapsuleStart;
+	/*VECTOR playerCapsuleStart;
 	VECTOR playerCapsuleEnd;
-	float playerCapsuleRadius;
+	float playerCapsuleRadius;*/
+
+	//突き刺し攻撃用
+	float cameraZoom;
+	float armRotateZ;
 };

@@ -12,6 +12,8 @@ Effect::Effect()
 
 	effectHandle[EffectKind::WeakPoint] = loader->GetHandle(Loader::Kind::WeakPointEffect);
 	effectHandle[EffectKind::HitWeakPoint] = loader->GetHandle(Loader::Kind::HitWeakPointEffect);
+	effectHandle[EffectKind::Warning] = loader->GetHandle(Loader::Kind::WarningEffect);
+	effectHandle[EffectKind::RockHit] = loader->GetHandle(Loader::Kind::RockHitEffect);
 
 	Initialize();
 }
@@ -87,7 +89,7 @@ void Effect::PlayEffect(EffectKind kind, VECTOR playPosition, VECTOR initScale, 
 }
 
 /// <summary>
-/// 更新
+/// エフェクト毎の更新
 /// </summary>
 /// <param name="kind">ポジション等を更新させたい種類</param>
 /// <param name="playPosition">再生ポジション</param>
@@ -103,14 +105,15 @@ void Effect::Update(EffectKind kind,VECTOR playPosition, VECTOR rotate)
 			SetRotationPlayingEffekseer3DEffect(playingEffectHandle[i], rotate.x, rotate.y, rotate.z);
 			//ポジション反映
 			SetPosPlayingEffekseer3DEffect(playingEffectHandle[i], playPosition.x, playPosition.y, playPosition.z);
-		}
+			//再生終了していたら再生中から削除
+			if (IsEffekseer3DEffectPlaying(playingEffectHandle[i]) == -1)
+			{
+				playingEffectHandle.erase(playingEffectHandle.begin() + i);
+				playingEffectKind.erase(playingEffectKind.begin() + i);
+				playingEffectScale.erase(playingEffectScale.begin() + i);
+			}
 
-		//再生終了していたら再生中から削除
-		if (IsEffekseer3DEffectPlaying(playingEffectHandle[i]) == -1)
-		{
-			playingEffectHandle.erase(playingEffectHandle.begin() + i);
-			playingEffectKind.erase(playingEffectKind.begin() + i);
-			playingEffectScale.erase(playingEffectScale.begin() + i);
+			break;
 		}
 	}
 }

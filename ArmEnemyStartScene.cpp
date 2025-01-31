@@ -50,9 +50,13 @@ SceneBase* ArmEnemyStartScene::Update()
 {
 	//更新
 	camera->UpdateStartScene(cameraPosition, cameraLookPosition);
-	if (cameraPosition.y >= 1000)
+	if (cameraPosition.y >= 2000)
 	{
-		cameraPosition.y -= 5;
+		cameraPosition.z -= 4;
+	}
+	if (cameraLookPosition.y < 6000)
+	{
+		cameraLookPosition.y += 20;
 	}
 
 	//黒帯を濃くする
@@ -66,7 +70,7 @@ SceneBase* ArmEnemyStartScene::Update()
 	}
 
 	//シーン変更
-	if (flame == 300)
+	if (flame == 400)
 	{
 		player->StartSceneEnd();
 		return new GameScene(stage, enemy, camera, player, Time::StageTag::ArmEnemy);

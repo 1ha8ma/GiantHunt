@@ -11,7 +11,7 @@ Wall::Wall()
 
 	modelHandle = loader->GetHandle(Loader::Kind::WallModel);
 
-	MV1SetScale(modelHandle, VGet(50.0f, 50.0f, 5.0f));
+	MV1SetScale(modelHandle, VGet(100.0f, 100.0f, 5.0f));
 	MV1SetPosition(modelHandle, VGet(0.0f, 0.0f, 4800.0f));
 }
 

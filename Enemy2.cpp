@@ -2,6 +2,7 @@
 #include"Loader.h"
 #include"Camera.h"
 #include"EnemyParts.h"
+#include"Enemy2MoveBase.h"
 #include"Enemy2.h"
 
 /// <summary>
@@ -26,6 +27,7 @@ Enemy2::Enemy2()
 	MV1SetPosition(modelHandle, position);
 
 	//•”ˆÊ‰Šú‰»
+	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Head, modelHandle, 7, 6, 200.0f));
 }
 
 /// <summary>

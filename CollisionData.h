@@ -19,7 +19,7 @@ enum class ObjectTag :int
 	WeakPoint,			//“G‚Ìã“_
 
 	//–Ø
-	Wood,
+	StageObject,
 };
 
 //“–‚½‚è”»’èî•ñ

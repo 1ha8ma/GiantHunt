@@ -16,7 +16,7 @@ public:
 	//ゲームシーン初期化
 	void GameInitialize(VECTOR playerpos);
 	//更新
-	void UpdateGame(VECTOR playerPosition,VECTOR targetCameraPosition);
+	void UpdateGame(VECTOR playerPosition,VECTOR targetCameraPosition,float addPlayerDistance);
 
 	//ゲームオーバーシーン初期化
 	void InitializeGameOver(VECTOR playerPosition);

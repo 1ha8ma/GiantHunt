@@ -4,6 +4,7 @@
 
 class CollisionManager;
 class Wood;
+class Rock;
 class Wall;
 class BGM;
 
@@ -29,6 +30,9 @@ private:
 	CollisionManager* collisionManager;
 	CollisionData collisionData;
 	Wood* wood;
+	Rock* rock1;
+	Rock* rock2;
+	Rock* rock3;
 	Wall* wall;
 	BGM* bgm;
 

@@ -22,7 +22,7 @@ public:
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <returns>動きの終了</returns>
-	virtual bool Update(Camera* camera) { return false; }
+	virtual bool Update(Camera* camera,VECTOR playerPosition) { return false; }
 
 	/// <summary>
 	/// 倒された後用更新

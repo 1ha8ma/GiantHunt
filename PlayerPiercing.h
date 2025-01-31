@@ -14,7 +14,7 @@ public:
 	~PlayerPiercing();
 
 	void Initialize()override {};
-	bool Update(VECTOR position,float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision) override;
+	bool Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision) override;
 	void Draw()override;
 
 private:

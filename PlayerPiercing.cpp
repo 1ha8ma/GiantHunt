@@ -53,28 +53,25 @@ PlayerPiercing::~PlayerPiercing()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="position">ポジション</param>
-/// <param name="angle">角度</param>
-/// <param name="inputstate">入力状態</param>
-/// <param name="stickstate">スティック入力情報</param>
+/// <param name="playerData">プレイヤーデータ</param>
 /// <param name="camera">カメラ</param>
-/// <param name="objectCollision">衝突オブジェクト情報</param>
-/// <returns>ステート変更</returns>
-bool PlayerPiercing::Update(VECTOR position,float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
+/// <param name="objectCollision">衝突したオブジェクト</param>
+/// <returns>終了</returns>
+bool PlayerPiercing::Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)
 {
 	moveVec = VGet(0, 0, 0);
 
 	//連続入力防止
-	if (!canInputX && (Input::InputNumber::XButton & inputstate) != Input::InputNumber::XButton)
+	if (!canInputX && (Input::InputNumber::XButton & playerData.inputState) != Input::InputNumber::XButton)
 	{
 		canInputX = true;
 	}
 
-	PiercingAttack(inputstate);
+	PiercingAttack(playerData.inputState);
 	UpdateCollisionData();
 
 	//離すとステート変更
-	if ((Input::InputNumber::R1 & inputstate) != Input::InputNumber::R1 || attackEnd)
+	if ((Input::InputNumber::R1 & playerData.inputState) != Input::InputNumber::R1 || attackEnd)
 	{
 		changeState = true;
 	}
@@ -100,6 +97,7 @@ void PlayerPiercing::PiercingAttack(int inputstate)
 		//腕を上げる
 		if (rotate.z < MaxSwingUp)
 		{
+			cameraZoom -= 1.4f;
 			rotate.z += SwingUpSpeed;
 		}
 	}
@@ -137,6 +135,7 @@ void PlayerPiercing::PiercingAttack(int inputstate)
 		attack = false;
 	}
 
+	armRotateZ = rotate.z;
 	//腕フレーム回転
 	MV1SetFrameUserLocalMatrix(modelHandle, RightArmFrameNumber, MGetRotZ(rotate.z));
 }

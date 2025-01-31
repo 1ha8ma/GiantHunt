@@ -98,20 +98,21 @@ void CollisionManager::Update()
 			if (data1->isCollisionActive && data2->isCollisionActive)
 			{
 				//カプセルどうし
-				if (/*プレイヤーと木*/
-					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::Wood ||
-					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::Wood ||
+				if (/*プレイヤーとステージのオブジェクト*/
+					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::StageObject ||
+					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::StageObject ||
 					/*プレイヤーと敵*/
 					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyParts ||
 					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyParts ||
-					/*プレイヤーと敵の攻撃*/
+					/*敵の攻撃とプレイヤー*/
 					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyAttack ||
 					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyAttack ||
+					/*敵の攻撃とステージオブジェクト*/
+					data1->tag == ObjectTag::EnemyAttack && data2->tag == ObjectTag::StageObject ||
 					/*プレイヤーの攻撃と敵*/
 					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::EnemyParts ||
 					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::WeakPoint
 					)
-
 				{
 					bool hit = CapsuleWithCapsule(data1->startPosition, data1->endPosition, data1->radius, data2->startPosition, data2->endPosition, data2->radius);
 

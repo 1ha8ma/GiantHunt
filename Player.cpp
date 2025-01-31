@@ -10,6 +10,8 @@
 #include"PlayerSquat.h"
 #include"PlayerPiercing.h"
 #include"PlayerFallDown.h"
+#include"PlayerIdle.h"
+#include"PlayerFalling.h"
 #include"Player.h"
 
 /// <summary>
@@ -52,10 +54,11 @@ void Player::InitializeStartScene()
 void Player::InitializeGame()
 {
 	//インスタンス化
-	nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	//nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	nowstate = new PlayerIdle(modelHandle, VGet(0.0f, 0.0f, 0.0f));
 	input = new Input();
 
-	//private変数初期化
+	//変数初期化
 	nowstateKind = State::Run;
 	position = VGet(3000.0f, 0.0f, -1000.0f);
 	drawPosition = position;
@@ -73,6 +76,9 @@ void Player::InitializeGame()
 	gameOverflg = false;
 	canInputX = false;
 	onFootObject = true;
+	cameraZoom = 0.0f;
+	piercingArmRotateZ = 0.0f;
+	onPiercingGauge = false;
 
 	//当たり判定
 	collisionManager = collisionManager->GetInstance();
@@ -103,23 +109,22 @@ bool Player::UpdateGame(const Camera& camera)
 	ChangeState();
 
 	//ステート更新に必要な情報を渡す
-	nowstate->SetRunPlace(runPlace);
-	nowstate->SetCapsule(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius);
+	MoveUseDataSet();
 	if (nowstateKind == State::Climb)
 	{
 		hitObjectData = collisionManager->GetCollisionData(hitObjectDataPointer);
 	}
 	//ステート更新
-	changeStateflg = nowstate->Update(position, angle, inputstate, stickstate, camera,hitObjectData);
+	changeStateflg = nowstate->Update(moveUseData, camera, hitObjectData);
 
 	//移動
 	moveVec = nowstate->GetmoveVec();
-	//足がついているか確認
-	CheckOnGround();
 	//落下速度追加
 	moveVec = VSub(moveVec, VGet(0.0f, fallSpeed, 0.0f));
 	//ポジション反映
 	position = VAdd(position, moveVec);
+	//足がついているか確認
+	CheckOnGround();
 
 	//描画位置修正
 	CorrectionDrawPosition();
@@ -149,6 +154,24 @@ bool Player::UpdateGame(const Camera& camera)
 	if (HP <= 0)
 	{
 		gameOverflg = true;
+	}
+
+	//突き刺し攻撃時
+	if (nowstateKind == State::Piercing)
+	{
+		onPiercingGauge = true;
+		cameraZoom = nowstate->GetCameraZoom();
+		piercingArmRotateZ = nowstate->GetArmRotateZ();
+	}
+	else
+	{
+		onPiercingGauge = false;
+		cameraZoom = 0.0f;
+	}
+	//ジャンプ時
+	if (nowstateKind == State::Jump && !jumpAfterLeaveFoot && !onFootObject)
+	{
+		jumpAfterLeaveFoot = true;
 	}
 
 	//ポジション等更新
@@ -215,18 +238,15 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 	}
 
 	//カプセル
-	if (hitObjectData->tag == ObjectTag::Wood ||		//木
-		hitObjectData->tag == ObjectTag::EnemyParts)	//敵
+	if (hitObjectData->tag == ObjectTag::StageObject ||
+		hitObjectData->tag == ObjectTag::EnemyParts)
 	{
 		//データコピー
 		hitObjectDataPointer = hitObjectData;
 		this->hitObjectData = *hitObjectData;
 
 		//押し戻し
-		if (nowstateKind != State::Climb)
-		{
-			CollisionPushBack(bodyCollisionData, *hitObjectData);
-		}
+		CollisionPushBack(bodyCollisionData, *hitObjectData);
 		isCatch = true;
 		runPlace = PlayerStateProcessBase::RunPlaceKind::capsule;
 	}
@@ -238,7 +258,7 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 /// <param name="hitObjectData">衝突したオブジェクト</param>
 void Player::FootOnHitObject(CollisionData* hitObjectData)
 {
-	if (hitObjectData->tag == ObjectTag::Wood ||		//木
+	if (hitObjectData->tag == ObjectTag::StageObject ||		//木
 		hitObjectData->tag == ObjectTag::EnemyParts)	//腕の敵
 	{
 		//データコピー
@@ -312,12 +332,22 @@ void Player::UpdateAngle()
 /// </summary>
 void Player::ChangeState()
 {
-	//走る
-	if (nowstateKind == State::Jump && onGround ||
+	//待機
+	if (nowstateKind == State::Run && (stickstate.X == 0.0f && stickstate.Y == 0.0f) ||
+		nowstateKind == State::Jump && onGround ||
 		nowstateKind == State::NormalAttack && changeStateflg ||
 		nowstateKind == State::Climb && changeStateflg || nowstateKind == State::Climb && gripPoint <= 0 ||
 		nowstateKind == State::Squat && changeStateflg ||
-		nowstateKind == State::Piercing && changeStateflg)
+		nowstateKind == State::Piercing && changeStateflg ||
+		nowstateKind == State::Falling && onGround)
+	{
+		delete nowstate;
+		nowstateKind = State::Idle;
+		nowstate = new PlayerIdle(modelHandle, targetLookDirection);
+	}
+
+	//走る
+	if (nowstateKind != State::Run && nowstateKind != State::Climb && nowstateKind != State::NormalAttack && onGround && (stickstate.X != 0.0f || stickstate.Y != 0.0f))
 	{
 		delete nowstate;
 		nowstateKind = State::Run;
@@ -329,6 +359,7 @@ void Player::ChangeState()
 	{
 		delete nowstate;
 		onGround = false;
+		jumpAfterLeaveFoot = false;
 		nowstateKind = State::Jump;
 		nowstate = new PlayerJump(modelHandle, moveVec);
 	}
@@ -364,6 +395,14 @@ void Player::ChangeState()
 		nowstateKind = State::Squat;
 		nowstate = new PlayerSquat(modelHandle, targetLookDirection);
 	}
+
+	//落下
+	if (fallFrame > 25 && !onGround && nowstateKind != State::Falling && nowstateKind != State::Jump && nowstateKind != State::Climb)
+	{
+		delete nowstate;
+		nowstateKind = State::Falling;
+		nowstate = new PlayerFalling(modelHandle, targetLookDirection);
+	}
 }
 
 /// <summary>
@@ -372,7 +411,8 @@ void Player::ChangeState()
 void Player::CheckOnGround()
 {
 	//着地したとき
-	if (!onGround && position.y < 0.0f || !onGround && onFootObject)
+	if ((nowstateKind == State::Jump && jumpAfterLeaveFoot && (!onGround && position.y < 0.0f || !onGround && onFootObject)) ||
+		nowstateKind != State::Jump && (!onGround && position.y < 0.0f || !onGround && onFootObject))
 	{
 		onGround = true;
 		moveVec.y = 0.0f;
@@ -507,6 +547,22 @@ void Player::CollisionPushBack(CollisionData partsData, CollisionData hitObjectD
 void Player::WallHitProcess(VECTOR sinkIntoDepth)
 {
 	position = VAdd(position, sinkIntoDepth);
+}
+
+/// <summary>
+/// 動きに使うデータのセット
+/// </summary>
+void Player::MoveUseDataSet()
+{
+	moveUseData.inputState = inputstate;
+	moveUseData.stickState = stickstate;
+	moveUseData.position = position;
+	moveUseData.capsuleStart = wholebodyCapStart;
+	moveUseData.capsuleEnd = wholebodyCapEnd;
+	moveUseData.capsuleRadius = WholeBodyCapsuleRadius;
+	moveUseData.angle = angle;
+	moveUseData.runPlace = runPlace;
+	moveUseData.onFoot = onFootObject;
 }
 
 /// <summary>

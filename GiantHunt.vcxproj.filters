@@ -100,6 +100,15 @@
     <Filter Include="Effect">
       <UniqueIdentifier>{7b319599-3193-4017-8a83-d1635ef69d8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\Enemy2\Move">
+      <UniqueIdentifier>{1717da2b-e747-4a35-908a-d7539caeb6e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\Enemy2\Move\Base">
+      <UniqueIdentifier>{d6ed4a45-a2d7-41d3-ae7a-758a2a085bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\ArmEnemy\Move\AttackObject">
+      <UniqueIdentifier>{463ef065-8a4d-441b-bf33-354aa580080d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -165,7 +174,7 @@
     <ClCompile Include="ArmEnemyMoveBase.cpp">
       <Filter>Enemy\ArmEnemy\Move\Base</Filter>
     </ClCompile>
-    <ClCompile Include="ArmEnemyMowingDown.cpp">
+    <ClCompile Include="ArmEnemyDropRock.cpp">
       <Filter>Enemy\ArmEnemy\Move</Filter>
     </ClCompile>
     <ClCompile Include="ArmEnemyIdle.cpp">
@@ -237,6 +246,21 @@
     <ClCompile Include="Enemy2StartScene.cpp">
       <Filter>Scene\StartScene\Enemy2StartScene</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy2MoveBase.cpp">
+      <Filter>Enemy\Enemy2\Move\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmEnemyAttackRock.cpp">
+      <Filter>Enemy\ArmEnemy\Move\AttackObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerIdle.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFalling.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -305,7 +329,7 @@
     <ClInclude Include="ArmEnemyMoveBase.h">
       <Filter>Enemy\ArmEnemy\Move\Base</Filter>
     </ClInclude>
-    <ClInclude Include="ArmEnemyMowingDown.h">
+    <ClInclude Include="ArmEnemyDropRock.h">
       <Filter>Enemy\ArmEnemy\Move</Filter>
     </ClInclude>
     <ClInclude Include="ArmEnemyIdle.h">
@@ -376,6 +400,21 @@
     </ClInclude>
     <ClInclude Include="Enemy2StartScene.h">
       <Filter>Scene\StartScene\Enemy2StartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2MoveBase.h">
+      <Filter>Enemy\Enemy2\Move\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClInclude>
+    <ClInclude Include="ArmEnemyAttackRock.h">
+      <Filter>Enemy\ArmEnemy\Move\AttackObject</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIdle.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFalling.h">
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

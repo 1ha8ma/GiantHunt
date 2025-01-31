@@ -15,10 +15,8 @@ PlayerSquat::PlayerSquat(int modelHandle,VECTOR prevtargetLookDirection) :Player
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
-	//モデルの向き設定
+	//変数初期化
 	targetLookDirection = prevtargetLookDirection;
-
-	//private変数初期化
 	changeState = false;
 }
 
@@ -33,21 +31,18 @@ PlayerSquat::~PlayerSquat()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="position">ポジション</param>
-/// <param name="angle">角度</param>
-/// <param name="inputstate">入力状態</param>
-/// <param name="stickstate">スティック入力情報</param>
+/// <param name="playerData">プレイヤーデータ</param>
 /// <param name="camera">カメラ</param>
-/// <param name="objectCollision">衝突オブジェクト情報</param>
-/// <returns>ステート変更</returns>
-bool PlayerSquat::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
+/// <param name="objectCollision">衝突したオブジェクト</param>
+/// <returns>終了</returns>
+bool PlayerSquat::Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)
 {
 	moveVec = VGet(0, 0, 0);
 
 	PlayAnimation(1.0f, false);
 
 	//R1を離すとステート変更
-	if ((Input::InputNumber::R1 & inputstate) != Input::InputNumber::R1)
+	if ((Input::InputNumber::R1 & playerData.inputState) != Input::InputNumber::R1)
 	{
 		changeState = true;
 	}

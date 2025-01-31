@@ -11,7 +11,7 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
-	bool Update(VECTOR position,float angle,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera,CollisionData objectCollision)override;
+	bool Update(UsePlayerData playerData, const Camera& camera,CollisionData objectCollision)override;
 
 private:
 	const float RotateSpeed = 0.01;	//回転速度
@@ -20,11 +20,8 @@ private:
 	//移動処理
 	void Move(VECTOR position, DINPUT_JOYSTATE stickstate, Camera camera, CollisionData objectCollision);
 
+	//他クラス
 	Calculation* calculation;
-
-	//登っているオブジェクトのカプセル
-	VECTOR climbCapStart;
-	VECTOR climbCapEnd;
 
 	bool stopanimflg;		//アニメーション停止フラグ
 };

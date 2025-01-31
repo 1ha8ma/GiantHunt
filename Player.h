@@ -4,7 +4,6 @@
 #include"CollisionManager.h"
 
 class Input;
-//class CollisonManager;
 class Camera;
 
 class Player
@@ -41,19 +40,23 @@ public:
 	float GetAngle() { return angle; }
 	int GetHP() { return HP; }
 	int GetGripPoint() { return gripPoint; }
+	float GetCameraZoom() { return cameraZoom; }
+	float GetPiercingArmRotateZ() { return piercingArmRotateZ; }
+	bool GetOnPiercingGauge() { return onPiercingGauge; }
 
 private:
 	//状態
 	enum class State :int
 	{
+		Idle,			//待機
 		Run,			//走る
 		Jump,			//ジャンプ
 		NormalAttack,	//通常攻撃
 		Climb,			//登り
 		Squat,			//しゃがみ
 		Piercing,		//突き刺し攻撃
-		Roll,			//転げる
-		FallDown,		//倒れる
+		FallDown,		//倒れる(負けた時)
+		Falling,		//落下
 	};
 
 	const float AngleSpeed = 0.2f;					//角度変更速度
@@ -80,6 +83,8 @@ private:
 	void CollisionPushBack(CollisionData partsData,CollisionData hitCollisionData);
 	//連続入力防止
 	void PreventionContinuousInput();
+	//動きに使う構造体の中身のセット
+	void MoveUseDataSet();
 	
 	//他クラス
 	PlayerStateProcessBase* nowstate;
@@ -89,6 +94,7 @@ private:
 	CollisionData footCollisionData;
 	CollisionData hitObjectData;
 	CollisionData* hitObjectDataPointer;
+	PlayerStateProcessBase::UsePlayerData moveUseData;	//動きに使うデータ構造体
 
 	//ステータス
 	int HP;				//体力
@@ -111,6 +117,7 @@ private:
 	VECTOR moveVec;									//移動量
 	VECTOR targetLookDirection;						//モデルの向く目標方向 
 	State nowstateKind;								//現在の状態
+	bool jumpAfterLeaveFoot;						//ジャンプした後に足が離れた
 	bool onGround;									//足がついているか
 	bool onFootObject;								//足がオブジェクトに着いている
 	bool isCatch;									//掴める状態か
@@ -122,6 +129,11 @@ private:
 	float fallSpeed;								//落下速度
 	int fallFrame;									//落下時間
 	bool changeStateflg;							//状態からの状態変更指示がある場合
+
+	//突き刺し攻撃時
+	float cameraZoom;								//カメラのズーム
+	float piercingArmRotateZ;						//腕の回転度
+	bool onPiercingGauge;							//突き刺し攻撃ゲージ表示
 
 	//当たっているオブジェクトのデータ
 	VECTOR hitObjectCapStart;

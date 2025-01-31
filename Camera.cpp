@@ -73,7 +73,7 @@ void Camera::GameInitialize(VECTOR playerPosition)
 /// </summary>
 /// <param name="playerPosition">プレイヤーポジション</param>
 /// <param name="targetCameraPosition">ターゲットカメラポジション</param>
-void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition)
+void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition,float addPlayerDistance)
 {
 	//注視点移動
 	bool inputflg = false;
@@ -164,7 +164,7 @@ void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition)
 	MATRIX rotY = MGetRotY(angleH + DX_PI_F / 2);
 	MATRIX rotZ = MGetRotZ(angleV);
 	
-	position = VAdd(VTransform(VTransform(VGet(PlayerDistance, 0.0f, 0.0f), rotZ), rotY), VAdd(playerPosition, VGet(0.0f, CameraPlayerTargetHeight, 0.0f)));
+	position = VAdd(VTransform(VTransform(VGet(PlayerDistance + addPlayerDistance, 0.0f, 0.0f), rotZ), rotY), VAdd(playerPosition, VGet(0.0f, CameraPlayerTargetHeight, 0.0f)));
 	//演出更新
 	UpdateProduction(playerPosition);
 

@@ -28,7 +28,7 @@ ArmEnemyIdle::~ArmEnemyIdle()
 /// 更新
 /// </summary>
 /// <returns>状態変更フラグ</returns>
-bool ArmEnemyIdle::Update(Camera* camera)
+bool ArmEnemyIdle::Update(Camera* camera,VECTOR playerPosition)
 {
 	switch (moveState)
 	{

@@ -41,14 +41,11 @@ void PlayerJump::Initialize()
 /// <summary>
 /// 更新
 /// </summary>
-/// <param name="position">ポジション</param>
-/// <param name="angle">向き</param>
-/// <param name="inputstate">入力状態</param>
-/// <param name="stickstate">スティック入力情報</param>
+/// <param name="playerData">プレイヤーデータ</param>
 /// <param name="camera">カメラ</param>
-/// <param name="objectCollision">衝突オブジェクト情報</param>
-/// <returns>ステート変更</returns>
-bool PlayerJump::Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)
+/// <param name="objectCollision">衝突したオブジェクト</param>
+/// <returns>終了</returns>
+bool PlayerJump::Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)
 {
 	Move();
 	//アニメーション再生

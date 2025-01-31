@@ -38,7 +38,7 @@ ArmEnemySwing::~ArmEnemySwing()
 /// XV
 /// </summary>
 /// <returns>ó‘Ô•ÏX</returns>
-bool ArmEnemySwing::Update(Camera* camera)
+bool ArmEnemySwing::Update(Camera* camera,VECTOR plaeyrPosition)
 {
 	switch (moveState)
 	{

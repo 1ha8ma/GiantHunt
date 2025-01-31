@@ -1,12 +1,6 @@
-﻿  ArmEnemy.cpp
+﻿  Player.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.h(14): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-  ArmEnemyStartScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Enemy2.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  EnemyParts.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  コードを生成中...
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.h(17): warning C4305: '初期化中': 'double' から 'const float' へ切り詰めます。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(510,32): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(511,33): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
   GiantHunt.vcxproj -> C:\Users\hamar\Desktop\GiantHunt\x64\Debug\GiantHunt.exe

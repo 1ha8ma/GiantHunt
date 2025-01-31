@@ -18,6 +18,10 @@ public:
 		BossEnemyStage,					//ボス戦ステージ
 		SkyDome,						//スカイドーム
 		Enemy2Model,					//2番目の敵モデル
+		RockModel1,						//岩1
+		RockModel2,						//岩2
+		RockModel3,						//岩3
+		RockModel4,						//岩4
 
 		//2D
 		GameOverBackImage,				//ゲームオーバー背景
@@ -44,6 +48,8 @@ public:
 		//エフェクト
 		WeakPointEffect,				//弱点
 		HitWeakPointEffect,				//弱点ヒットエフェクト
+		WarningEffect,					//岩が落ちてくる場所の注意エフェクト
+		RockHitEffect,					//岩が落ちた場所に出すエフェクト
 	};
 
 	//ハンドルゲット

@@ -10,7 +10,7 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
-	bool Update(VECTOR position, float angle, int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera, CollisionData objectCollision)override;
+	bool Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)override;
 
 private:
 	const float FirstJumpPower = 20.0f;	//最初のジャンプ力

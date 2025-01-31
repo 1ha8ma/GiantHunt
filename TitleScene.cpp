@@ -7,8 +7,6 @@
 #include"SoundEffect.h"
 #include"ArmEnemyStartScene.h"
 #include"Enemy2StartScene.h"
-//#include"ArmEnemyStage.h"
-//#include"ArmEnemy.h"
 #include"RankingScene.h"
 #include"TutorialScene.h"
 #include"TitleScene.h"

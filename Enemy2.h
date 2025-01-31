@@ -24,6 +24,36 @@ public:
 	void Draw()override;
 
 private:
+	//パーツの名前
+	enum class PartsName :int
+	{
+		Head,			//頭
+		Body,			//胴体
+		LeftUpperArm,	//左上腕
+		LeftForeArm,	//左前腕
+		LeftHand,		//左手
+		LeftSowrd,		//左手の剣の部分
+		RightUpperArm,	//右上腕
+		RightForeArm,	//右前腕
+		RightHand,		//右手
+		LeftThigh,		//左太もも
+		LeftCalf,		//左ふくらはぎ
+		LeftFoot,		//左足
+		RightThigh,		//右ふともも
+		RightCalf,		//右ふくらはぎ
+		RightFoot,		//右足
+		WeakPoint,		//弱点
+	};
+
+	/// <summary>
+	/// 動きの種類
+	/// </summary>
+	enum class MoveKind :int
+	{
+		Walk,			//歩く
+
+	};
+
 	const float ModelScale = 40.0f;		//モデルスケール
 	const int MaxHP = 2000;				//最大HP
 

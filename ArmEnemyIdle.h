@@ -7,7 +7,7 @@ public:
 	ArmEnemyIdle(int modelHandle,VECTOR prevRotate);
 	~ArmEnemyIdle()override;
 
-	bool Update(Camera* camera)override;
+	bool Update(Camera* camera,VECTOR playerPosition)override;
 	void Draw()override {};
 
 private:

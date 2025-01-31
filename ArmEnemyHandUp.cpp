@@ -26,7 +26,7 @@ ArmEnemyHandUp::~ArmEnemyHandUp()
 /// </summary>
 /// <param name="camera">ƒJƒƒ‰î•ñ</param>
 /// <returns>“®‚«‚ÌI—¹</returns>
-bool ArmEnemyHandUp::Update(Camera* camera)
+bool ArmEnemyHandUp::Update(Camera* camera,VECTOR playerPosition)
 {
 	bool moveEnd = false;
 
@@ -34,7 +34,7 @@ bool ArmEnemyHandUp::Update(Camera* camera)
 	{
 	case 0:
 	{
-		rotate.x += 0.005f;
+		rotate.x += 0.01f;
 		if (rotate.x > 0.8f)
 		{
 			moveState++;
@@ -43,7 +43,7 @@ bool ArmEnemyHandUp::Update(Camera* camera)
 	break;
 	case 1:
 	{
-		rotate.x -= 0.005f;
+		rotate.x -= 0.01f;
 		if (rotate.x < 0)
 		{
 			moveState++;

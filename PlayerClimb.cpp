@@ -49,15 +49,15 @@ void PlayerClimb::Initialize()
 /// <param name="objectCapsuleStart">衝突しているカプセル始点</param>
 /// <param name="objectCapsuleEnd">カプセル終点</param>
 /// <returns>状態を変更するか</returns>
-bool PlayerClimb::Update(VECTOR position,float angle,int inputstate, DINPUT_JOYSTATE stickstate, const Camera& camera,CollisionData objectCollision)
+bool PlayerClimb::Update(UsePlayerData playerData, const Camera& camera,CollisionData objectCollision)
 {
 	bool stateChange = false;//状態変更フラグ
 
-	Move(position, stickstate, camera, objectCollision);
+	Move(playerData.position, playerData.stickState, camera, objectCollision);
 	PlayAnimation(0.5f, stopanimflg);
 
 	//R1を離すとステート変更
-	if ((Input::InputNumber::R1 & inputstate) != Input::InputNumber::R1)
+	if ((Input::InputNumber::R1 & playerData.inputState) != Input::InputNumber::R1)
 	{
 		stateChange = true;
 	}

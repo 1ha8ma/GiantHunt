@@ -33,6 +33,10 @@ void Loader::Load()
 	handle[WoodModel] = MV1LoadModel("3D/Wood.mv1");
 	handle[SkyDome] = MV1LoadModel("3D/Dome_Y901.x");
 	handle[Enemy2Model] = MV1LoadModel("3D/Enemy2.mv1");
+	handle[RockModel1] = MV1LoadModel("3D/Rock1.mv1");
+	handle[RockModel2] = MV1LoadModel("3D/Rock2.mv1");
+	handle[RockModel3] = MV1LoadModel("3D/Rock3.mv1");
+	handle[RockModel4] = MV1LoadModel("3D/Rock4.mv1");
 
 	//2D
 	handle[GameOverBackImage] = LoadGraph("2D/GameOverBack.jpg");
@@ -59,4 +63,6 @@ void Loader::Load()
 	//エフェクト
 	handle[WeakPointEffect] = LoadEffekseerEffect("Effect/WeakPoint.efkefc", 1.0f);
 	handle[HitWeakPointEffect] = LoadEffekseerEffect("Effect/HitWeakPoint.efkefc", 1.0f);
+	handle[WarningEffect] = LoadEffekseerEffect("Effect/WarningEffect.efkefc", 1.0f);
+	handle[RockHitEffect] = LoadEffekseerEffect("Effect/RockHitEffect.efkefc", 1.0f);
 }

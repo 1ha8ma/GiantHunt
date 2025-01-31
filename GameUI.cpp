@@ -1,7 +1,7 @@
 #include"DxLib.h"
 #include"GameUI.h"
 
-GameUI::GameUI(int enemyHP, int playerHP, int playerGrip)
+GameUI::GameUI(int enemyHP, int playerHP, int playerGrip, float maxPiercingRotateZ)
 {
 	//現在のステータス初期化
 	this->enemyHP = enemyHP;
@@ -12,6 +12,7 @@ GameUI::GameUI(int enemyHP, int playerHP, int playerGrip)
 	startEnemyHP = enemyHP;
 	startPlayerHP = playerHP;
 	startPlayerGrip = playerGrip;
+	this->maxPiercingRotateZ = maxPiercingRotateZ;
 
 	//1フレーム前のステータス
 	prevEnemyHP = enemyHP;
@@ -44,12 +45,14 @@ GameUI::~GameUI()
 /// <param name="enemyHP">敵HP</param>
 /// <param name="playerHP">プレイヤーHP</param>
 /// <param name="playerGrip">プレイヤー握力</param>
-void GameUI::Update(int enemyHP, int playerHP, int playerGrip)
+void GameUI::Update(int enemyHP, int playerHP, int playerGrip, bool onPiercingGauge, float piercingRotateZ)
 {
 	//ステータス取得
 	this->enemyHP = enemyHP;
 	this->playerHP = playerHP;
 	this->playerGrip = playerGrip;
+	this->onPiercingGauge = onPiercingGauge;
+	this->piercingRotateZ = piercingRotateZ;
 
 	//ダメージを受けたか確認
 	if (enemyHP != prevEnemyHP)
@@ -109,6 +112,12 @@ void GameUI::Update(int enemyHP, int playerHP, int playerGrip)
 		}
 	}
 
+	//突き刺し中なら
+	if (onPiercingGauge)
+	{
+		piercingPer = this->piercingRotateZ / this->maxPiercingRotateZ;
+	}
+
 	//割合計算
 	enemyHPPer = this->enemyHP / startEnemyHP;
 	playerHPPer = this->playerHP / startPlayerHP;
@@ -133,4 +142,8 @@ void GameUI::Draw()
 	//プレイヤー握力
 	DrawCircle(1450, 730, PlayerGripSize + 3, GetColor(75, 75, 75), TRUE);
 	DrawCircle(1450, 730, PlayerGripSize * playerGripPer, GetColor(240, 230, 140), TRUE);
+	if (onPiercingGauge)
+	{
+		DrawCircle(1450, 730, PlayerGripSize * piercingPer, GetColor(127, 255, 212), TRUE);
+	}
 }

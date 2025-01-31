@@ -26,7 +26,7 @@ public:
 	void Draw()override;
 
 private:
-	//乗っている場所
+	//パーツの名前
 	enum class PartsName :int
 	{
 		Upperarm,	//上腕
@@ -39,7 +39,7 @@ private:
 	enum class MoveKind :int
 	{
 		Idle,		//待機
-		MowingDown,	//薙ぎ払い
+		DropRock,	//岩落とし
 		Swing,		//振り回し
 		FallDown,	//倒れる
 		HandUp,		//手を上げる
@@ -48,6 +48,7 @@ private:
 	const int MaxHP = 1000;							//最大HP
 	const float ModelScale = 40.0f;					//モデルの描画サイズ
 	const int PlayerRideMoveStateFlame = 100;		//プレイヤーが乗っている時の動きを始めるフレーム
+	const int AttackCoolTime = 100;					//攻撃クールタイム
 
 	void ChangeMove(VECTOR playerPos);
 
@@ -55,10 +56,12 @@ private:
 	Calculation* calclation;
 
 	std::vector<EnemyParts*> parts;			//パーツ
-	int playerRidePlace;				//プレイヤーが乗っている場所
+	int playerRidePlace;					//プレイヤーが乗っている場所
 	bool moveChangeflg;						//状態からの動き変更指示フラグ
 	MoveKind nowMoveKind;					//現在の動きの種類
 	int playerRideFlame;					//プレイヤーが乗っている時間
 	bool playerRideflg;						//プレイヤーが乗っているフラグ
 	bool playerRideMoveStartflg;			//プレイヤーが乗っている時の動きの開始フラグ
+	int attackCoolTimeFlame;				//攻撃クールタイムフレーム
+	bool attackCoolTimeflg;					//攻撃クールタイムフラグ
 };

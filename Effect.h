@@ -10,6 +10,8 @@ public:
 	{
 		WeakPoint,		//弱点
 		HitWeakPoint,	//弱点ヒット
+		Warning,		//注意
+		RockHit,		//岩衝突
 	};
 
 	Effect();
