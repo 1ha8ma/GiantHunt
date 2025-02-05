@@ -66,7 +66,7 @@ SceneBase* GameScene::Update()
 	//クラス更新
 	stage->Update();
 	camera->UpdateGame(player->GetPosition(), enemy->GetTargetCameraPosition(), player->GetCameraZoom());
-	gameOver = player->UpdateGame(*camera);
+	gameOver = player->UpdateGame(camera);
 	gameClear = enemy->Update(player->GetPosition(), camera);
 	ui->Update(enemy->GetHP(), player->GetHP(), player->GetGripPoint(), player->GetOnPiercingGauge(), player->GetPiercingArmRotateZ());
 

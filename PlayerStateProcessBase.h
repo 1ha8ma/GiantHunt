@@ -30,6 +30,7 @@ public:
 		float angle;					//角度
 		RunPlaceKind runPlace;			//走っている場所
 		bool onFoot;					//プレイヤーの足が着いているか
+		VECTOR putCloseVec;				//オブジェクトに近づけるベクトル
 	};
 
 	/// <summary>
@@ -61,10 +62,7 @@ public:
 	//Get,Set
 	VECTOR GetmoveVec() { return moveVec; }
 	VECTOR GettargetLookDirection() { return targetLookDirection; }
-	/*void SetRunPlace(RunPlaceKind place) { runPlace = place; }
-	void SetOnFoot(bool onFootObject) { onFoot = onFootObject; }*/
-	//登り用
-	//void SetCapsule(VECTOR capsuleStart, VECTOR capsuleEnd, float radius) { playerCapsuleStart = capsuleStart; playerCapsuleEnd = capsuleEnd; playerCapsuleRadius = radius; }
+
 	//突き刺し用
 	float GetCameraZoom() { return cameraZoom; }
 	float GetArmRotateZ() { return armRotateZ; }
@@ -108,13 +106,6 @@ protected:
 	//移動
 	VECTOR moveVec;				//移動ベクトル
 	VECTOR targetLookDirection;	//目標角度
-	//RunPlaceKind runPlace;		//走っている場所　false:地面 true:カプセル上
-	//bool onFoot;				//プレイヤーの足が着いているか
-
-	//登り用
-	/*VECTOR playerCapsuleStart;
-	VECTOR playerCapsuleEnd;
-	float playerCapsuleRadius;*/
 
 	//突き刺し攻撃用
 	float cameraZoom;

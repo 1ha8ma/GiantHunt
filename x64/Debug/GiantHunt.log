@@ -1,6 +1,35 @@
 ﻿  Player.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.h(17): warning C4305: '初期化中': 'double' から 'const float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\Player.cpp(510,32): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\Player.cpp(511,33): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(516,32): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(517,33): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  PlayerClimb.cpp
+C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(83,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(84,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(162,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(163,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(164,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(175,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(176,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(177,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(201,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(202,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(203,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(214,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(215,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(216,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(240,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(241,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(242,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(253,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(254,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(255,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(279,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(280,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(281,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(292,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(293,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(294,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(318,10): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
   GiantHunt.vcxproj -> C:\Users\hamar\Desktop\GiantHunt\x64\Debug\GiantHunt.exe

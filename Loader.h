@@ -44,6 +44,7 @@ public:
 		HitWeakPointSE,					//弱点ヒットSE
 		CrickSE,						//決定SE
 		CursorMoveSE,					//カーソル移動SE
+		RockHitSE,						//岩衝突SE
 
 		//エフェクト
 		WeakPointEffect,				//弱点

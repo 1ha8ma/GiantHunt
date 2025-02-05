@@ -20,7 +20,7 @@ public:
 	//ゲーム初期化
 	void InitializeGame();
 	//ゲーム更新
-	bool UpdateGame(const Camera& camera);
+	bool UpdateGame(Camera* camera);
 
 	//ゲームオーバーシーン初期化
 	void InitializeGameOver();
@@ -61,10 +61,11 @@ private:
 
 	const float AngleSpeed = 0.2f;					//角度変更速度
 	const float WholeBodyCapsuleRadius = 50.0f;		//全身カプセル半径
+	const float WholeBodyCapsuleLength = 50.0f;		//カプセルの長さ
 	const float FootCapsuleRadius = 20.0f;			//足カプセル半径
 	const float Gravity = 0.5f;						//重力
 	const int MaxHP = 100;							//最大HP
-	const int MaxGripPoint = 400;					//最大握力
+	const int MaxGripPoint = 600;					//最大握力
 	const int MinusGripPoint = 1;					//減らす握力量
 
 	//角度更新
@@ -72,7 +73,7 @@ private:
 	//ステート変更
 	void ChangeState();
 	//足がついているか確認
-	void CheckOnGround();
+	void CheckOnGround(Camera* camera);
 	//カプセル更新
 	void UpdateCapsule();
 	//当たり判定情報更新
@@ -103,39 +104,46 @@ private:
 	//入力
 	int inputstate;									//入力情報
 	DINPUT_JOYSTATE stickstate;						//スティック入力情報
+	bool canInputX;									//攻撃連続入力防止
 
+	//モデル関係
 	int modelHandle;								//モデルハンドル
 	VECTOR drawPosition;							//描画用ポジション
+
 	//当たり判定
 	VECTOR position;								//ポジション
 	VECTOR wholebodyCapStart;						//カプセル始点(上)
 	VECTOR wholebodyCapEnd;							//カプセル終点(下)
 	VECTOR footCapStart;							//足カプセル
 	VECTOR footCapEnd;								//足カプセル
-	//その他
+
+	//移動関係
 	float angle;									//プレイヤーの向き
 	VECTOR moveVec;									//移動量
-	VECTOR targetLookDirection;						//モデルの向く目標方向 
-	State nowstateKind;								//現在の状態
+	VECTOR targetLookDirection;						//モデルの向く目標方向
 	bool jumpAfterLeaveFoot;						//ジャンプした後に足が離れた
 	bool onGround;									//足がついているか
 	bool onFootObject;								//足がオブジェクトに着いている
 	bool isCatch;									//掴める状態か
-	bool isStand;									//立てる状態か
 	PlayerStateProcessBase::RunPlaceKind runPlace;	//走っている場所
-	bool gameOverflg;								//ゲームオーバーフラグ
-	bool canInputX;									//攻撃連続入力防止
 
+	//動き関係
+	State nowstateKind;								//現在の状態
+	bool changeStateflg;							//状態からの状態変更指示がある場合
+
+	//落下
 	float fallSpeed;								//落下速度
 	int fallFrame;									//落下時間
-	bool changeStateflg;							//状態からの状態変更指示がある場合
 
 	//突き刺し攻撃時
 	float cameraZoom;								//カメラのズーム
 	float piercingArmRotateZ;						//腕の回転度
 	bool onPiercingGauge;							//突き刺し攻撃ゲージ表示
 
-	//当たっているオブジェクトのデータ
-	VECTOR hitObjectCapStart;
-	VECTOR hitObjectCapEnd;
+	//登り時
+	VECTOR putCloseVec;								//オブジェクトと離れている分近づけるベクトル
+
+
+	//その他
+	bool gameOverflg;								//ゲームオーバーフラグ
 };

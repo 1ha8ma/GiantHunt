@@ -70,9 +70,6 @@
     <Filter Include="Scene\Game">
       <UniqueIdentifier>{bf142e25-0cd3-4e7e-aef4-254c63fa6432}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Game\GameScene">
-      <UniqueIdentifier>{58f9f729-d1f1-4e1c-b9d6-893c9bb6b6cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{590f363b-dcd0-4659-bf29-493f17b842d5}</UniqueIdentifier>
     </Filter>
@@ -213,9 +210,6 @@
     <ClCompile Include="GameOverScene.cpp">
       <Filter>Scene\GameOver</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Scene\Game\GameScene</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerFallDown.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
@@ -260,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="PlayerFalling.cpp">
       <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,9 +365,6 @@
     <ClInclude Include="GameOverScene.h">
       <Filter>Scene\GameOver</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Scene\Game\GameScene</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerFallDown.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>
@@ -415,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="PlayerFalling.h">
       <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

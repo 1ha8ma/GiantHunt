@@ -137,10 +137,10 @@ void ArmEnemyDropRock::Draw()
 	}
 
 	//Šm”F—p
-	if (onAttackCollision)
+	/*if (onAttackCollision)
 	{
 		DrawCapsule3D(attackCapsuleStart, attackCapsuleEnd, AttackCapsuleRadius, 8, GetColor(173, 255, 47), GetColor(173, 255, 47), false);
-	}
+	}*/
 }
 
 /// <summary>

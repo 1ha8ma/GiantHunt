@@ -62,6 +62,8 @@ void Rock::RegisterCollisionData()
 	collisionData.tag = ObjectTag::StageObject;
 	collisionData.startPosition = capsuleStart;
 	collisionData.endPosition =	capsuleEnd;
+	collisionData.position = VAdd(capsuleStart, capsuleEnd);
+	collisionData.position = VScale(collisionData.position, 0.5f);
 	collisionData.radius = capsuleRadius;
 	collisionData.moveVec = VGet(0, 0, 0);
 	collisionData.isCollisionActive = true;

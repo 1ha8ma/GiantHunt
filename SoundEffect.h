@@ -14,6 +14,7 @@ public:
 		Jump,				//ジャンプ
 		CursorMove,			//カーソル移動
 		Crick,				//決定
+		RockHit,			//岩衝突
 	};
 
 	SoundEffect();
@@ -34,6 +35,7 @@ private:
 		HitWeakPoint = 100,
 		CursorMove = 70,
 		Crick = 100,
+		RockHit = 100,
 	};
 
 	std::map<SEKind, int> handle;	//ハンドル

@@ -63,3 +63,38 @@ float Calculation::LengthTwoPoint3D(VECTOR pos1, VECTOR pos2)
 	float length = sqrtf(calc1);
 	return length;
 }
+
+/// <summary>
+/// 2つのベクトルのなす角
+/// </summary>
+/// <param name="vec1">ベクトル1</param>
+/// <param name="vec2">ベクトル2</param>
+/// <returns>角度</returns>
+float Calculation::AngleTwoVector(VECTOR vec1, VECTOR vec2)
+{
+	float calc1 = VDot(vec1, vec2);
+	float calc2 = sqrtf(pow(vec1.x, 2) + pow(vec1.y, 2) + pow(vec1.z, 2)) * sqrtf(pow(vec2.x, 2) + pow(vec2.y, 2) + pow(vec2.z, 2));
+	float cosTheta = calc1 / calc2;
+
+	float angle = acos(cosTheta);
+
+	float deg = angle * (180 / DX_PI_F);//確認用
+
+	return angle;
+}
+
+/// <summary>
+/// 正射影ベクトル
+/// </summary>
+/// <param name="OA">原点から垂線を降ろされる側のベクトル</param>
+/// <param name="OB">原点から垂線を降ろす側のベクトル</param>
+/// <returns>降ろした点</returns>
+VECTOR Calculation::OrthogonalProjectionVector(VECTOR OA, VECTOR OB)
+{
+	float calc1 = VDot(OA, OB);
+	float calc2 = pow(OA.x, 2) + pow(OA.y, 2) + pow(OA.z, 2);
+	float calc3 = calc1 / calc2;
+	VECTOR OH = VScale(OA, calc3);
+
+	return OH;
+}

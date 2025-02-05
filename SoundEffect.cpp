@@ -22,6 +22,8 @@ SoundEffect::SoundEffect()
 	ChangeVolumeSoundMem(255 * (int)Ratio::CursorMove / 100, handle[SEKind::CursorMove]);
 	handle[SEKind::Crick] = loader->GetHandle(Loader::Kind::CrickSE);
 	ChangeVolumeSoundMem(255 * (int)Ratio::Crick / 100, handle[SEKind::Crick]);
+	handle[SEKind::RockHit] = loader->GetHandle(Loader::Kind::RockHitSE);
+	ChangeVolumeSoundMem(255 * (int)Ratio::RockHit / 100, handle[SEKind::RockHit]);
 }
 
 /// <summary>

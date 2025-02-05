@@ -59,6 +59,7 @@ void Loader::Load()
 	handle[HitWeakPointSE] = LoadSoundMem("Sound/SE/HitWeakPointSE.mp3");
 	handle[CursorMoveSE] = LoadSoundMem("Sound/SE/CursorMoveSE.mp3");
 	handle[CrickSE] = LoadSoundMem("Sound/SE/CrickSE.mp3");
+	handle[RockHitSE] = LoadSoundMem("Sound/SE/RockHitSE.mp3");
 
 	//エフェクト
 	handle[WeakPointEffect] = LoadEffekseerEffect("Effect/WeakPoint.efkefc", 1.0f);

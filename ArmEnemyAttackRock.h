@@ -4,6 +4,7 @@ class CollisionManager;
 struct CollisionData;
 class Effect;
 class Camera;
+class SoundEffect;
 
 class ArmEnemyAttackRock
 {
@@ -30,6 +31,7 @@ private:
 	CollisionData collisionData;
 	Effect* effect;
 	Camera* camera;
+	SoundEffect* se;
 
 	int modelHandle;				//モデルハンドル
 	VECTOR position;				//ポジション

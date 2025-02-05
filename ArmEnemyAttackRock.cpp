@@ -3,6 +3,7 @@
 #include"CollisionManager.h"
 #include"Camera.h"
 #include"Effect.h"
+#include"SoundEffect.h"
 #include"Loader.h"
 #include"ArmEnemyAttackRock.h"
 
@@ -15,6 +16,7 @@ ArmEnemyAttackRock::ArmEnemyAttackRock(VECTOR playerPosition,Camera* camera)
 	//ƒCƒ“ƒXƒ^ƒ“ƒX‰»
 	Loader* loader = loader->GetInstance();
 	effect = new Effect();
+	se = new SoundEffect();
 	this->camera = camera;
 
 	//•Ï”‰Šú‰»
@@ -84,9 +86,11 @@ void ArmEnemyAttackRock::Update()
 		hitEffectPosition = VAdd(position,VGet(0.0f,70.0f,0.0f));
 		effect->PlayEffect(Effect::EffectKind::RockHit, hitEffectPosition, VGet(50, 50, 50), VGet(DX_PI_F / 2, 0.0f, 0.0f), 0.1f);
 		//ã‰º—h‚ê
-		camera->PlayShakingVertical(0.5, 5, 50);
+		camera->PlayShakingVertical(1.0f, 5, 50);
 		//U“®
 		StartJoypadVibration(DX_INPUT_PAD1, 150, 1000, -1);
+		//se
+		se->PlaySE(SoundEffect::SEKind::RockHit);
 		collisionActive = false;
 	}
 
@@ -106,7 +110,7 @@ void ArmEnemyAttackRock::Draw()
 	effect->Draw();
 
 	//Šm”F—p
-	DrawCapsule3D(collisionPosition, collisionPosition, CapsuleRadius, 8, GetColor(124, 34, 232), GetColor(124, 34, 232), false);
+	//DrawCapsule3D(collisionPosition, collisionPosition, CapsuleRadius, 8, GetColor(124, 34, 232), GetColor(124, 34, 232), false);
 }
 
 /// <summary>
@@ -135,7 +139,10 @@ void ArmEnemyAttackRock::OnHitObject(CollisionData* collisionData)
 		//U“®
 		//ã‰º—h‚ê
 		camera->PlayShakingVertical(0.5, 5, 50);
+		//U“®
 		StartJoypadVibration(DX_INPUT_PAD1, 150, 1000, -1);
+		//se
+		se->PlaySE(SoundEffect::SEKind::RockHit);
 		collisionActive = false;
 	}
 }
