@@ -16,9 +16,9 @@ ArmEnemyStage::ArmEnemyStage()
 	Loader* loader = loader->GetInstance();
 	wood = new Wood();
 	wall = new Wall();
-	rock1 = new Rock(loader->GetHandle(Loader::Kind::RockModel1), VGet(400, 0, 0), VGet(-400, 0, 50), 1000.0f, VGet(500, 2300, 4400), VGet(0, 0, DX_PI_F/2), 5);
+	rock1 = new Rock(loader->GetHandle(Loader::Kind::RockModel1), VGet(-400, 0, 50), VGet(400, 0, 0), 1000.0f, VGet(500, 2300, 4400), VGet(0, 0, DX_PI_F / 2), 5);
 	rock2 = new Rock(loader->GetHandle(Loader::Kind::RockModel2), VGet(200, 200, 0), VGet(-700, 200, 0), 900.0f, VGet(3700, 3400, 4000), VGet(0, 0, DX_PI_F / 2), 7);
-	rock3 = new Rock(loader->GetHandle(Loader::Kind::RockModel3), VGet(1000, -1000, 0), VGet(-1000, 1000, 0), 900.0f, VGet(1700, 6000, 5000), VGet(0, 0, DX_PI_F / 4), 4.0f);
+	rock3 = new Rock(loader->GetHandle(Loader::Kind::RockModel3), VGet(-1000, 1000, 0), VGet(1000, -1000, 0), 900.0f, VGet(1700, 6000, 5000), VGet(0, 0, DX_PI_F / 4), 4.0f);
 	bgm = new BGM(BGM::BGMKind::ArmEnemyStage);
 
 	//•Ï”‰Šú‰»

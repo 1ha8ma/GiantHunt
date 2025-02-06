@@ -3,106 +3,35 @@ C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは�
 C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.h(14): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
   ArmEnemyAttackRock.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  ArmEnemyFallDown.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  ArmEnemyHandUp.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  ArmEnemyIdle.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.h(14): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.cpp(68,21): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.cpp(72,21): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
-  ArmEnemyMoveBase.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  ArmEnemyDropRock.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyDropRock.cpp(54,19): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyDropRock.cpp(55,19): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemyDropRock.cpp(97,21): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
   ArmEnemyStage.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   ArmEnemyStartScene.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  ArmEnemySwing.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\ArmEnemySwing.cpp(47,20): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-  BGM.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   Calculation.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(42,36): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(44,27): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(46,27): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(62,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(76,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(76,112): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(79,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Calculation.cpp(95,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   Camera.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\GiantHunt\Camera.cpp(136,79): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
 C:\Users\hamar\Desktop\GiantHunt\Camera.cpp(147,24): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\hamar\Desktop\GiantHunt\Camera.cpp(149,24): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
-  Enemy2.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Enemy2MoveBase.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   Enemy2StartScene.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  PlayerFalling.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  PlayerIdle.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Rock.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  TutorialScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  コンパイル中...
-  CollisionManager.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Effect.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  EnemyBase.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  EnemyParts.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  FPS.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\FPS.cpp(43,15): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
   GameClearScene.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  GameManager.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   GameOverScene.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   GameScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  GameUI.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(7,18): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(8,19): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(9,21): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(12,17): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(13,18): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(14,20): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(18,16): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(19,17): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(51,18): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(52,19): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(53,21): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(127,16): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(128,17): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(137,21): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(138,21): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(140,26): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(141,26): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(143,39): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(144,39): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\GameUI.cpp(147,40): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Input.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Loader.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   Main.cpp
@@ -110,15 +39,42 @@ C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは�
 C:\Users\hamar\Desktop\Effekseer_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   Player.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.h(17): warning C4305: '初期化中': 'double' から 'const float' へ切り詰めます。
-C:\Users\hamar\Desktop\GiantHunt\Player.cpp(510,32): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\Player.cpp(511,33): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(516,32): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(517,33): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
   PlayerClimb.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.h(17): warning C4305: '初期化中': 'double' から 'const float' へ切り詰めます。
 C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(83,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(84,15): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(162,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(163,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(164,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(175,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(176,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(177,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(201,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(202,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(203,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(214,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(215,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(216,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(240,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(241,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(242,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(253,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(254,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(255,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(279,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(280,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(281,49): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(292,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(293,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(294,47): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\hamar\Desktop\GiantHunt\PlayerClimb.cpp(318,10): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   PlayerFallDown.cpp
+C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  PlayerFalling.cpp
+C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  PlayerIdle.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   PlayerJump.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
@@ -148,28 +104,13 @@ C:\Users\hamar\Desktop\GiantHunt\PlayerRun.cpp(116,26): warning C4244: '=': 'dou
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   PlayerStateProcessBase.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  RankingScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  SceneBase.cpp
-  SoundEffect.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  StageBase.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Time.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  TitleScene.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\TitleScene.cpp(216,66): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\TitleScene.cpp(216,56): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\hamar\Desktop\GiantHunt\TitleScene.cpp(216,33): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Wall.cpp
-C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  Wood.cpp
+  Rock.cpp
 C:\Users\hamar\Desktop\DxLib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 EffekseerForDXLib_vs2019_x64_d.lib(EffekseerForDXLib.obj) : warning LNK4075: /EDITANDCONTINUE は /OPT:ICF の指定によって無視されます。
   コード生成しています。
-  Previous IPDB not found, fall back to full compilation.
-  All 1645 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  51 of 1647 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    5 functions were new in current compilation
+    11 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
 EffekseerForDXLib_vs2019_x64_d.lib(EffekseerForDXLib.obj) : warning LNK4099: PDB '' が 'EffekseerForDXLib_vs2019_x64_d.lib(EffekseerForDXLib.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
 Effekseer_vs2019_x64_d.lib(Effekseer.Vector3D.obj) : warning LNK4099: PDB '' が 'Effekseer_vs2019_x64_d.lib(Effekseer.Vector3D.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
