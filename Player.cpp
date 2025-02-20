@@ -1,8 +1,11 @@
+#include<fstream>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"Loader.h"
 #include"Camera.h"
 #include"Input.h"
 #include"CollisionManager.h"
+#include"Calculation.h"
 #include"PlayerRun.h"
 #include"PlayerJump.h"
 #include"PlayerNormalAttack.h"
@@ -42,8 +45,18 @@ Player::~Player()
 /// </summary>
 void Player::InitializeStartScene()
 {
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/PlayerData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
+
 	nowstate = new PlayerRun(modelHandle, VGet(0.0f, 0.0f, 0.0f));
-	position = VGet(3000.0f, 0.0f, -1000.0f);
+	positionDistanceGround = jsonData["PositionDistanceGround"];
+	position = VGet(jsonData["InitPositionX"], positionDistanceGround, jsonData["InitPositionZ"]);
 	drawPosition = position;
 	angle = 0.0f;
 }
@@ -56,26 +69,65 @@ void Player::InitializeGame()
 	//インスタンス化
 	nowstate = new PlayerIdle(modelHandle, VGet(0.0f, 0.0f, 0.0f));
 	input = new Input();
+	calculation = new Calculation();
+
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/PlayerData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
 	//変数初期化
-	nowstateKind = State::Run;
-	position = VGet(3000.0f, 0.0f, -1000.0f);
-	drawPosition = position;
-	angle = 0.0f;
+	//ステータス
+	MaxHP = jsonData["PlayerMaxHP"];
 	HP = MaxHP;
+	MaxGripPoint = jsonData["MaxGripPoint"];
 	gripPoint = MaxGripPoint;
+	//入力
+	canInputX = false;
+	//モデル関係
+	drawPosition = position;
+	//あたり判定
+	positionDistanceGround = jsonData["PositionDistanceGround"];
+	position = VGet(jsonData["InitPositionX"], positionDistanceGround, jsonData["InitPositionZ"]);
+	WholeBodyCapsuleRadius = jsonData["WholeBodyCapsuleRadius"];
+	WholeBodyCapsuleHalfLength = jsonData["WholeBodyCapsuleHalfLength"];
+	FootCapsuleRadius = jsonData["FootCapsuleRadius"];
+
+	//移動関係
+	angle = 0.0f;
+	changeAngleSpeed = jsonData["ChangeAngleSpeed"];
+	jumpAfterLeaveFoot = false;
 	onGround = true;
+	onFootObject = false;
 	isCatch = false;
+	runPlace = PlayerStateProcessBase::RunPlaceKind::ground;
+	//動き関係
+	nowstateKind = State::Run;
+	changeStateflg = false;
+	//落下関係
 	fallSpeed = 0.0f;
 	fallFrame = 0;
-	runPlace = PlayerStateProcessBase::RunPlaceKind::ground;
-	gameOverflg = false;
-	canInputX = false;
-	onFootObject = true;
+	fallDamage = 0;
+	FallDamageIncrease = jsonData["FallDamageIncrease"];
+	Gravity = jsonData["Gravity"];
+	FallDamageCameraShakingPower = jsonData["FallDamageCameraShakingPower"];
+	FallDamageCameraShakingDirChangeflame = jsonData["FallDamageCameraShakingDirChangeflame"];
+	FallDamageCameraShakingPlayflame = jsonData["FallDamageCameraShakingPlayflame"];
+	FallDamageJoypadVibPower = jsonData["FallDamageJoypadVibPower"];
+	FallDamageJoypadVibPlayflame = jsonData["FallDamageJoypadVibPlayflame"];
+	//突き刺し攻撃
 	cameraZoom = 0.0f;
 	piercingArmRotateZ = 0.0f;
 	onPiercingGauge = false;
+	//登り
 	putCloseVec = VGet(0, 0, 0);
+	MinusGripPoint = jsonData["MinusGripPoint"];
+	//その他
+	gameOverflg = false;
 
 	//当たり判定
 	collisionManager = collisionManager->GetInstance();
@@ -120,6 +172,7 @@ bool Player::UpdateGame(Camera* camera)
 	MoveUseDataSet();
 	//ステート更新
 	changeStateflg = nowstate->Update(moveUseData, *camera, hitObjectData);
+	rotateMatrix = nowstate->GetRotateMatrix();
 
 	//移動
 	moveVec = nowstate->GetmoveVec();
@@ -130,12 +183,12 @@ bool Player::UpdateGame(Camera* camera)
 	//足がついているか確認
 	CheckOnGround(camera);
 
-	//描画位置修正
-	CorrectionDrawPosition();
-	
 	//角度更新
 	targetLookDirection = nowstate->GettargetLookDirection();
 	UpdateAngle();
+
+	//描画位置修正
+	CorrectionDrawPosition();
 
 	//連続入力防止
 	PreventionContinuousInput();
@@ -217,7 +270,7 @@ void Player::Draw()
 	MV1DrawModel(modelHandle);
 
 	//確認用
-	//DrawCapsule3D(bodyCollisionData.startPosition, bodyCollisionData.endPosition, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
+	DrawCapsule3D(bodyCollisionData.startPosition, bodyCollisionData.endPosition, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
 	//DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);
 	//nowstate->Draw();
 }
@@ -245,16 +298,12 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 	if (hitObjectData->tag == ObjectTag::StageObject ||
 		hitObjectData->tag == ObjectTag::EnemyParts)
 	{
-		//データコピー
-		hitObjectDataPointer = hitObjectData;
-		this->hitObjectData = *hitObjectData;
-
 		//押し戻し
 		if (nowstateKind != State::Climb)
 		{
-			CollisionPushBack(bodyCollisionData, *hitObjectData);
+			CollisionPushBack(bodyCollisionData, hitObjectData);
 		}
-		isCatch = true;
+		//isCatch = true;
 		runPlace = PlayerStateProcessBase::RunPlaceKind::capsule;
 	}
 }
@@ -268,7 +317,6 @@ void Player::FootOnHitObject(CollisionData* hitObjectData)
 	if (hitObjectData->tag == ObjectTag::StageObject ||		//木
 		hitObjectData->tag == ObjectTag::EnemyParts)	//腕の敵
 	{
-		onFootObject = true;
 		runPlace = PlayerStateProcessBase::RunPlaceKind::capsule;
 	}
 }
@@ -279,8 +327,8 @@ void Player::FootOnHitObject(CollisionData* hitObjectData)
 void Player::UpdateAngle()
 {
 	//移動方向にモデルの方向を近づける
-	float targetAngle;//目標の角度
-	float difference;//目標角度と現在の角度の差
+	float targetAngle;		//目標の角度
+	float difference;		//目標角度と現在の角度の差
 
 	//目標の方向ベクトルから角度値を算出する
 	targetAngle = static_cast<float>(atan2(targetLookDirection.x, targetLookDirection.z));
@@ -302,7 +350,7 @@ void Player::UpdateAngle()
 	//角度の差を0に近づける
 	if (difference > 0.0f)//差がマイナスの場合
 	{
-		difference -= AngleSpeed;
+		difference -= changeAngleSpeed;
 		if (difference < 0.0f)
 		{
 			difference = 0.0f;
@@ -310,7 +358,7 @@ void Player::UpdateAngle()
 	}
 	else//差がプラスの場合
 	{
-		difference += AngleSpeed;
+		difference += changeAngleSpeed;
 		if (difference > 0.0f)
 		{
 			difference = 0.0f;
@@ -321,14 +369,29 @@ void Player::UpdateAngle()
 	angle = targetAngle - difference;
 
 	//反映
-	MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
 
 	//登りモーションの時は反転
 	if (nowstateKind == State::Climb)
 	{
 		MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle, 0.0f));
+		//MV1SetMatrix(modelHandle, rotateMatrix);
+	}
+	else
+	{
+		MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
 	}
 }
+
+/// <summary>
+/// 角度更新
+/// </summary>
+//void Player::UpdateAngle()
+//{
+//	//目標の方向ベクトルから角度値を算出する
+//	float targetAngle = static_cast<float>(atan2(targetLookDirection.x, targetLookDirection.z));
+//
+//	MV1SetMatrix(modelHandle, rotateMatrix);
+//}
 
 /// <summary>
 /// ステート変更
@@ -399,7 +462,7 @@ void Player::ChangeState()
 		nowstate = new PlayerSquat(modelHandle, targetLookDirection);
 	}
 
-	//落下
+	//落下(一定フレーム以上落ちている場合に移行)
 	if (fallFrame > 25 && !onGround && nowstateKind != State::Falling && nowstateKind != State::Jump && nowstateKind != State::Climb)
 	{
 		delete nowstate;
@@ -415,8 +478,8 @@ void Player::ChangeState()
 void Player::CheckOnGround(Camera* camera)
 {
 	//着地したとき
-	if ((nowstateKind == State::Jump && jumpAfterLeaveFoot && (!onGround && position.y < 0.0f || !onGround && onFootObject)) ||
-		nowstateKind != State::Jump && (!onGround && position.y < 0.0f || !onGround && onFootObject))
+	if ((nowstateKind == State::Jump && jumpAfterLeaveFoot && (!onGround && position.y - positionDistanceGround < 0.0f || !onGround && onFootObject)) ||
+		nowstateKind != State::Jump && (!onGround && position.y - positionDistanceGround < 0.0f || !onGround && onFootObject))
 	{
 		onGround = true;
 		moveVec.y = 0.0f;
@@ -424,19 +487,20 @@ void Player::CheckOnGround(Camera* camera)
 		//一定時間落下していたら落下ダメージ
 		if (fallFrame >= 100)
 		{
-			HP -= fallFrame / 10;
+			HP -= fallDamage;
 			//カメラ振動
-			camera->PlayShakingVertical(0.8f, 10, 20);
+			camera->PlayShakingVertical(FallDamageCameraShakingPower, FallDamageCameraShakingDirChangeflame, FallDamageCameraShakingPlayflame);
 			//振動
-			StartJoypadVibration(DX_INPUT_PAD1, 500, 100, -1);
+			StartJoypadVibration(DX_INPUT_PAD1, FallDamageJoypadVibPower, FallDamageJoypadVibPlayflame, -1);
 		}
 	}
 
 	//ついていなければ
-	if (position.y > 0.0f && !onFootObject)
+	if (position.y - positionDistanceGround > 0.0f && !onFootObject)
 	{
 		onGround = false;
 		runPlace = PlayerStateProcessBase::RunPlaceKind::air;
+		fallDamage += FallDamageIncrease;
 	}
 
 	//足がついていなければ落下
@@ -449,13 +513,14 @@ void Player::CheckOnGround(Camera* camera)
 	{
 		fallFrame = 0;
 		fallSpeed = 0.0f;
+		fallDamage = 0;
 	}
 
 	//下まで行かないように
-	if (position.y < 0.0f)
+	if (position.y - positionDistanceGround < 0.0f)
 	{
 		runPlace = PlayerStateProcessBase::RunPlaceKind::ground;
-		position.y = 0.0f;
+		position.y = 0.0f + positionDistanceGround;
 	}
 }
 
@@ -465,8 +530,12 @@ void Player::CheckOnGround(Camera* camera)
 void Player::UpdateCapsule()
 {
 	//全身
-	wholebodyCapStart = VAdd(position, VGet(0.0f, 100.0f, 0.0f));
-	wholebodyCapEnd = VAdd(position, VGet(0.0f, 50.0f, 0.0f));
+	wholebodyCapStart = VAdd(position, VGet(0.0f, WholeBodyCapsuleHalfLength, 0.0f));
+	wholebodyCapEnd = VAdd(position, VGet(0.0f, -WholeBodyCapsuleHalfLength, 0.0f));
+	
+	//中心
+	centerPosition = VAdd(wholebodyCapStart, wholebodyCapEnd);
+	centerPosition = VScale(centerPosition, 0.5);
 
 	//足
 	footCapStart = VAdd(position, VGet(0.0f, 10.0f, 0.0f));
@@ -502,6 +571,7 @@ void Player::CorrectionDrawPosition()
 {
 	//基本
 	drawPosition = position;
+	drawPosition.y -= positionDistanceGround;
 
 	//ジャンプ
 	if (nowstateKind == State::Jump)
@@ -521,28 +591,69 @@ void Player::CorrectionDrawPosition()
 /// <summary>
 /// 衝突後の押し戻し
 /// </summary>
-void Player::CollisionPushBack(CollisionData partsData, CollisionData hitObjectData)
+void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObjectData)
 {
-	//半径の合計
-	float radiusSum = hitObjectData.radius + partsData.radius;
+	////半径の合計
+	//float radiusSum = hitObjectData.radius + partsData.radius;
 
-	//ベクトルのサイズを計算
-	//2つの線分の最短距離を求める
-	float length = Segment_Segment_MinLength(partsData.startPosition, partsData.endPosition, hitObjectData.startPosition, hitObjectData.endPosition);
-	float distance = radiusSum - length;
+	////ベクトルのサイズを計算
+	////2つの線分の最短距離を求める
+	//float length = Segment_Segment_MinLength(partsData.startPosition, partsData.endPosition, hitObjectData.startPosition, hitObjectData.endPosition);
+	//float distance = radiusSum - length;
 
-	//衝突したものとプレイヤーの向きのベクトルを取る
-	VECTOR dir = VSub(hitObjectData.position, position);
+	////衝突したものとプレイヤーの向きのベクトルを取る
+	//VECTOR dir = VSub(hitObjectData.position, position);
 
-	//押し戻し
-	dir = VNorm(dir);
-	VECTOR pushBackVec = VScale(dir, -distance);
+	////押し戻し
+	//dir = VNorm(dir);
+	//VECTOR pushBackVec = VScale(dir, -distance);
 
-	position = VAdd(position, pushBackVec);
+	//position = VAdd(position, pushBackVec);
 
-	if (position.y < 0.0f)
+	//if (position.y < 0.0f)
+	//{
+	//	position.y = 0.0f;
+	//}
+
+	for (int i = 0; i < hitObjectData->meshData.polygonList.PolygonNum; i++)
 	{
-		position.y = 0.0f;
+		VECTOR vertex0 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[0]].Position;
+		VECTOR vertex1 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[1]].Position;
+		VECTOR vertex2 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[2]].Position;
+
+		//カプセルと三角形の当たり判定
+		bool bodyResult = HitCheck_Capsule_Triangle(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius, vertex0, vertex1, vertex2);
+		bool footResult = HitCheck_Capsule_Triangle(footCapStart, footCapEnd, FootCapsuleRadius, vertex0, vertex1, vertex2);
+
+		if (footResult)
+		{
+			onFootObject = true;
+		}
+
+		if (bodyResult)
+		{
+			//データコピー
+			hitObjectDataPointer = hitObjectData;
+			this->hitObjectData = *hitObjectData;
+
+			//掴めるようにする
+			isCatch = true;
+
+			VECTOR vec01 = VSub(vertex1, vertex0);	//0→1
+			VECTOR vec02 = VSub(vertex2, vertex0);	//0→2
+			VECTOR normVec = VCross(vec01, vec02);	//法線ベクトル
+			normVec = VNorm(normVec);
+
+			//HACK:moveVecの長さを法線の方向に戻しているためステージからの押し返しに反応しないしガタガタする
+			float length = VSize(moveVec);
+			//距離を取る
+			//length = Segment_Triangle_MinLength(wholebodyCapStart, wholebodyCapEnd, vertex0, vertex1, vertex2);
+			
+			VECTOR pushBackVec = VScale(normVec, length);
+			position = VAdd(position, pushBackVec);
+			
+			break;
+		}
 	}
 }
 
@@ -565,11 +676,13 @@ void Player::MoveUseDataSet()
 	moveUseData.position = position;
 	moveUseData.capsuleStart = wholebodyCapStart;
 	moveUseData.capsuleEnd = wholebodyCapEnd;
+	moveUseData.centerPosition = centerPosition;
 	moveUseData.capsuleRadius = WholeBodyCapsuleRadius;
 	moveUseData.angle = angle;
 	moveUseData.runPlace = runPlace;
 	moveUseData.onFoot = onFootObject;
 	moveUseData.putCloseVec = putCloseVec;
+	moveUseData.lookDirection = targetLookDirection;
 }
 
 /// <summary>
@@ -586,4 +699,18 @@ void Player::PreventionContinuousInput()
 	{
 		canInputX = true;
 	}
+}
+
+/// <summary>
+/// カメラに渡すためのポジション
+/// </summary>
+/// <returns>ポジション</returns>
+VECTOR Player::GetPositionUseCamera()
+{
+	VECTOR returnVec;
+
+	returnVec = position;
+	returnVec.y -= positionDistanceGround;
+
+	return returnVec;
 }

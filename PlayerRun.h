@@ -13,10 +13,9 @@ public:
 	bool Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)override;
 
 private:
-	const float Speed = 20.0f;      //スピード
-
 	//移動処理
 	void Move(UsePlayerData playerData,Camera camera);
 
+	float Speed;      //スピード
 	bool moveflg;	//移動しているか
 };

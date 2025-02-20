@@ -3,8 +3,7 @@
 #include"CollisionData.h"
 
 class CollisionManager;
-class Wood;
-class Rock;
+class StageObject;
 class Wall;
 class BGM;
 
@@ -29,10 +28,10 @@ private:
 
 	CollisionManager* collisionManager;
 	CollisionData collisionData;
-	Wood* wood;
-	Rock* rock1;
-	Rock* rock2;
-	Rock* rock3;
+	StageObject* wood;
+	StageObject* rock1;
+	StageObject* rock2;
+	StageObject* rock3;
 	Wall* wall;
 	BGM* bgm;
 

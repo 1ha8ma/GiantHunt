@@ -1,5 +1,7 @@
+#include<fstream>
 #include<math.h>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"CollisionData.h"
 #include"Camera.h"
 #include"PlayerRun.h"
@@ -15,7 +17,17 @@ PlayerRun::PlayerRun(int modelHandle,VECTOR prevtargetLookDirection):PlayerState
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/PlayerData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
+
 	//変数初期化
+	Speed = jsonData["RunSpeed"];
 	targetLookDirection = prevtargetLookDirection;
 }
 
@@ -58,6 +70,7 @@ void PlayerRun::Move(UsePlayerData playerData, Camera camera)
 	//初期化
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	moveflg = false;
+	VECTOR prevTargetLookDir = playerData.lookDirection;
 
 	//左スティックの角度を取る
 	float stickX = playerData.stickState.X;
@@ -80,44 +93,46 @@ void PlayerRun::Move(UsePlayerData playerData, Camera camera)
 	{
 		moveVec = VNorm(moveVec);
 	}
+
+	rotateMatrix = MGetRotVec2(prevTargetLookDir, moveVec);
 	//スピード加算
 	moveVec = VScale(moveVec, Speed);
 
 	//カプセルを歩いていたらベクトルの向きを変更
-	if (playerData.runPlace == RunPlaceKind::capsule && playerData.onFoot)
-	{
-		//対象カプセルの軸を取る
-		VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
+	//if (playerData.runPlace == RunPlaceKind::capsule && playerData.onFoot)
+	//{
+	//	//対象カプセルの軸を取る
+	//	VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
 
-		//カプセルの下を取る
-		float underY;
-		if (playerData.capsuleEnd.y <= playerData.capsuleStart.y)
-		{
-			//対象カプセルの軸を取る
-			underY = playerData.capsuleEnd.y;
-		}
-		else
-		{
-			//対象カプセルの軸を取る
-			underY = playerData.capsuleStart.y;
-		}
+	//	//カプセルの下を取る
+	//	float underY;
+	//	if (playerData.capsuleEnd.y <= playerData.capsuleStart.y)
+	//	{
+	//		//対象カプセルの軸を取る
+	//		underY = playerData.capsuleEnd.y;
+	//	}
+	//	else
+	//	{
+	//		//対象カプセルの軸を取る
+	//		underY = playerData.capsuleStart.y;
+	//	}
 
-		//カプセルの水平との角度をとる
-		float cal1 = sqrtf(pow(shaft.x, 2) + pow(shaft.y, 2) + pow(shaft.z, 2));//カプセルのベクトル
-		float cal2 = sqrtf(pow(shaft.x, 2) + pow(underY, 2) + pow(shaft.z, 2));//Y座標をカプセルの下にしたベクトル
-		float cosTheta = VDot(shaft, VGet(shaft.x, underY, shaft.z)) / (cal1 * cal2);
-		float angle = acos(cosTheta);//角度変換
+	//	//カプセルの水平との角度をとる
+	//	float cal1 = sqrtf(pow(shaft.x, 2) + pow(shaft.y, 2) + pow(shaft.z, 2));//カプセルのベクトル
+	//	float cal2 = sqrtf(pow(shaft.x, 2) + pow(underY, 2) + pow(shaft.z, 2));//Y座標をカプセルの下にしたベクトル
+	//	float cosTheta = VDot(shaft, VGet(shaft.x, underY, shaft.z)) / (cal1 * cal2);
+	//	float angle = acos(cosTheta);//角度変換
 
-		float deg = angle * (180 / DX_PI_F);//確認用
+	//	float deg = angle * (180 / DX_PI_F);//確認用
 
-		//平面moveVecの長さ
-		float horizonLen = VSize(moveVec);
-		//Y座標変更
-		moveVec.y = sin(angle) * horizonLen;
+	//	//平面moveVecの長さ
+	//	float horizonLen = VSize(moveVec);
+	//	//Y座標変更
+	//	moveVec.y = sin(angle) * horizonLen;
 
-		if (VSize(moveVec) > 0)
-		{
-			targetLookDirection = moveVec;
-		}
-	}
+	//	if (VSize(moveVec) > 0)
+	//	{
+	//		targetLookDirection = moveVec;
+	//	}
+	//}
 }

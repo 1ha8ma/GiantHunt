@@ -70,7 +70,7 @@ SceneBase* ArmEnemyStartScene::Update()
 	}
 
 	//ƒV[ƒ“•ÏX
-	if (flame == 400)
+	if (flame == 400)//400
 	{
 		player->StartSceneEnd();
 		return new GameScene(stage, enemy, camera, player, Time::StageTag::ArmEnemy);

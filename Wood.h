@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 class CollisionManager;
 struct CollisionData;
@@ -29,10 +30,16 @@ private:
 	//当たり判定情報セット
 	void RegisterCollisionData();
 
+	void PolyInit();
+
 	//他クラス
 	CollisionManager* collisionManager;
 	CollisionData capsule1CollisionData;
 	CollisionData capsule2CollisionData;
 
 	int modelHandle;		//モデルハンドル
+
+	bool objectHit;
+	std::vector<VERTEX3D> vertex;
+	MV1_REF_POLYGONLIST polygonList;
 };

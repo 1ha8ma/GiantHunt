@@ -44,6 +44,7 @@ void Loader::Load()
 	handle[RankingArmEnemyImage] = LoadGraph("2D/RankingArmEnemy.png");
 	handle[ClearTextBackImage] = LoadGraph("2D/ClearTextBack.png");
 	handle[TutorialBackImage] = LoadGraph("2D/TutorialBack.jpg");
+	handle[DemoMovie] = LoadGraph("2D/DemoMovie.mp4");
 
 	//BGM
 	handle[TitleBGM] = LoadSoundMem("Sound/BGM/TitleBGM.mp3");

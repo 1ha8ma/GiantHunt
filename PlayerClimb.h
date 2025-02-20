@@ -15,10 +15,11 @@ public:
 
 private:
 	const float RotateSpeed = 0.01f;	//回転速度
-	const float Speed = 5.0f;			//移動速度
 
-	//移動処理
-	void Move(UsePlayerData playerData, Camera camera, CollisionData objectCollision);
+	//旧移動処理
+	void MoveCapsule(UsePlayerData playerData, Camera camera, CollisionData objectCollision);
+	//
+	void MoveMesh(UsePlayerData playerData, Camera camera,CollisionData objectData);
 
 	//角度計算
 	void CalculationAngle(VECTOR playerPosition, VECTOR objectPosition);
@@ -26,6 +27,8 @@ private:
 	//他クラス
 	Calculation* calculation;
 
+	//変数
+	float Speed;			//移動速度
 	bool stopanimflg;		//アニメーション停止フラグ
 	float rotateY;			//球に着いている時
 	float rotateH;			

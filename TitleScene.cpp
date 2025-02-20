@@ -8,6 +8,7 @@
 #include"ArmEnemyStartScene.h"
 #include"Enemy2StartScene.h"
 #include"RankingScene.h"
+#include"DemoScene.h"
 #include"TutorialScene.h"
 #include"TitleScene.h"
 
@@ -24,7 +25,7 @@ TitleScene::TitleScene()
 	bgm = new BGM(BGM::BGMKind::Title);
 	se = new SoundEffect();
 
-	//private変数初期化
+	//変数初期化
 	canInputB = false;
 	canInputStick = false;
 	inputOrderAlpha = MaxAlpha;
@@ -32,6 +33,7 @@ TitleScene::TitleScene()
 	trianglePosY = 220;
 	stringAlpha = MaxAlpha;
 	stateChange = false;
+	demoStartflame = 0;
 	state = State::Title;
 	cursor = (int)Cursor::ArmEnemyStage;
 }
@@ -113,6 +115,7 @@ SceneBase* TitleScene::Update()
 		//ステート変更
 		if (stateChange)
 		{
+			demoStartflame = 0;
 			stringAlpha -= 5;
 
 			if (stringAlpha <= 0)
@@ -137,6 +140,7 @@ SceneBase* TitleScene::Update()
 		//上入力
 		if (stringAlpha == 255 && cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
 		{
+			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
 			trianglePosY -= 100;
@@ -145,6 +149,7 @@ SceneBase* TitleScene::Update()
 		//下入力
 		if (stringAlpha == 255 && cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
 		{
+			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
 			trianglePosY += 100;
@@ -172,6 +177,13 @@ SceneBase* TitleScene::Update()
 	}
 	break;
 	}
+
+	if (demoStartflame == 1000)
+	{
+		return new DemoScene();
+	}
+
+	demoStartflame++;
 
 	return this;
 }

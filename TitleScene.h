@@ -46,4 +46,5 @@ private:
 	bool canInputStick;			//スティック入力可能
 	bool stateChange;			//タイトル内のステート変更
 	int stringAlpha;			//文字の透明度
+	int demoStartflame;			//デモ開始フレーム
 };

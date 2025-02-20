@@ -29,6 +29,7 @@ public:
 		RankingArmEnemyImage,			//ランキング画面の腕の敵背景
 		ClearTextBackImage,				//クリア画面のテキスト背景
 		TutorialBackImage,				//操作説明背景
+		DemoMovie,						//デモ映像
 
 		//BGM
 		TitleBGM,						//タイトルBGM

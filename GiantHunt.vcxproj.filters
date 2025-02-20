@@ -106,19 +106,31 @@
     <Filter Include="Enemy\ArmEnemy\Move\AttackObject">
       <UniqueIdentifier>{463ef065-8a4d-441b-bf33-354aa580080d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\DemoScene">
+      <UniqueIdentifier>{1c7c852a-4155-4919-8253-0aa65c4da5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\StageObject">
+      <UniqueIdentifier>{092fec60-a0af-40c7-9de6-89fcc295a9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Loader">
+      <UniqueIdentifier>{519526e3-770e-489b-b752-cf1522161736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Calculation">
+      <UniqueIdentifier>{cecb99ee-d7ba-490d-bec6-12a2e17dd15d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\FPS">
+      <UniqueIdentifier>{02e9bb17-49a2-4bc6-9d81-a6b11ef90477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Input">
+      <UniqueIdentifier>{83bb6f8b-0dda-453b-b1de-3121f7982a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{019a89d4-857e-4950-91b3-2e46a4c72b89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Loader.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="FPS.cpp">
-      <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Main</Filter>
@@ -132,9 +144,6 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Calculation.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
     <ClCompile Include="ArmEnemyStage.cpp">
       <Filter>Stage\ArmEnemyStage</Filter>
     </ClCompile>
@@ -147,9 +156,6 @@
     <ClCompile Include="PlayerRun.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Stage\ArmEnemyStage</Filter>
-    </ClCompile>
     <ClCompile Include="StageBase.cpp">
       <Filter>Stage\Base</Filter>
     </ClCompile>
@@ -158,9 +164,6 @@
     </ClCompile>
     <ClCompile Include="ArmEnemy.cpp">
       <Filter>Enemy\ArmEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Wood.cpp">
-      <Filter>Stage\ArmEnemyStage</Filter>
     </ClCompile>
     <ClCompile Include="PlayerClimb.cpp">
       <Filter>Player\PlayerState</Filter>
@@ -243,9 +246,6 @@
     <ClCompile Include="Enemy2MoveBase.cpp">
       <Filter>Enemy\Enemy2\Move\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Rock.cpp">
-      <Filter>Stage\ArmEnemyStage</Filter>
-    </ClCompile>
     <ClCompile Include="ArmEnemyAttackRock.cpp">
       <Filter>Enemy\ArmEnemy\Move\AttackObject</Filter>
     </ClCompile>
@@ -258,18 +258,33 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene\Game</Filter>
     </ClCompile>
+    <ClCompile Include="DemoScene.cpp">
+      <Filter>Scene\DemoScene</Filter>
+    </ClCompile>
+    <ClCompile Include="StageObject.cpp">
+      <Filter>Stage\StageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Stage\ArmEnemyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="Wood.cpp">
+      <Filter>Stage\StageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Utility\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculation.cpp">
+      <Filter>Utility\Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Utility\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Utility\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Loader.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="FPS.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
@@ -283,9 +298,6 @@
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Calculation.h">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="ArmEnemyStage.h">
       <Filter>Stage\ArmEnemyStage</Filter>
@@ -313,9 +325,6 @@
     </ClInclude>
     <ClInclude Include="ArmEnemy.h">
       <Filter>Enemy\ArmEnemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Wood.h">
-      <Filter>Stage\ArmEnemyStage</Filter>
     </ClInclude>
     <ClInclude Include="PlayerClimb.h">
       <Filter>Player\PlayerState</Filter>
@@ -398,9 +407,6 @@
     <ClInclude Include="Enemy2MoveBase.h">
       <Filter>Enemy\Enemy2\Move\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Rock.h">
-      <Filter>Stage\ArmEnemyStage</Filter>
-    </ClInclude>
     <ClInclude Include="ArmEnemyAttackRock.h">
       <Filter>Enemy\ArmEnemy\Move\AttackObject</Filter>
     </ClInclude>
@@ -413,5 +419,34 @@
     <ClInclude Include="GameScene.h">
       <Filter>Scene\Game</Filter>
     </ClInclude>
+    <ClInclude Include="DemoScene.h">
+      <Filter>Scene\DemoScene</Filter>
+    </ClInclude>
+    <ClInclude Include="StageObject.h">
+      <Filter>Stage\StageObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Wood.h">
+      <Filter>Stage\StageObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Utility\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculation.h">
+      <Filter>Utility\Calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Utility\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Utility\Input</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\PlayerData.json">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="Data\CameraData.json">
+      <Filter>Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

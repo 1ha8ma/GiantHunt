@@ -13,6 +13,7 @@ PlayerStateProcessBase::PlayerStateProcessBase(int modelHandle)
 	nowAnimPlayTime = 0.0f;
 	cameraZoom = 0.0f;
 	armRotateZ = 0.0f;
+	rotateMatrix = MGetIdent();
 }
 
 /// <summary>

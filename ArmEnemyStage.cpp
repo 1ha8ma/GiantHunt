@@ -2,8 +2,7 @@
 #include"Loader.h"
 #include"CollisionManager.h"
 #include"BGM.h"
-#include"Wood.h"
-#include"Rock.h"
+#include"StageObject.h"
 #include"Wall.h"
 #include"ArmEnemyStage.h"
 
@@ -14,11 +13,11 @@ ArmEnemyStage::ArmEnemyStage()
 {
 	//インスタンス化
 	Loader* loader = loader->GetInstance();
-	wood = new Wood();
 	wall = new Wall();
-	rock1 = new Rock(loader->GetHandle(Loader::Kind::RockModel1), VGet(-400, 0, 50), VGet(400, 0, 0), 1000.0f, VGet(500, 2300, 4400), VGet(0, 0, DX_PI_F / 2), 5);
-	rock2 = new Rock(loader->GetHandle(Loader::Kind::RockModel2), VGet(200, 200, 0), VGet(-700, 200, 0), 900.0f, VGet(3700, 3400, 4000), VGet(0, 0, DX_PI_F / 2), 7);
-	rock3 = new Rock(loader->GetHandle(Loader::Kind::RockModel3), VGet(-1000, 1000, 0), VGet(1000, -1000, 0), 900.0f, VGet(1700, 6000, 5000), VGet(0, 0, DX_PI_F / 4), 4.0f);
+	wood = new StageObject(loader->GetHandle(Loader::Kind::WoodModel), VGet(-2000, 1000, 0), VGet(1000, -500, 0), 800.0f, VGet(4500.0f, 1000.0f, 4300.0f), VGet(-DX_PI_F / 2, 0.0f, -0.7f), 40.0f);
+	rock1 = new StageObject(loader->GetHandle(Loader::Kind::RockModel1), VGet(-400, 0, 50), VGet(400, 0, 0), 1000.0f, VGet(500, 2300, 4400), VGet(0, 0, DX_PI_F / 2), 5);
+	rock2 = new StageObject(loader->GetHandle(Loader::Kind::RockModel2), VGet(200, 200, 0), VGet(-700, 200, 0), 900.0f, VGet(3700, 3400, 4000), VGet(0, 0, DX_PI_F / 2), 7);
+	rock3 = new StageObject(loader->GetHandle(Loader::Kind::RockModel3), VGet(-1000, 1000, 0), VGet(1000, -1000, 0), 900.0f, VGet(1700, 6000, 5000), VGet(0, 0, DX_PI_F / 4), 4.0f);
 	bgm = new BGM(BGM::BGMKind::ArmEnemyStage);
 
 	//変数初期化

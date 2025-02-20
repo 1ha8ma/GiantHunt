@@ -1,5 +1,7 @@
+#include<fstream>
 #include<math.h>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"Input.h"
 #include"Calculation.h"
 #include"Camera.h"
@@ -20,12 +22,22 @@ Camera::Camera()
 /// <param name="lookPosition">カメラ注視点</param>
 void Camera::StartSceneInitialize(VECTOR position,VECTOR lookPosition)
 {
-	//距離設定
-	SetCameraNearFar(100.0f, 20000.0f);
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/CameraData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
+	Near = jsonData["Near"];
+	Far = jsonData["Far"];
 	this->position = position;
 	this->lookPosition = lookPosition;
 
+	//距離設定
+	SetCameraNearFar(100.0f, 20000.0f);
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(this->position, this->lookPosition);
 }
@@ -49,11 +61,21 @@ void Camera::UpdateStartScene(VECTOR position,VECTOR lookPosition)
 /// </summary>
 void Camera::GameInitialize(VECTOR playerPosition)
 {
-	//距離設定
-	SetCameraNearFar(100.0f, 20000.0f);
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/CameraData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
 	//private変数
-	position = VGet(0, 2000, -1500);
+	Near = jsonData["Near"];
+	Far = jsonData["Far"];
+	AngleSpeed = jsonData["AngleSpeed"];
+	CameraPlayerTargetHeight = jsonData["CameraPlayerTargetHeight"];
+	PlayerDistance = jsonData["PlayerDistance"];
 	lookPosition = playerPosition;
 	lookPosition.y += CameraPlayerTargetHeight;
 	angleH = 0.0f;
@@ -62,7 +84,10 @@ void Camera::GameInitialize(VECTOR playerPosition)
 	shakingDirection = true;
 	t = 0;
 	lerpflg = false;
+	LerpSpeed = jsonData["TargetCameraLerpSpeed"];
 
+	//距離設定
+	SetCameraNearFar(Near, Far);
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }
@@ -133,7 +158,7 @@ void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition,float
 			lerpflg = true;
 		}
 
-		lookPosition = calculation->Lerp(targetCameraPosition, lookPosition, 0.01, t);
+		lookPosition = calculation->Lerp(targetCameraPosition, lookPosition, LerpSpeed, t);
 	}
 	else
 	{
@@ -178,10 +203,19 @@ void Camera::UpdateGame(VECTOR playerPosition, VECTOR targetCameraPosition,float
 /// <param name="playerPosition"></param>
 void Camera::InitializeGameOver(VECTOR playerPosition)
 {
-	//距離設定
-	SetCameraNearFar(10.0f, 10000.0f);
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/CameraData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
 	//XXX:ポジションと注視点のポジションのXZを同じにすると画面が黒くなって何も映らなくなるが少しずらすと映る
+	Near = jsonData["GameOverNear"];
+	Far = jsonData["GameOverFar"];
+	LeaveSpeed = jsonData["GameOverLeaveSpeed"];
 	position = playerPosition;
 	position.x += 10;
 	position.z += 10;
@@ -190,6 +224,8 @@ void Camera::InitializeGameOver(VECTOR playerPosition)
 	//注視点
 	lookPosition = playerPosition;
 
+	//距離設定
+	SetCameraNearFar(Near, Far);
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }
@@ -199,7 +235,7 @@ void Camera::InitializeGameOver(VECTOR playerPosition)
 /// </summary>
 void Camera::UpdateGameOver()
 {
-	position.y += 3.0f;
+	position.y += LeaveSpeed;
 
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
@@ -212,12 +248,22 @@ void Camera::UpdateGameOver()
 /// <param name="enemyPosition">注視点になる敵のポジション</param>
 void Camera::InitializeGameClear(VECTOR cameraPosition, VECTOR enemyPosition)
 {
-	//距離設定
-	SetCameraNearFar(100.0f, 20000.0f);
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/CameraData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
+	Near = jsonData["Near"];
+	Far = jsonData["Far"];
 	position = cameraPosition;
 	lookPosition = enemyPosition;
 
+	//距離設定
+	SetCameraNearFar(Near, Far);
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(position, lookPosition);
 }

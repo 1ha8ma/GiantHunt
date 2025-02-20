@@ -1,6 +1,5 @@
 #include"SceneBase.h"
 #include"TitleScene.h"
-//#include"GameScene.h"
 
 /// <summary>
 /// Å‰‚ÌƒV[ƒ“‚ğİ’è

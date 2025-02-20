@@ -22,6 +22,15 @@ enum class ObjectTag :int
 	StageObject,
 };
 
+//メッシュデータ
+struct MeshData
+{
+	//オブジェクトタグ
+	ObjectTag tag;										
+	//メッシュ情報
+	MV1_REF_POLYGONLIST polygonList;					//ポリゴンリスト
+};
+
 //当たり判定情報
 struct CollisionData
 {
@@ -31,19 +40,22 @@ struct CollisionData
 	//中心
 	VECTOR position;
 
-	//カプセル用
-	VECTOR startPosition;   //カプセル始点
-	VECTOR endPosition;     //カプセル終点
-	float radius;           //カプセル半径
+	//カプセル(メッシュ毎の前にカプセルで大まかに判定して、全てのオブジェクトとメッシュ判定するのを防ぐため)
+	VECTOR startPosition;								//カプセル始点
+	VECTOR endPosition;									//カプセル終点
+	float radius;										//カプセル半径
+
+	//メッシュ情報
+	MeshData meshData;
 
 	//動いた量
-	VECTOR moveVec;			//動くカプセル用
+	VECTOR moveVec;										//動くカプセル用
 
 	//四角ステージ用(ポジション)
-	float stageLeft;
-	float stageRight;
-	float stageFront;
-	float stageBack;
+	float stageLeft;									//右(x+)
+	float stageRight;									//左(x-)
+	float stageFront;									//前(z+)
+	float stageBack;									//後(z-)
 
 	//攻撃力
 	int attackPower;

@@ -24,13 +24,15 @@ public:
 		int inputState;					//ボタン入力状態
 		DINPUT_JOYSTATE stickState;		//スティック入力状態
 		VECTOR position;				//ポジション
-		VECTOR capsuleStart;			//カプセル視点
+		VECTOR capsuleStart;			//カプセル始点
 		VECTOR capsuleEnd;				//カプセル終点
+		VECTOR centerPosition;			//カプセルの中点
 		float capsuleRadius;			//カプセル半径
 		float angle;					//角度
 		RunPlaceKind runPlace;			//走っている場所
 		bool onFoot;					//プレイヤーの足が着いているか
 		VECTOR putCloseVec;				//オブジェクトに近づけるベクトル
+		VECTOR lookDirection;
 	};
 
 	/// <summary>
@@ -62,6 +64,7 @@ public:
 	//Get,Set
 	VECTOR GetmoveVec() { return moveVec; }
 	VECTOR GettargetLookDirection() { return targetLookDirection; }
+	MATRIX GetRotateMatrix() { return rotateMatrix; }
 
 	//突き刺し用
 	float GetCameraZoom() { return cameraZoom; }
@@ -106,6 +109,7 @@ protected:
 	//移動
 	VECTOR moveVec;				//移動ベクトル
 	VECTOR targetLookDirection;	//目標角度
+	MATRIX rotateMatrix;		//モデル回転行列
 
 	//突き刺し攻撃用
 	float cameraZoom;

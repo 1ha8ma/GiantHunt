@@ -1,4 +1,6 @@
+#include<fstream>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"Input.h"
 #include"Camera.h"
 #include"CollisionData.h"
@@ -17,9 +19,23 @@ PlayerPiercing::PlayerPiercing(int modelHandle, VECTOR prevtargetLookDirection) 
 	//アニメーションの総再生時間を取る
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
-	targetLookDirection = prevtargetLookDirection;
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/PlayerData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
 	//private変数初期化
+	targetLookDirection = prevtargetLookDirection;
+	LowestAttackPower = jsonData["PiercingLowestAttackPower"];
+	AttackCapsuleRadius = jsonData["PiercingAttackCapsuleRadius"];
+	MaxSwingUp = jsonData["PiercingMaxSwingUp"];
+	SwingUpSpeed = jsonData["PiercingSwingUpSpeed"];
+	SwingDownSpeed = jsonData["PiercingSwingDownSpeed"];
+	ChargeMagnification = jsonData["PiercingChargeMagnification"];
 	changeState = false;
 	attackPower = 0;
 	attackCapsuleStart = VGet(0.0f, -1000.0f, 0.0f);

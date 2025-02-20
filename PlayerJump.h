@@ -13,11 +13,12 @@ public:
 	bool Update(UsePlayerData playerData, const Camera& camera, CollisionData objectCollision)override;
 
 private:
-	const float FirstJumpPower = 20.0f;	//最初のジャンプ力
 
 	//移動処理
-	void Move();
+	void Move(UsePlayerData playerData, Camera camera);
 
-	VECTOR moveVecV;	//水平方向ベクトル
-	float jumpPower;	//ジャンプ力
+	VECTOR moveVecV;				//水平方向ベクトル
+	float FirstJumpPower;			//最初のジャンプ力
+	float MoveSpeedHorizon;			//平行移動速度
+	float jumpPower;				//ジャンプ力
 };

@@ -19,8 +19,6 @@ public:
 	void Draw()override;
 
 private:
-	const int AttackPower = 15;				//攻撃力
-	const float AttackCapsuleRadius = 20;	//攻撃当たり判定半径
 
 	//当たり判定更新
 	void UpdateCollisionData();
@@ -33,6 +31,8 @@ private:
 	CollisionData attackCollisionData;
 	SoundEffect* se;
 
+	int AttackPower;				//攻撃力
+	float AttackCapsuleRadius;		//攻撃当たり判定半径
 	bool stateChangeflg;			//ステート変更フラグ
 	bool animEndflg;				//アニメーション終了
 	bool attack;					//攻撃中

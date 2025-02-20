@@ -1,4 +1,6 @@
+#include<fstream>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"CollisionData.h"
 #include"CollisionManager.h"
 #include"SoundEffect.h"
@@ -24,7 +26,18 @@ PlayerNormalAttack::PlayerNormalAttack(int modelHandle, VECTOR prevtargetLookDir
 	//インスタンス化
 	se = new SoundEffect();
 
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/PlayerData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
+
 	//private変数初期化
+	AttackPower = jsonData["NormalAttackPower"];
+	AttackCapsuleRadius = jsonData["NormalAttackCapsuleRadius"];
 	stateChangeflg = false;
 	animEndflg = false;
 	attack = true;
