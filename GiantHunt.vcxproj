@@ -242,6 +242,7 @@
     <ClInclude Include="Wood.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\ArmEnemyData.json" />
     <None Include="Data\CameraData.json" />
     <None Include="Data\PlayerData.json" />
   </ItemGroup>

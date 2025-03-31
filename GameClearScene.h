@@ -21,6 +21,7 @@ public:
 private:
 	const int MaxTextBackAlpha = 200;	//テキスト背景の最大濃さ
 	const int MaxBlackBandAlpha = 255;	//黒帯の最大濃さ
+	const int AlphaIncrease = 3;		//濃くするスピード
 
 	//他クラス
 	Input* input;

@@ -1,4 +1,6 @@
+#include<fstream>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"CollisionData.h"
 #include"CollisionManager.h"
 #include"SoundEffect.h"
@@ -15,7 +17,17 @@ ArmEnemyDropRock::ArmEnemyDropRock(int modelHandle,VECTOR prevRotate) :ArmEnemyM
 	//インスタンス化
 	se = new SoundEffect();
 
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/ArmEnemyData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
+
 	//変数初期化
+	AttackPower = jsonData["DropRockAttackPower"];
 	moveState = 0;
 	moveEnd = false;
 	rotate.x = -0.5;
@@ -77,9 +89,9 @@ bool ArmEnemyDropRock::Update(Camera* camera,VECTOR playerPosition)
 		if (rotate.x < -1.4f)
 		{
 			//上下揺れ
-			camera->PlayShakingVertical(1, 10, 50);
+			camera->PlayShakingVertical(CameraShakingPower, CameraShakingChangeDirflame, CameraShakinPlayflame);
 			//振動
-			StartJoypadVibration(DX_INPUT_PAD1, 200, 900, -1);
+			StartJoypadVibration(DX_INPUT_PAD1, JoyPadVibPower, JoyPadVibflame, -1);
 			//se再生
 			se->PlaySE(SoundEffect::SEKind::MowinDownAttack);
 			rock = new ArmEnemyAttackRock(playerPosition, camera);

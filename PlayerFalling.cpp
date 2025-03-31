@@ -28,7 +28,7 @@ PlayerFalling::PlayerFalling(int modelHandle, VECTOR prevtargetLookDirection) :P
 
 	//ïœêîèâä˙âª
 	MoveSpeed = jsonData["FallingHorizonMoveSpeed"];
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
 	moveVec = VGet(0, 0, 0);
 }
 
@@ -82,7 +82,7 @@ void PlayerFalling::Move(UsePlayerData playerData, Camera camera)
 		moveVec.x = cos(stickAngle + -camera.GetangleH());
 		moveVec.z = sin(stickAngle + -camera.GetangleH());
 
-		targetLookDirection = moveVec;
+		newLookDirection = moveVec;
 	}
 
 	moveVec = VScale(moveVec, MoveSpeed);

@@ -13,6 +13,8 @@ public:
 	void Draw()override {};
 
 private:
+	const int JoyPadVibPower = 150;				//コントローラー振動強さ
+	const int JoyPadVibflame = -1;				//コントローラー振動フレーム(停止指示が来るまで)
 
 	SoundEffect* se;
 

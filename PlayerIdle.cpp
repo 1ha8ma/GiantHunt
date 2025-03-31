@@ -16,7 +16,7 @@ PlayerIdle::PlayerIdle(int modelHandle,VECTOR prevtargetLookDirection):PlayerSta
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
 	//•Ï”‰Šú‰»
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
 	moveVec = VGet(0, 0, 0);
 }
 

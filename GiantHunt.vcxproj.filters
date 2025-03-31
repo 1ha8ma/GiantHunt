@@ -448,5 +448,8 @@
     <None Include="Data\CameraData.json">
       <Filter>Data</Filter>
     </None>
+    <None Include="Data\ArmEnemyData.json">
+      <Filter>Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

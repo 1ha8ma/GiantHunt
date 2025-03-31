@@ -1,4 +1,5 @@
 #include<math.h>
+#include<algorithm>
 #include"DxLib.h"
 #include"Calculation.h"
 
@@ -61,6 +62,7 @@ float Calculation::LengthTwoPoint3D(VECTOR pos1, VECTOR pos2)
 {
 	float calc1 = pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2) + pow(pos2.z - pos1.z, 2);
 	float length = sqrtf(calc1);
+	
 	return length;
 }
 
@@ -97,4 +99,187 @@ VECTOR Calculation::OrthogonalProjectionVector(VECTOR OA, VECTOR OB)
 	VECTOR OH = VScale(OA, calc3);
 
 	return OH;
+}
+
+/// <summary>
+/// 法線ベクトル
+/// </summary>
+/// <param name="ver0">頂点1</param>
+/// <param name="ver1">頂点2</param>
+/// <param name="ver2">頂点3</param>
+/// <returns>法線ベクトル</returns>
+VECTOR Calculation::Normalize(VECTOR ver0, VECTOR ver1, VECTOR ver2)
+{
+	VECTOR vec01 = VSub(ver1, ver0);		//0→1
+	VECTOR vec02 = VSub(ver2, ver0);		//0→2
+	VECTOR normVec = VCross(vec01, vec02);	//法線ベクトル
+	normVec = VNorm(normVec);
+
+	return normVec;
+}
+
+/// <summary>
+/// カプセルと三角形のそれぞれの最近傍点
+/// </summary>
+/// <param name="capPos1">カプセルポジション1</param>
+/// <param name="capPos2">カプセルポジション2</param>
+/// <param name="ver0">頂点1</param>
+/// <param name="ver1">頂点2</param>
+/// <param name="ver2">頂点3</param>
+/// <param name="capClosest">カプセル最近傍点</param>
+/// <param name="triangleClosest">三角形最近傍点</param>
+void Calculation::ClosestPointCapsuleAndTriangle(VECTOR capPos1, VECTOR capPos2, VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR& capClosest, VECTOR& triangleClosest)
+{
+	//三角形上の最近傍点を求める
+	//VECTOR capCenter = VScale(VAdd(capPos1, capPos2), 0.5f);
+	//triangleClosest = ClosestPointOnTriangle(ver0, ver1, ver2, capCenter);
+
+	////カプセル軸上の最近傍点を求める
+	//capClosest = ClosestPointOnSegment(capPos1, capPos2, triangleClosest);
+
+	VECTOR closestA = ClosestPointOnTriangle(ver0, ver1, ver2, capPos1);
+	VECTOR closestB = ClosestPointOnTriangle(ver0, ver1, ver2, capPos2);
+
+	float distA = LengthTwoPoint3D(capPos1, closestA);
+	float distB = LengthTwoPoint3D(capPos2, closestB);
+
+	if (distA < distB)
+	{
+		capClosest = capPos1;
+		triangleClosest = closestA;
+	}
+	else
+	{
+		capClosest = capPos2;
+		triangleClosest = closestB;
+	}
+}
+
+/// <summary>
+/// 線分上の最近傍点
+/// </summary>
+/// <param name="pos1">ポジション1</param>
+/// <param name="pos2">ポジション2</param>
+/// <param name="point">点</param>
+/// <returns>最近傍点</returns>
+VECTOR Calculation::ClosestPointOnSegment(VECTOR pos1, VECTOR pos2, const VECTOR point)
+{
+	VECTOR vec12 = VSub(pos2, pos1);
+	VECTOR vec1p = VSub(point, pos1);
+	float dot = VDot(vec1p, vec12);
+	float len = LengthTwoPoint3D(pos1, pos2);
+	len = VDot(vec12, vec12);
+	float t = dot / len;
+
+	//線分内に納める
+	if (t < 0.0f)
+	{
+		t = 0.0f;
+	}
+	if (t > 1.0f)
+	{
+		t = 1.0f;
+	}
+
+	VECTOR closestPoint = VAdd(pos1, VScale(vec12, t));
+
+	return closestPoint;
+}
+
+/// <summary>
+/// 点と三角形の最近傍点を求める
+/// </summary>
+/// <param name="ver1">頂点1</param>
+/// <param name="ver2">頂点2</param>
+/// <param name="ver3">頂点3</param>
+/// <param name="point">点</param>
+/// <returns>最近傍点</returns>
+VECTOR Calculation::ClosestPointOnTriangle(VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR point)
+{
+	//法線ベクトル
+	//VECTOR norm = Normalize(ver0, ver1, ver2);
+
+	////点を三角形の平面上に投影
+	//VECTOR projectPoint = VSub(point, VScale(norm, VDot(VSub(point, ver0), norm)));
+
+	////バリセン重心座標を計算
+	//float u, v, w;
+	//Barycentric(ver0, ver1, ver2, projectPoint, u, v, w);
+
+	////三角形の内側にある場合は返す
+	//if (u >= 0 && v >= 0 && w >= 0)
+	//{
+	//	return projectPoint;
+	//}
+
+	//三角形の外側にある場合は最近傍点を求める
+	VECTOR closest01 = ClosestPointOnSegment(ver0, ver1, point);
+	VECTOR closest12 = ClosestPointOnSegment(ver1, ver2, point);
+	VECTOR closest20 = ClosestPointOnSegment(ver2, ver0, point);
+
+	//最近傍点とpointの最も距離の近いもの
+	float distance01 = LengthTwoPoint3D(point, closest01);
+	float distance12 = LengthTwoPoint3D(point, closest12);
+	float distance20 = LengthTwoPoint3D(point, closest20);
+
+	if (distance01 < distance12 && distance01 < distance20)
+	{
+		return closest01;
+	}
+	if (distance12 < distance20)
+	{
+		return closest12;
+	}
+	else
+	{
+		return closest20;
+	}
+}
+
+/// <summary>
+/// バリセントリック座標計算
+/// </summary>
+/// <param name="ver0">頂点1</param>
+/// <param name="ver1">頂点2</param>
+/// <param name="ver2">頂点3</param>
+/// <param name="projectionPoint">三角形に投影した点</param>
+/// <param name="u">中心座標</param>
+/// <param name="v">中心座標</param>
+/// <param name="w">中心座標</param>
+void Calculation::Barycentric(VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR projectionPoint, float& u, float& v, float& w)
+{
+	VECTOR v0 = VSub(ver1, ver0);
+	VECTOR v1 = VSub(ver2, ver0);
+	VECTOR v2 = VSub(projectionPoint, ver0);
+
+	float dot00 = VDot(v0, v0);
+	float dot01 = VDot(v0, v1);
+	float dot11 = VDot(v1, v1);
+	float dot20 = VDot(v2, v0);
+	float dot21 = VDot(v2, v1);
+	float denom = (dot00 * dot11) - (dot01 * dot01);
+
+	v = ((dot11 * dot20) - (dot01 * dot21)) / denom;
+	w = ((dot00 * dot21) - (dot01 * dot20)) / denom;
+	u = 1.0f - v - w;
+}
+
+/// <summary>
+/// 同じベクトルか判定
+/// </summary>
+/// <param name="vector1">ベクトル1</param>
+/// <param name="vector2">ベクトル2</param>
+/// <returns>結果</returns>
+bool Calculation::SameVector(VECTOR vector1, VECTOR vector2)
+{
+	bool result = false;
+
+	if (vector1.x == vector2.x &&
+		vector1.y == vector2.y &&
+		vector1.z == vector2.z)
+	{
+		result = true;
+	}
+
+	return result;
 }

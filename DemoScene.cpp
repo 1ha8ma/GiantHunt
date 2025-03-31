@@ -14,7 +14,7 @@ DemoScene::DemoScene()
 	input = new Input();
 
 	movieHandle = loader->GetHandle(Loader::Kind::DemoMovie);
-	SetGraphMode(1920+800, 1080+800, 32);
+	SetGraphMode(1920 + 800, 1080 + 800, 32);
 }
 
 /// <summary>

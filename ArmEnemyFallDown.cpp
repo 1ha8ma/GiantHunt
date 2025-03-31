@@ -48,9 +48,10 @@ bool ArmEnemyFallDown::UpdateFallDown(Camera* camera)
 
 		if (rotate.x <= -0.6f)
 		{
-			camera->PlayShakingVertical(3, 10, 50);
+			//ÉJÉÅÉâêUìÆ
+			camera->PlayShakingVertical(CameraShakingPower, CameraShakingChangeDirflame, CameraShakinPlayflame);
 			//êUìÆ
-			StartJoypadVibration(DX_INPUT_PAD1, 300, 1200, -1);
+			StartJoypadVibration(DX_INPUT_PAD1, JoyPadVibPower, JoyPadVibflame, -1);
 			moveState++;
 		}
 	}

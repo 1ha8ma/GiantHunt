@@ -45,17 +45,22 @@ private:
 		HandUp,		//手を上げる
 	};
 
-	const int MaxHP = 1000;							//最大HP
 	const float ModelScale = 40.0f;					//モデルの描画サイズ
-	const int PlayerRideMoveStateFlame = 100;		//プレイヤーが乗っている時の動きを始めるフレーム
-	const int AttackCoolTime = 100;					//攻撃クールタイム
 
 	void ChangeMove(VECTOR playerPos);
 
+	//他クラス
 	ArmEnemyMoveBase* move;
 	Calculation* calclation;
-
 	std::vector<EnemyParts*> parts;			//パーツ
+
+	//ステータス
+	int MaxHP;								//最大HP
+
+	//攻撃関係
+	int PlayerRideMoveStartFlame;			//プレイヤーが乗っている時の動きを始めるフレーム
+	int AttackCoolTime;						//攻撃クールタイム
+	float DropRockStartPlayerHeight;		//岩落とし攻撃をするプレイヤーの高さ
 	int playerRidePlace;					//プレイヤーが乗っている場所
 	bool moveChangeflg;						//状態からの動き変更指示フラグ
 	MoveKind nowMoveKind;					//現在の動きの種類

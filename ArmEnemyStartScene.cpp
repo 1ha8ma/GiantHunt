@@ -14,6 +14,7 @@
 /// </summary>
 ArmEnemyStartScene::ArmEnemyStartScene()
 {
+	//インスタンス化
 	camera = new Camera();
 	player = new Player();
 	stage = new ArmEnemyStage();
@@ -22,8 +23,8 @@ ArmEnemyStartScene::ArmEnemyStartScene()
 	//変数初期化
 	flame = 0;
 	blackBandAlpha = 0;
-	cameraPosition = VGet(5000, 2500, -1500);
-	cameraLookPosition = VGet(500, 1000, 1000);
+	cameraPosition = InitCameraPosition;
+	cameraLookPosition = InitCameraLookPosition;
 }
 
 /// <summary>
@@ -50,19 +51,18 @@ SceneBase* ArmEnemyStartScene::Update()
 {
 	//更新
 	camera->UpdateStartScene(cameraPosition, cameraLookPosition);
-	if (cameraPosition.y >= 2000)
+
+	cameraPosition.z -= CameraMoveZSpeed;
+
+	if (cameraLookPosition.y < CameraMaxLookPosY)
 	{
-		cameraPosition.z -= 4;
-	}
-	if (cameraLookPosition.y < 6000)
-	{
-		cameraLookPosition.y += 20;
+		cameraLookPosition.y += CameraLookPosUpYSpeed;
 	}
 
 	//黒帯を濃くする
 	if (blackBandAlpha < MaxBlackBandAlpha)
 	{
-		blackBandAlpha += 3;
+		blackBandAlpha += AlphaIncrease;
 		if (blackBandAlpha >= MaxBlackBandAlpha)
 		{
 			blackBandAlpha = MaxBlackBandAlpha;
@@ -70,7 +70,7 @@ SceneBase* ArmEnemyStartScene::Update()
 	}
 
 	//シーン変更
-	if (flame == 400)//400
+	if (flame == ChangeSceneflame)
 	{
 		player->StartSceneEnd();
 		return new GameScene(stage, enemy, camera, player, Time::StageTag::ArmEnemy);

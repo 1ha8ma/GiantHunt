@@ -1,4 +1,6 @@
+#include<fstream>
 #include"DxLib.h"
+#include"nlohmann/json.hpp"
 #include"Loader.h"
 #include"Calculation.h"
 #include"Camera.h"
@@ -16,16 +18,32 @@
 /// </summary>
 ArmEnemy::ArmEnemy()
 {
+	//インスタンス化
+	calclation = new Calculation();
 	Loader* loader = loader->GetInstance();
+
 	//モデルロード
 	modelHandle = loader->GetHandle(Loader::Kind::ArmEnemyModel);
 
-	//ステータス初期化
-	HP = MaxHP;
+	//ファイル読み込み
+	using Json = nlohmann::json;
+	Json jsonData;
+	std::ifstream ifs("Data/ArmEnemyData.json");
+	if (ifs)
+	{
+		ifs >> jsonData;
+	}
 
-	//private変数初期化
-	calclation = new Calculation();
-	position = VGet(1000.0f, 2000.0f, 6550.0f);//2000,-5000,6550
+	//変数初期化
+	//ステータス初期化
+	MaxHP = jsonData["MaxHP"];
+	HP = MaxHP;
+	//攻撃関係
+	PlayerRideMoveStartFlame = jsonData["PlayerRideMoveStartFlame"];
+	AttackCoolTime = jsonData["AttackCoolTime"];
+	DropRockStartPlayerHeight = jsonData["DropRockStartPlayerHeight"];
+	//ポジション関係
+	position = VGet(jsonData["InitPositionX"], jsonData["InitPositionY"], jsonData["InitPositionZ"]);
 	moveChangeflg = false;
 	playerRideFlame = 0;
 	playerRideflg = false;
@@ -98,7 +116,7 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 	{
 		playerRideFlame++;
 
-		if (playerRideFlame > PlayerRideMoveStateFlame)
+		if (playerRideFlame > PlayerRideMoveStartFlame)
 		{
 			playerRideFlame = 0;
 			playerRideMoveStartflg = true;
@@ -225,7 +243,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 	}
 
 	//岩落とし
-	if (nowMoveKind == MoveKind::Idle && handForPlayerDistance > 2500 && !playerRideflg && playerPos.y < handpos.y && playerPos.y>2000 && !attackCoolTimeflg)
+	if (nowMoveKind == MoveKind::Idle && !playerRideflg && playerPos.y < handpos.y && playerPos.y>DropRockStartPlayerHeight && !attackCoolTimeflg)
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;

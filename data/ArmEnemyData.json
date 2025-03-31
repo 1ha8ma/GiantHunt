@@ -1,0 +1,17 @@
+{
+  "MaxHP": 1000,
+  "PlayerRideMoveStartFlame": 100,
+  "AttackCoolTime": 100,
+  "InitPositionX": 1000.0,
+  "InitPositionY": 2000.0,
+  "InitPositionZ": 6550.0,
+  "DropRockStartPlayerHeight": 2000.0,
+  "DropRockAttackPower": 20,
+  "StartSceneCameraInitPosX": 5000.0,
+  "StartSceneCameraInitPosY": 2500.0,
+  "StartSceneCameraInitPosZ": -1500.0,
+  "StartSceneCameraInitLookPosX": 500.0,
+  "StartSceneCameraInitLookPosY": 1000.0,
+  "StartSceneCameraInitLookPosZ": 1000.0,
+    "StartSceneCameraLookPosUpYSpeed": 2.0
+}

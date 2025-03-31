@@ -27,11 +27,11 @@ private:
 	//‰¹—ÊŠ„‡
 	enum class Ratio :int
 	{
-		Title = 100,
-		GameOver = 100,
-		ArmEnemyStage = 80,
-		GameClear = 100,
-		Ranking = 80,
+		Title = 0,//100
+		GameOver = 0,//100
+		ArmEnemyStage = 0,//80
+		GameClear = 0,//100
+		Ranking = 0,//80
 	};
 
 	std::map<BGMKind, int> handle;	//ƒnƒ“ƒhƒ‹

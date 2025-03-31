@@ -21,7 +21,7 @@ PlayerNormalAttack::PlayerNormalAttack(int modelHandle, VECTOR prevtargetLookDir
 	//移動ベクトル初期化
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	//目標の方向を前の方向にする
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
 
 	//インスタンス化
 	se = new SoundEffect();

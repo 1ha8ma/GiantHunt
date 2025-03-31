@@ -75,7 +75,7 @@ SceneBase* GameOverScene::Update()
 		camera->UpdateGameOver();
 		player->UpdateGameOver();
 
-		if (flame == 200)
+		if (flame == DrawGameOverStringflame)
 		{
 			drawGameOver = true;
 		}
@@ -84,11 +84,11 @@ SceneBase* GameOverScene::Update()
 	}
 	else
 	{
-		backImageAlpha += 2;
+		backImageAlpha += AlphaIncrease;
 
-		if (backImageAlpha >= 255)
+		if (backImageAlpha >= MaxAlpha)
 		{
-			backImageAlpha = 255;
+			backImageAlpha = MaxAlpha;
 		}
 
 		//Bボタン入力可能
@@ -97,7 +97,7 @@ SceneBase* GameOverScene::Update()
 			canInputB = true;
 		}
 		//Bボタン入力
-		if (backImageAlpha == 255 && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		if (backImageAlpha == MaxAlpha && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
 		{
 			return new TitleScene();
 		}
@@ -125,6 +125,6 @@ void GameOverScene::Draw()
 		DrawString(500, 350, "Game Over", GetColor(240, 248, 255));
 		SetFontSize(40);
 		DrawString(600, 550, "タイトルに戻る [B]", GetColor(240, 248, 255));
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, MaxAlpha);
 	}
 }

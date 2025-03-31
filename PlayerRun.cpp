@@ -28,7 +28,8 @@ PlayerRun::PlayerRun(int modelHandle,VECTOR prevtargetLookDirection):PlayerState
 
 	//変数初期化
 	Speed = jsonData["RunSpeed"];
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
+	rotateMatrix = MGetIdent();
 }
 
 /// <summary>
@@ -85,7 +86,7 @@ void PlayerRun::Move(UsePlayerData playerData, Camera camera)
 		moveVec.z = sin(stickAngle + -camera.GetangleH());
 
 		moveflg = true;
-		targetLookDirection = moveVec;
+		newLookDirection = moveVec;
 	}
 
 	//正規化
@@ -97,42 +98,4 @@ void PlayerRun::Move(UsePlayerData playerData, Camera camera)
 	rotateMatrix = MGetRotVec2(prevTargetLookDir, moveVec);
 	//スピード加算
 	moveVec = VScale(moveVec, Speed);
-
-	//カプセルを歩いていたらベクトルの向きを変更
-	//if (playerData.runPlace == RunPlaceKind::capsule && playerData.onFoot)
-	//{
-	//	//対象カプセルの軸を取る
-	//	VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
-
-	//	//カプセルの下を取る
-	//	float underY;
-	//	if (playerData.capsuleEnd.y <= playerData.capsuleStart.y)
-	//	{
-	//		//対象カプセルの軸を取る
-	//		underY = playerData.capsuleEnd.y;
-	//	}
-	//	else
-	//	{
-	//		//対象カプセルの軸を取る
-	//		underY = playerData.capsuleStart.y;
-	//	}
-
-	//	//カプセルの水平との角度をとる
-	//	float cal1 = sqrtf(pow(shaft.x, 2) + pow(shaft.y, 2) + pow(shaft.z, 2));//カプセルのベクトル
-	//	float cal2 = sqrtf(pow(shaft.x, 2) + pow(underY, 2) + pow(shaft.z, 2));//Y座標をカプセルの下にしたベクトル
-	//	float cosTheta = VDot(shaft, VGet(shaft.x, underY, shaft.z)) / (cal1 * cal2);
-	//	float angle = acos(cosTheta);//角度変換
-
-	//	float deg = angle * (180 / DX_PI_F);//確認用
-
-	//	//平面moveVecの長さ
-	//	float horizonLen = VSize(moveVec);
-	//	//Y座標変更
-	//	moveVec.y = sin(angle) * horizonLen;
-
-	//	if (VSize(moveVec) > 0)
-	//	{
-	//		targetLookDirection = moveVec;
-	//	}
-	//}
 }

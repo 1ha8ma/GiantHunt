@@ -13,6 +13,9 @@ private:
 	const float PlayerHPLength = 300.0f;	//描画プレイヤーHPゲージの長さ
 	const float EnemyHPLength = 500.0f;		//描画敵HPゲージの長さ
 	const float PlayerGripSize = 50.0f;		//描画プレイヤー握力の大きさ
+	const int TakeDamageChangeColorflame = 40;
+	const int ColorChangeLowSpeed = 4;		//色の変更速度
+	const int ColorChangeHighSpeed = 5;		
 
 	float startEnemyHP;			//開始時敵HP
 	float startPlayerHP;		//開始時プレイヤーHP

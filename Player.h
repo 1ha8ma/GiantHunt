@@ -35,6 +35,8 @@ public:
 	void FootOnHitObject(CollisionData* hitObjectData);
 	//壁衝突時の処理
 	void WallHitProcess(VECTOR sinkIntoDepth);
+	//動き毎の処理
+	void MoveStateProcess();
 
 	//GetSet
 	VECTOR GetPosition() { return position; }
@@ -61,6 +63,13 @@ private:
 		Falling,		//落下
 	};
 
+	const float FallDamageCameraShakingPower = 0.8f;				//落下ダメージカメラ揺れ強さ
+	const int FallDamageCameraShakingDirChangeflame = 10;			//落下ダメージカメラの揺れの上下を切り替えるフレーム
+	const int FallDamageCameraShakingPlayflame = 20;				//落下ダメージ揺れ再生フレーム
+	const int FallDamageJoypadVibPower = 500;						//落下ダメージコントローラー揺れ強さ
+	const int FallDamageJoypadVibPlayflame = 100;					//落下ダメージコントローラー揺れフレーム
+	const float JumpDrowCorrectionY = -60.0f;						//ジャンプ時描画位置修正
+
 	//角度更新
 	void UpdateAngle();
 	//ステート変更
@@ -71,8 +80,8 @@ private:
 	void UpdateCapsule();
 	//当たり判定情報更新
 	void UpdateCollisionData();
-	//描画位置修正
-	void CorrectionDrawPosition();
+	//描画位置設定
+	void DrawPositionSet();
 	//押し戻し
 	void CollisionPushBack(CollisionData partsData,CollisionData *hitCollisionData);
 	//連続入力防止
@@ -123,16 +132,15 @@ private:
 	float angle;									//プレイヤーの向き
 	float changeAngleSpeed;							//角度変更速度
 	VECTOR moveVec;									//移動量
-	VECTOR targetLookDirection;						//モデルの向く目標方向
+	VECTOR lookDirection;							//モデルの向いている方向
 	bool jumpAfterLeaveFoot;						//ジャンプした後に足が離れた
 	bool onGround;									//足がついているか
 	bool onFootObject;								//足がオブジェクトに着いている
 	bool isCatch;									//掴める状態か
-	PlayerStateProcessBase::RunPlaceKind runPlace;	//走っている場所
 
 	//動き関係
 	State nowstateKind;								//現在の状態
-	bool changeStateflg;							//状態からの状態変更指示がある場合
+	bool isChangeState;								//状態からの状態変更指示がある場合
 
 	//落下
 	float Gravity;									//重力
@@ -140,11 +148,6 @@ private:
 	int fallFrame;									//落下時間
 	float fallDamage;								//落下ダメージ
 	float FallDamageIncrease;						//落下ダメージの増加量
-	float FallDamageCameraShakingPower;				//落下ダメージカメラ揺れ強さ
-	float FallDamageCameraShakingDirChangeflame;	//落下ダメージカメラの揺れの上下を切り替えるフレーム
-	float FallDamageCameraShakingPlayflame;			//落下ダメージ揺れ再生フレーム
-	float FallDamageJoypadVibPower;					//落下ダメージコントローラー揺れ強さ
-	float FallDamageJoypadVibPlayflame;				//落下ダメージコントローラー揺れフレーム
 
 	//突き刺し攻撃時
 	float cameraZoom;								//カメラのズーム
@@ -153,8 +156,7 @@ private:
 
 	//登り時
 	int MinusGripPoint;								//減らす握力量
-	VECTOR putCloseVec;								//オブジェクトと離れている分近づけるベクトル
 
 	//その他
-	bool gameOverflg;								//ゲームオーバーフラグ
+	bool isGameOver;								//ゲームオーバーフラグ
 };

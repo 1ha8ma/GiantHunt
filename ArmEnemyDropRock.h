@@ -17,8 +17,12 @@ public:
 
 	void OnHitObject(CollisionData* objectData);
 private:
-	const float AttackCapsuleRadius = 800.0f; //指から指の当たり判定にするなら200
-	const int AttackPower = 20;
+	const float AttackCapsuleRadius = 800.0f;	//指から指の当たり判定にするなら200
+	const float CameraShakingPower = 1.0;		//カメラ揺れ強さ
+	const int CameraShakingChangeDirflame = 10;	//カメラ上下揺れ変更フレーム
+	const int CameraShakinPlayflame = 50;		//カメラ揺れ再生フレーム
+	const int JoyPadVibPower = 200;				//コントローラー振動強さ
+	const int JoyPadVibflame = 900;				//コントローラー振動フレーム
 
 	//当たり判定情報更新
 	void UpdateCollisionData();
@@ -28,6 +32,7 @@ private:
 	SoundEffect* se;
 	ArmEnemyAttackRock* rock;				//岩
 
+	int AttackPower;
 	VECTOR attackCapsuleStart;				//攻撃カプセル始点
 	VECTOR attackCapsuleEnd;				//攻撃カプセル終点
 	bool moveEnd;							//動き終了

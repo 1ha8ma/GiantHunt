@@ -8,7 +8,6 @@ class EnemyBase;
 class Camera;
 class Player;
 
-
 class GameOverScene :public SceneBase
 {
 public:
@@ -23,6 +22,8 @@ public:
 	void Draw() override;
 
 private:
+	const int AlphaIncrease = 2;					//濃くする速さ
+	const int DrawGameOverStringflame = 200;		//ゲームオーバーの文字を表示し始めるフレーム
 
 	//他クラス
 	Input* input;

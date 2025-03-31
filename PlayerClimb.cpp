@@ -4,6 +4,7 @@
 #include"nlohmann/json.hpp"
 #include"CollisionData.h"
 #include"Camera.h"
+#include"Calculation.h"
 #include"Input.h"
 #include"PlayerClimb.h"
 
@@ -11,7 +12,7 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle">モデルハンドル</param>
-PlayerClimb::PlayerClimb(int modelHandle,VECTOR lookDir) :PlayerStateProcessBase(modelHandle)
+PlayerClimb::PlayerClimb(int modelHandle, VECTOR lookDir) :PlayerStateProcessBase(modelHandle)
 {
 	//アニメーションアタッチ
 	nowPlayAnim = MV1AttachAnim(modelHandle, PlayerAnimationNumber::Climb);
@@ -28,13 +29,14 @@ PlayerClimb::PlayerClimb(int modelHandle,VECTOR lookDir) :PlayerStateProcessBase
 		ifs >> jsonData;
 	}
 
+	//インスタンス化
+	calculation = new Calculation();
+
 	//変数初期化
 	calculation = new Calculation();
-	stopanimflg = false;
-	targetLookDirection = lookDir;
+	stopAnimation = false;
+	newLookDirection = lookDir;
 	Speed = jsonData["ClimbMoveSpeed"];
-	rotateY = 0.0f;
-	rotateH = 0.0f;
 }
 
 /// <summary>
@@ -66,9 +68,10 @@ bool PlayerClimb::Update(UsePlayerData playerData, const Camera& camera,Collisio
 {
 	bool stateChange = false;//状態変更フラグ
 
-	//MoveCapsule(playerData, camera, objectCollision);
-	MoveMesh(playerData, camera,objectCollision);
-	PlayAnimation(0.5f, stopanimflg);
+	//動き
+	Move(playerData, camera,objectCollision);
+	//アニメーション再生
+	PlayAnimation(0.5f, stopAnimation);
 
 	//R1を離すとステート変更
 	if ((Input::InputNumber::R1 & playerData.inputState) != Input::InputNumber::R1)
@@ -80,33 +83,149 @@ bool PlayerClimb::Update(UsePlayerData playerData, const Camera& camera,Collisio
 }
 
 /// <summary>
-/// メッシュとの登り動作
+///登り動作
 /// </summary>
 /// <param name="playerData">プレイヤー情報</param>
 /// <param name="camera">カメラ</param>
 /// <param name="objectData">オブジェクト情報</param>
-void PlayerClimb::MoveMesh(UsePlayerData playerData, Camera camera,CollisionData objectData)
+void PlayerClimb::Move(UsePlayerData playerData, Camera camera, CollisionData objectData)
 {
-	stopanimflg = true;										//アニメーション停止フラグ初期化
-	moveVec = VGet(0.0f, 0.0f, 0.0f);						//moveVec初期化
-	bool hit = false;										//メッシュに当たった
-	float nearDistance = 0;										//一番近かったポリゴンとプレイヤーの距離
-	int nearNumber = 0;											//一番近かったポリゴンの番号
+	//初期化
+	moveVec = VGet(0, 0, 0);				
+	float nearDistance;						//最も近い距離
+	VECTOR nearVer0, nearVer1, nearVer2;	//最も近いポリゴンの頂点
+	int nearPolygonNumber;					//最も近いポリゴン番号
+	playerCapStart = playerData.capsuleStart;
+	playerCapEnd = playerData.capsuleEnd;
+	capsuleRadius = playerData.capsuleRadius;
+	stopAnimation = true;
 
-	//左スティックの角度を取る
-	float stickX = playerData.stickState.X;
-	float stickY = -playerData.stickState.Y;//コントローラー上入力が+の値になるように
+	//近いポリゴンの情報を取る
+	NearPolygon(nearPolygonNumber,nearVer0, nearVer1, nearVer2, nearDistance, objectData);
+
+	//確認用中心点
+	playerPosition = playerData.position;
+	nearPolygonCenter = VAdd(VAdd(nearVer0, nearVer1), nearVer2);
+	nearPolygonCenter.x = nearPolygonCenter.x / 3;
+	nearPolygonCenter.y = nearPolygonCenter.y / 3;
+	nearPolygonCenter.z = nearPolygonCenter.z / 3;
+
+	//法線ベクトル
+	VECTOR normVec = calculation->Normalize(nearVer0, nearVer1, nearVer2);
+
+	//入力からのmoveVec
+	bool isInputStick = MoveVecForInput(playerData, camera, normVec, nearVer0);
+
+	//向いている方向更新
+	newLookDirection = VScale(normVec, -1);
+
+	//回転行列更新
+	UpdateRotateMatrix(newLookDirection, playerData.lookDirection);
 
 	//入力が無ければ返す
-	if (stickX == 0 && stickY == 0)
+	if (!isInputStick)
 	{
+		moveVec = VGet(0, 0, 0);
 		return;
 	}
-	else
+
+	//アニメーションを中断させない
+	stopAnimation = false;
+
+	//スピード加算
+	moveVec = VScale(moveVec, Speed);
+
+	//移動後のポジション
+	VECTOR moveAfterPos = VAdd(playerData.position, moveVec);
+	UpdateTentativePlayerCapsule(playerData, moveAfterPos);
+
+	//移動後のポジションが有効か確認
+	VECTOR addMoveVec = IsValidMoveAfterPosition(objectData, moveAfterPos, nearVer0, nearVer1, nearVer2);
+
+//	moveVec = VAdd(moveVec, addMoveVec);
+}
+
+/// <summary>
+/// 確認用
+/// </summary>
+void PlayerClimb::Draw()
+{
+	//ポジションと登っているポリゴン中点
+	DrawLine3D(nearPolygonCenter, playerPosition,GetColor(127,255,212));
+}
+
+/// <summary>
+/// 入力からのmoveVec作成
+/// </summary>
+/// <param name="playerData">プレイヤー情報</param>
+/// <param name="camera">カメラ情報</param>
+/// <param name="normVec">法線</param>
+/// <param name="vertex0">頂点</param>
+/// <returns>入力があったか</returns>
+bool PlayerClimb::MoveVecForInput(UsePlayerData playerData, Camera camera, VECTOR normVec, VECTOR vertex0)
+{
+	//入力が無ければ返す
+	if (playerData.stickState.X == 0 && playerData.stickState.Y == 0)
 	{
-		stopanimflg = false;
+		return false;
 	}
-	
+
+	//入力からのベクトル作成
+	VECTOR inputDir = VGet(0.0f, 0.0f, 0.0f);
+	//上
+	if (playerData.stickState.Y < 0.0f)
+	{
+		inputDir = VAdd(inputDir, VSub(playerData.capsuleStart, playerData.capsuleEnd));
+	}
+	//下
+	if (playerData.stickState.Y > 0.0f)
+	{
+		inputDir = VAdd(inputDir, VSub(playerData.capsuleEnd, playerData.capsuleStart));
+	}
+	//右
+	if (playerData.stickState.X > 0.0f)
+	{
+		VECTOR cross = VCross(VSub(playerData.capsuleStart, playerData.capsuleEnd), playerData.lookDirection);
+		inputDir = VAdd(inputDir, cross);
+	}
+	//左
+	if (playerData.stickState.X < 0.0f)
+	{
+		VECTOR cross = VCross(playerData.lookDirection, VSub(playerData.capsuleStart, playerData.capsuleEnd));
+		inputDir = VAdd(inputDir, cross);
+	}
+
+	//平面を移動するように補正
+	inputDir = VNorm(inputDir);
+	moveVec = ProjectOnPlane(inputDir, normVec);
+	moveVec = VNorm(moveVec);
+
+	return true;
+}
+
+/// <summary>
+/// 回転行列更新
+/// </summary>
+/// <param name="newLookDirection">新しい向いている方向</param>
+/// <param name="prevLookDirection">前に向いていた方向</param>
+void PlayerClimb::UpdateRotateMatrix(VECTOR newLookDirection, VECTOR prevLookDirection)
+{
+	//前の方向と今回の方向の差
+	MATRIX addMatrix = MGetRotVec2(prevLookDirection, newLookDirection);
+
+	rotateMatrix = MMult(rotateMatrix, addMatrix);
+}
+
+/// <summary>
+/// 最も近いポリゴンの情報を取る
+/// </summary>
+/// <param name="nearVer0">頂点0</param>
+/// <param name="nearVer1">頂点1</param>
+/// <param name="nearVer2">頂点2</param>
+/// <param name="nearDistance">最も近い距離</param>
+/// <param name="objectData">オブジェクトデータ</param>
+void PlayerClimb::NearPolygon(int& nearPolygonNumber, VECTOR& nearVer0, VECTOR& nearVer1, VECTOR& nearVer2, float& nearDistance, const CollisionData objectData)
+{
 	for (int i = 0; i < objectData.meshData.polygonList.PolygonNum; i++)
 	{
 		VECTOR vertex0 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[0]].Position;
@@ -114,366 +233,228 @@ void PlayerClimb::MoveMesh(UsePlayerData playerData, Camera camera,CollisionData
 		VECTOR vertex2 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[2]].Position;
 
 		//距離を取る
-		float distance = Segment_Triangle_MinLength(playerData.capsuleStart, playerData.capsuleEnd, vertex0, vertex1, vertex2);
+		float distance = Segment_Triangle_MinLength(playerCapStart, playerCapEnd, vertex0, vertex1, vertex2);
 
-		//一回目の時
+		//一回目の処理
 		if (i == 0)
 		{
 			nearDistance = distance;
+			nearVer0 = vertex0;
+			nearVer1 = vertex1;
+			nearVer2 = vertex2;
+			nearPolygonNumber = i;
 		}
 
-		//あたり判定
-		if (distance < playerData.capsuleRadius)
-		{
-			hit = true;
-		}
-
-		//一番近い距離を更新
+		//最も近いポリゴンとその距離
 		if (nearDistance > distance)
 		{
 			nearDistance = distance;
-			nearNumber = i;
+			nearVer0 = vertex0;
+			nearVer1 = vertex1;
+			nearVer2 = vertex2;
+			nearPolygonNumber = i;
+		}
+	}
+}
+
+/// <summary>
+/// 入力された情報をポリゴンの平面に映す
+/// </summary>
+/// <param name="inputDir">入力された方向</param>
+/// <param name="polygonNorm">ポリゴン法線</param>
+/// <returns></returns>
+VECTOR PlayerClimb::ProjectOnPlane(VECTOR inputDir, VECTOR polygonNorm)
+{
+	float dot = VDot(inputDir, polygonNorm);
+	return VSub(inputDir, VScale(polygonNorm, VDot(inputDir, polygonNorm)));
+}
+
+/// <summary>
+/// 移動先が有効か確認
+/// </summary>
+/// <param name="objectData">オブジェクトデータ</param>
+/// <param name="moveAfterPosition">移動後ポジション</param>
+/// <param name="vertex0">頂点</param>
+/// <param name="vertex1">頂点</param>
+/// <param name="vertex2">頂点</param>
+/// <returns>追加の移動ベクトル</returns>
+VECTOR PlayerClimb::IsValidMoveAfterPosition(CollisionData objectData, VECTOR moveAfterPosition, VECTOR vertex0, VECTOR vertex1, VECTOR vertex2)
+{
+	VECTOR addMoveVec = VGet(0, 0, 0);	//追加用移動ベクトル
+
+	//移動後の最近傍点を求める
+	VECTOR capsuleClosest, triangleClosest;
+	calculation->ClosestPointCapsuleAndTriangle(playerCapStart, playerCapEnd, vertex0, vertex1, vertex2, capsuleClosest, triangleClosest);
+
+	//確認用
+	float checkLen = calculation->LengthTwoPoint3D(capsuleClosest, triangleClosest);
+
+	//判定中のポリゴンの中に投影点があるか
+	bool inPolygon = false;
+	VECTOR polyNorm = calculation->Normalize(vertex0, vertex1, vertex2);
+	float u, v, w;
+	VECTOR projectClosest = VSub(capsuleClosest, VScale(polyNorm, VDot(VSub(capsuleClosest, vertex0), polyNorm)));
+	calculation->Barycentric(vertex0, vertex1, vertex2, projectClosest, u, v, w);
+	if (u >= 0 && v >= 0 && w >= 0)
+	{
+		inPolygon = true;
+	}
+
+	//隣の三角形へ移動できるか確認
+	if (!inPolygon)
+	{	
+		//隣のポリゴンを探す
+		int nextPolygonNumber;
+		nextPolygonNumber = FindNextPolygon(objectData, capsuleClosest, vertex0, vertex1, vertex2);
+
+		//ポジションを隣のポリゴンの最近傍点に変更
+		VECTOR nextVer0 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nextPolygonNumber].VIndex[0]].Position;
+		VECTOR nextVer1 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nextPolygonNumber].VIndex[1]].Position;
+		VECTOR nextVer2 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nextPolygonNumber].VIndex[2]].Position;
+
+		VECTOR nextCapClosest, nextTriClosest;
+		calculation->ClosestPointCapsuleAndTriangle(playerCapStart, playerCapEnd, nextVer0, nextVer1, nextVer2, nextCapClosest, nextTriClosest);
+		VECTOR newPos = nextTriClosest;
+		newPos = VAdd(newPos, VScale(VNorm(VSub(nextCapClosest, nextTriClosest)), capsuleRadius));
+
+		addMoveVec = VSub(moveAfterPosition, newPos);
+	}
+
+	return addMoveVec;
+}
+
+/// <summary>
+/// 隣のポリゴンを見つける
+/// </summary>
+/// <param name="point">ポジションを投影した点</param>
+/// <param name="vertex0">頂点</param>
+/// <param name="vertex1">頂点</param>
+/// <param name="vertex2">頂点</param>
+int PlayerClimb::FindNextPolygon(CollisionData objectData,VECTOR point, VECTOR vertex0, VECTOR vertex1, VECTOR vertex2)
+{
+	VECTOR vertex[3] = { vertex0,vertex1,vertex2};
+	
+	//法線
+	VECTOR normal = calculation->Normalize(vertex0, vertex1, vertex2);
+
+	//超えていた辺を持つポリゴンを取る
+	int nextPolygonNumber = -1;
+	if (CheckOutSide(point, normal, vertex1, vertex0, vertex2))
+	{
+		nextPolygonNumber = CheckSameVertexPolygon(objectData, vertex1, vertex0);
+	}
+	if (CheckOutSide(point, normal, vertex2, vertex1, vertex0))
+	{
+		nextPolygonNumber = CheckSameVertexPolygon(objectData, vertex2, vertex1);
+	}
+	if (CheckOutSide(point, normal, vertex2, vertex0, vertex1))
+	{
+		nextPolygonNumber = CheckSameVertexPolygon(objectData, vertex2, vertex0);
+	}
+	
+	return nextPolygonNumber;
+}
+
+/// <summary>
+/// 出た辺を探す
+/// </summary>
+/// <param name="point">確認する点</param>
+/// <param name="normal">法線</param>
+/// <param name="sideVer1">辺の頂点</param>
+/// <param name="sideVer2">辺の頂点</param>
+/// <param name="noSideVer">辺に使用しない頂点</param>
+/// <returns>true:辺の外　false:辺の内</returns>
+bool PlayerClimb::CheckOutSide(VECTOR point, VECTOR normal, VECTOR sideVer1, VECTOR sideVer2,VECTOR noSideVer)
+{
+	//辺のベクトル
+	VECTOR side = VSub(sideVer2, sideVer1);
+
+	//辺に垂直なベクトル
+	VECTOR sideVerticalVec = VCross(side, normal);
+
+	//辺と反対の頂点の方向
+	float side1 = VDot(sideVerticalVec, VSub(noSideVer, sideVer1));
+	//辺と点の方向
+	float side2 = VDot(sideVerticalVec, VSub(point, sideVer1));
+
+	//頂点の方向と辺の方向が同じでないなら外に出ている
+	if (side1 * side2 >= 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/// <summary>
+/// 同じ頂点を2つもつポリゴンを探す
+/// </summary>
+/// <param name="vertex1">頂点</param>
+/// <param name="vertex2">頂点</param>
+/// <returns>対象のポリゴンの番号</returns>
+int PlayerClimb::CheckSameVertexPolygon(CollisionData objectData, VECTOR vertex1, VECTOR vertex2)
+{
+	VECTOR vertex3;
+	int sameTwoVerPolygonNum;
+	int sameVer1, sameVer2;
+
+	for (int i = 0; i < objectData.meshData.polygonList.PolygonNum; i++)
+	{
+		VECTOR checkVer0 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[0]].Position;
+		VECTOR checkVer1 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[1]].Position;
+		VECTOR checkVer2 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[2]].Position;
+
+		int sameCount = 0;
+
+		for (int j = 0; j < 3; j++)
+		{
+			if (calculation->SameVector(vertex1, objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[j]].Position))
+			{
+				sameCount++;
+				sameVer1 = j;
+			}
 		}
 
-		if (hit)
+		for (int k = 0; k < 3; k++)
 		{
-			VECTOR vec01 = VSub(vertex1, vertex0);	//0→1
-			VECTOR vec02 = VSub(vertex2, vertex0);	//0→2
-			VECTOR normVec = VCross(vec01, vec02);	//法線ベクトル
-			normVec = VNorm(normVec);
-
-			//法線とは逆の方向(ポリゴンの方向に向ける)
-			moveVec = normVec;
-			//法線の辺面との角度
-			float angley = calculation->AngleTwoVector(normVec, VGet(normVec.x, 0, normVec.z));
-
-			//上
-			if (stickY > 0)
+			if (calculation->SameVector(vertex2, objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[i].VIndex[k]].Position))
 			{
-				//方向ベクトル
-				VECTOR vecDir = VSub(playerData.capsuleStart, playerData.centerPosition);
-				vecDir = VNorm(vecDir);
-
-				moveVec = VScale(vecDir, Speed);
+				sameCount++;
+				sameVer2 = k;
 			}
-			//下
-			if (stickY < 0)
-			{
-				//方向ベクトル
-				VECTOR vecDir = VSub(playerData.capsuleEnd, playerData.centerPosition);
-				vecDir = VNorm(vecDir);
+		}
 
-				moveVec = VScale(vecDir, Speed);
-			}
-			//右
-			if (stickX > 0)
-			{
-				//回転軸を取る
-				VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
-				shaft = VNorm(shaft);
-				//正面から90度横に移動ベクトルの向きを設定
-				MATRIX rot = MGetRotAxis(shaft, DX_PI_F / 2);
-				VECTOR vecDir = playerData.lookDirection;
-				vecDir = VNorm(vecDir);
-				vecDir = VTransform(vecDir, rot);
-				
-				moveVec = VScale(vecDir, Speed);
-			}
-			//左
-			if (stickX < 0)
-			{
-				//回転軸を取る
-				VECTOR shaft = VSub(playerData.capsuleStart, playerData.capsuleEnd);
-				shaft = VNorm(shaft);
-				//正面から-90度横に移動ベクトルの向きを設定
-				MATRIX rot = MGetRotAxis(shaft, -DX_PI_F / 2);
-				VECTOR vecDir = playerData.lookDirection;
-				vecDir = VNorm(vecDir);
-				vecDir = VTransform(vecDir, rot);
-
-				moveVec = VScale(vecDir, Speed);
-			}
-
-			//前のベクトルから新しいベクトルに変換したときの回転行列
-			//rotateMatrix = MGetRotVec2(targetLookDirection, VScale(normVec, -1));
-			//法線の逆の方向に向ける
-			targetLookDirection = VScale(normVec, -1);
-
+		if (sameCount == 2)
+		{
+			sameTwoVerPolygonNum = i;
 			break;
 		}
 	}
 
-	//どこにも当たっていなければ一番近かったポリゴンに近づける
-	if (!hit)
+	//3つ目の頂点を探す
+	for (int l = 0; l < 3; l++)
 	{
-		VECTOR vertex0 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nearNumber].VIndex[0]].Position;
-		VECTOR vertex1 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nearNumber].VIndex[1]].Position;
-		VECTOR vertex2 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[nearNumber].VIndex[2]].Position;
-		VECTOR vec01 = VSub(vertex1, vertex0);	//0→1
-		VECTOR vec02 = VSub(vertex2, vertex0);	//0→2
-		VECTOR normVec = VCross(vec01, vec02);	//法線ベクトル
-		normVec = VNorm(normVec);
-
-		moveVec = VScale(normVec, -1);
-		moveVec = VScale(moveVec, nearDistance);
-
-		//法線の逆の方向に向ける
-		targetLookDirection = VScale(normVec, -1);
+		if (sameVer1 != l && sameVer2 != l)
+		{
+			vertex3 = objectData.meshData.polygonList.Vertexs[objectData.meshData.polygonList.Polygons[sameTwoVerPolygonNum].VIndex[l]].Position;
+		}
 	}
+
+	return sameTwoVerPolygonNum;
 }
 
 /// <summary>
-/// カプセルとの登り動作(使用しない)
+/// 仮のプレイヤーカプセルを更新
 /// </summary>
-/// <param name="playerData">プレイヤーデータ</param>
-/// <param name="camera">カプセル</param>
-/// <param name="objectCollision">オブジェクト情報</param>
-void PlayerClimb::MoveCapsule(UsePlayerData playerData, Camera camera, CollisionData objectCollision )
+/// <param name="playerData">プレイヤー情報</param>
+void PlayerClimb::UpdateTentativePlayerCapsule(UsePlayerData playerData,VECTOR moveAfterPos)
 {
-	stopanimflg = true;										//アニメーション停止フラグ初期化
-	moveVec = VGet(0.0f, 0.0f, 0.0f);						//moveVec初期化
-	VECTOR afterPos = VGet(0.0f, 0.0f, 0.0f);				//計算後ポジション
-	VECTOR positionFromShaftstart = VGet(0.0f, 0.0f, 0.0f);	//軸の始点からのポジションまでのベクトル
-	
-	//左スティックの角度を取る
-	float stickX = playerData.stickState.X;
-	float stickY = -playerData.stickState.Y;
-
-	//対象カプセルの軸を取る
-	VECTOR shaft = VSub(objectCollision.startPosition, objectCollision.endPosition);
-
-	//登っている場所がカプセルの筒の部分か先端の球の部分か判定
-	int capsuleRidePlace;	//0:筒 1:カプセル始点 2:カプセル終点
-
-	//カプセルの両端のどちらに近いか
-	float sphere1 = calculation->LengthTwoPoint3D(playerData.position, objectCollision.startPosition);
-	float sphere2 = calculation->LengthTwoPoint3D(playerData.position, objectCollision.endPosition);
-
-	//始点に近い場合
-	if (sphere1 < sphere2)
-	{
-		VECTOR OA = VSub(objectCollision.endPosition, objectCollision.startPosition);		//始点→終点
-		VECTOR OB = VSub(playerData.position, objectCollision.startPosition);				//始点→プレイヤーポジション
-		VECTOR tipPoint = VNorm(OA);														//終点→始点ベクトルの正規化 * 半径 = カプセルの先端ポジション
-		tipPoint = VScale(tipPoint, -1);
-		tipPoint = VScale(tipPoint, objectCollision.radius);
-		VECTOR OH = calculation->OrthogonalProjectionVector(OA, OB);
-		float distanceForH = calculation->LengthTwoPoint3D(OH, tipPoint);					//カプセルの先端と垂線の距離
-		if (distanceForH < objectCollision.radius)
-		{
-			capsuleRidePlace = 1;
-		}
-		else
-		{
-			capsuleRidePlace = 0;
-		}
-	}
-	else //終点に近い場合
-	{
-		VECTOR OA = VSub(objectCollision.startPosition, objectCollision.endPosition);
-		VECTOR OB = VSub(playerData.position, objectCollision.endPosition);
-		VECTOR tipPoint = VNorm(OA);
-		tipPoint = VScale(tipPoint, -1);
-		tipPoint = VScale(tipPoint, objectCollision.radius);
-		VECTOR OH = calculation->OrthogonalProjectionVector(OA, OB);
-		float distanceForH = calculation->LengthTwoPoint3D(OH, tipPoint);	//カプセルの先端と垂線の距離
-		if (distanceForH < objectCollision.radius)
-		{
-			capsuleRidePlace = 2;
-		}
-		else
-		{
-			capsuleRidePlace = 0;
-		}
-	}
-
-	//球にいる場合の球とプレイヤーの角度計算
-	if (capsuleRidePlace == 1)
-	{
-		CalculationAngle(playerData.position, objectCollision.startPosition);
-	}
-	if (capsuleRidePlace == 2)
-	{
-		CalculationAngle(playerData.position, objectCollision.endPosition);
-	}
-
-	//上
-	if (stickY > 0)
-	{
-		if (capsuleRidePlace == 0)
-		{
-			stopanimflg = false;
-			//軸の垂直方向に回転
-			positionFromShaftstart = VSub(playerData.position, objectCollision.startPosition);
-			afterPos = calculation->RodriguesRotationFormula(shaft, -RotateSpeed, positionFromShaftstart);
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, positionFromShaftstart);
-		}
-		if (capsuleRidePlace == 1)
-		{
-			stopanimflg = false;
-
-			rotateY += RotateSpeed;
-			
-			afterPos.x = objectCollision.startPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.startPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.startPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-		if (capsuleRidePlace == 2)
-		{
-			stopanimflg = false;
-
-			rotateY += RotateSpeed;
-
-			afterPos.x = objectCollision.endPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.endPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.endPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-	}
-	//下
-	if (stickY < 0)
-	{
-		if (capsuleRidePlace == 0)
-		{
-			stopanimflg = false;
-			//軸の垂直方向に回転
-			positionFromShaftstart = VSub(playerData.position, objectCollision.startPosition);
-			afterPos = calculation->RodriguesRotationFormula(shaft, RotateSpeed, positionFromShaftstart);
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, positionFromShaftstart);
-		}
-		if (capsuleRidePlace == 1)
-		{
-			stopanimflg = false;
-
-			rotateY -= RotateSpeed;
-
-			afterPos.x = objectCollision.startPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.startPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.startPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-		if (capsuleRidePlace == 2)
-		{
-			stopanimflg = false;
-
-			rotateY -= RotateSpeed;
-
-			afterPos.x = objectCollision.endPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.endPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.endPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-	}
-	//左
-	if (stickX < 0)
-	{
-		if (capsuleRidePlace == 0)
-		{
-			//軸の方向に移動
-			stopanimflg = false;
-
-			VECTOR shaftVec = VNorm(shaft);
-			VECTOR speedVec = VScale(shaftVec, Speed);
-			moveVec = VAdd(moveVec, speedVec);
-		}
-		if (capsuleRidePlace == 1)
-		{
-			stopanimflg = false;
-
-			rotateH -= RotateSpeed;
-
-			afterPos.x = objectCollision.startPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.startPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.startPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-		if (capsuleRidePlace == 2)
-		{
-			stopanimflg = false;
-
-			rotateH -= RotateSpeed;
-
-			afterPos.x = objectCollision.endPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.endPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.endPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-	}
-	//右
-	if (stickX > 0)
-	{
-		if (capsuleRidePlace == 0)
-		{
-			//軸の方向に移動
-			stopanimflg = false;
-
-			VECTOR shaftVec = VNorm(shaft);
-			VECTOR speedVec = VScale(shaftVec, -Speed);
-			moveVec = VAdd(moveVec, speedVec);
-		}
-		if (capsuleRidePlace == 1)
-		{
-			stopanimflg = false;
-
-			rotateH += RotateSpeed;
-
-			afterPos.x = objectCollision.startPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.startPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.startPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-		if (capsuleRidePlace == 2)
-		{
-			stopanimflg = false;
-
-			rotateH += RotateSpeed;
-
-			afterPos.x = objectCollision.endPosition.x + objectCollision.radius * cos(rotateY) * cos(rotateH);
-			afterPos.y = objectCollision.endPosition.y + objectCollision.radius * sin(rotateY);
-			afterPos.z = objectCollision.endPosition.z + objectCollision.radius * cos(rotateY) * sin(rotateH);
-
-			//計算前と計算後の差
-			moveVec = VSub(afterPos, playerData.position);
-		}
-	}
-
-	//オブジェクトのmoveVecを加算
-	moveVec = VAdd(moveVec, objectCollision.moveVec);
-}
-
-/// <summary>
-/// 角度計算
-/// </summary>
-/// <param name="playerPosition">プレイヤーポジション</param>
-/// <param name="objectPosition">判定対象のポジション</param>
-void PlayerClimb::CalculationAngle(VECTOR playerPosition, VECTOR objectPosition)
-{
-	//差分
-	float dx = playerPosition.x - objectPosition.x;
-	float dy = playerPosition.y - objectPosition.y;
-	float dz = playerPosition.z - objectPosition.z;
-
-	//半径
-	float r = sqrt(dx * dx + dy * dy + dz * dz);
-
-	//角度計算
-	rotateY = asinf(dy / r);
-	rotateH = atan2f(dz, dx);
+	VECTOR startVec = VGet(0, 1, 0);
+	startVec = VTransform(startVec, rotateMatrix);
+	playerCapStart = VAdd(moveAfterPos, VScale(startVec, playerData.wholeBodyCapsuleHalfLength));
+	VECTOR endVec = VGet(0, -1, 0);
+	endVec = VTransform(endVec, MInverse(rotateMatrix));
+	playerCapEnd = VAdd(moveAfterPos, VScale(endVec, playerData.wholeBodyCapsuleHalfLength));
 }

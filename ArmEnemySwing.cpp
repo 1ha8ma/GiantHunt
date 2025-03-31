@@ -22,7 +22,7 @@ ArmEnemySwing::ArmEnemySwing(int modelHandle,VECTOR prevRotate) :ArmEnemyMoveBas
 	se->PlaySE(SoundEffect::SEKind::Swing);
 
 	//êUìÆ
-	StartJoypadVibration(DX_INPUT_PAD1, 150, -1, -1);
+	StartJoypadVibration(DX_INPUT_PAD1, JoyPadVibPower, JoyPadVibflame, -1);
 }
 
 /// <summary>

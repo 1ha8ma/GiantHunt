@@ -82,7 +82,7 @@ SceneBase* GameClearScene::Update()
 	//黒帯を濃くする
 	if (blackBandAlpha < MaxBlackBandAlpha)
 	{
-		blackBandAlpha += 3;
+		blackBandAlpha += AlphaIncrease;
 		if (blackBandAlpha >= MaxBlackBandAlpha)
 		{
 			blackBandAlpha = MaxBlackBandAlpha;
@@ -92,7 +92,7 @@ SceneBase* GameClearScene::Update()
 	//テキストボックスを濃くする
 	if (enemyMoveEnd && textBackAlpha < MaxTextBackAlpha)
 	{
-		textBackAlpha += 3;
+		textBackAlpha += AlphaIncrease;
 		if (textBackAlpha >= MaxTextBackAlpha)
 		{
 			textBackAlpha = MaxTextBackAlpha;

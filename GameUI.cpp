@@ -72,17 +72,17 @@ void GameUI::Update(int enemyHP, int playerHP, int playerGrip, bool onPiercingGa
 	if (enemyTakeDamage)
 	{
 		//色変更
-		enemyColorR += 4;
+		enemyColorR += ColorChangeLowSpeed;
 		if (enemyColorR > 224) { enemyColorR = 224; }
-		enemyColorG += 5;
+		enemyColorG += ColorChangeHighSpeed;
 		if (enemyColorG > 255) { enemyColorG = 255; }
-		enemyColorB += 5;
+		enemyColorB += ColorChangeHighSpeed;
 		if (enemyColorB > 255) { enemyColorB = 255; }
 
 		enemyTakeDamageFlame++;
 
 		//一定フレーム経ったら
-		if (enemyTakeDamageFlame >= 40)
+		if (enemyTakeDamageFlame >= TakeDamageChangeColorflame)
 		{
 			enemyColorR = 75;
 			enemyColorG = 75;
@@ -93,17 +93,17 @@ void GameUI::Update(int enemyHP, int playerHP, int playerGrip, bool onPiercingGa
 	if (playerTakeDamage)
 	{
 		//色変更
-		playerColorR += 5;
+		playerColorR += ColorChangeHighSpeed;
 		if (playerColorR > 255) { playerColorR = 255; }
-		playerColorG += 4;
+		playerColorG += ColorChangeLowSpeed;
 		if (playerColorG > 224) { playerColorG = 224; }
-		playerColorB += 5;
+		playerColorB += ColorChangeHighSpeed;
 		if (playerColorB > 255) { playerColorB = 255; }
 
 		playerTakeDamageFlame++;
 
 		//一定フレーム経ったら
-		if (playerTakeDamageFlame >= 40)
+		if (playerTakeDamageFlame >= TakeDamageChangeColorflame)
 		{
 			playerColorR = 75;
 			playerColorG = 75;

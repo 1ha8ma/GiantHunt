@@ -31,6 +31,13 @@ private:
 		Tutorial,		//チュートリアル
 	};
 	
+	const float InitTrianglePosY = 220;				//カーソル三角の初期位置
+	const int StartStringAlphaMin = 100;			//スタート文字の最小濃さ
+	const int AlphaIncrease = 2;					//濃くする速さ
+	const int ChangeStageStringAlphaIncrease = 5;	//タイトルから場面選択に行く時の文字のきえる速さ
+	const float CursorSpeed = 100;					//カーソル移動速度
+	const int DemoStartflame = 1000;				//操作せずにデモプレイが始まるフレーム
+
 	//他クラス
 	Input* input;
 	BGM* bgm;

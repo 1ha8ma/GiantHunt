@@ -29,7 +29,7 @@ PlayerJump::PlayerJump(int modelHandle,VECTOR prevmoveVec) :PlayerStateProcessBa
 	//•Ï”‰Šú‰»
 	moveVecV = prevmoveVec;
 	moveVecV.y = 0.0f;
-	targetLookDirection = prevmoveVec;
+	newLookDirection = prevmoveVec;
 	FirstJumpPower = jsonData["JumpPower"];
 	MoveSpeedHorizon = jsonData["FallingHorizonMoveSpeed"];
 	jumpPower = FirstJumpPower;

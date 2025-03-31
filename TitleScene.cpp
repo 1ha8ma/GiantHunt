@@ -30,7 +30,7 @@ TitleScene::TitleScene()
 	canInputStick = false;
 	inputOrderAlpha = MaxAlpha;
 	inputOrderflg = true;
-	trianglePosY = 220;
+	trianglePosY = InitTrianglePosY;
 	stringAlpha = MaxAlpha;
 	stateChange = false;
 	demoStartflame = 0;
@@ -85,21 +85,21 @@ SceneBase* TitleScene::Update()
 		//入力指示点滅
 		if (inputOrderflg)
 		{
-			inputOrderAlpha -= 2;
+			inputOrderAlpha -= AlphaIncrease;
 
-			if (inputOrderAlpha <= 100)
+			if (inputOrderAlpha <= StartStringAlphaMin)
 			{
-				inputOrderAlpha = 100;
+				inputOrderAlpha = StartStringAlphaMin;
 				inputOrderflg = false;
 			}
 		}
 		else
 		{
-			inputOrderAlpha += 2;
+			inputOrderAlpha += AlphaIncrease;
 
-			if (inputOrderAlpha >= 255)
+			if (inputOrderAlpha >= MaxAlpha)
 			{
-				inputOrderAlpha = 255;
+				inputOrderAlpha = MaxAlpha;
 				inputOrderflg = true;
 			}
 		}
@@ -116,7 +116,7 @@ SceneBase* TitleScene::Update()
 		if (stateChange)
 		{
 			demoStartflame = 0;
-			stringAlpha -= 5;
+			stringAlpha -= ChangeStageStringAlphaIncrease;
 
 			if (stringAlpha <= 0)
 			{
@@ -128,36 +128,36 @@ SceneBase* TitleScene::Update()
 	break;
 	case State::Select:
 	{
-		if (stringAlpha < 255)
+		if (stringAlpha < MaxAlpha)
 		{
-			stringAlpha += 5;
-			if (stringAlpha >= 255)
+			stringAlpha += ChangeStageStringAlphaIncrease;
+			if (stringAlpha >= MaxAlpha)
 			{
-				stringAlpha = 255;
+				stringAlpha = MaxAlpha;
 			}
 		}
 
 		//上入力
-		if (stringAlpha == 255 && cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
+		if (stringAlpha == MaxAlpha && cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
 		{
 			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
-			trianglePosY -= 100;
+			trianglePosY -= CursorSpeed;
 			cursor--;
 		}
 		//下入力
-		if (stringAlpha == 255 && cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
+		if (stringAlpha == MaxAlpha && cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
 		{
 			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
-			trianglePosY += 100;
+			trianglePosY += CursorSpeed;
 			cursor++;
 		}
 
 		//Bボタン入力
-		if (stringAlpha == 255 && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
+		if (stringAlpha == MaxAlpha && canInputB && (Input::InputNumber::BButton & input->GetInputState()) == Input::InputNumber::BButton)
 		{
 			se->PlaySE(SoundEffect::SEKind::Crick);
 			if (cursor == (int)Cursor::ArmEnemyStage)
@@ -178,7 +178,7 @@ SceneBase* TitleScene::Update()
 	break;
 	}
 
-	if (demoStartflame == 1000)
+	if (demoStartflame == DemoStartflame)
 	{
 		return new DemoScene();
 	}
@@ -226,7 +226,7 @@ void TitleScene::Draw()
 
 		//三角形
 		DrawTriangle(20, trianglePosY - 20, 20, trianglePosY + 20, 70, trianglePosY, GetColor(0, 0, 0), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, MaxAlpha);
 	}
 	break;
 	}

@@ -29,7 +29,7 @@ PlayerPiercing::PlayerPiercing(int modelHandle, VECTOR prevtargetLookDirection) 
 	}
 
 	//private•Ï”‰Šú‰»
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
 	LowestAttackPower = jsonData["PiercingLowestAttackPower"];
 	AttackCapsuleRadius = jsonData["PiercingAttackCapsuleRadius"];
 	MaxSwingUp = jsonData["PiercingMaxSwingUp"];

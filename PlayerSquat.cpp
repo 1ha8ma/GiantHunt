@@ -16,7 +16,7 @@ PlayerSquat::PlayerSquat(int modelHandle,VECTOR prevtargetLookDirection) :Player
 	animTotalTime = MV1GetAnimTotalTime(modelHandle, nowPlayAnim);
 
 	//•Ï”‰Šú‰»
-	targetLookDirection = prevtargetLookDirection;
+	newLookDirection = prevtargetLookDirection;
 	changeState = false;
 }
 
