@@ -38,6 +38,12 @@ public:
 	//同じベクトルか判定
 	bool SameVector(VECTOR vector1, VECTOR vector2);
 
+	//三角形の中点
+	VECTOR TriangleCenter(VECTOR vertex0, VECTOR vertex1, VECTOR vertex2);
+
+	//回転行列のスケーリング成分を除去
+	MATRIX NormalizeRotateMatrix(MATRIX matrix);
+
 private:
 	//線分上の最近傍点
 	VECTOR ClosestPointOnSegment(VECTOR pos1, VECTOR pos2, const VECTOR point);

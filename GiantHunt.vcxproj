@@ -149,9 +149,6 @@
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DemoScene.cpp" />
-    <ClCompile Include="Enemy2.cpp" />
-    <ClCompile Include="Enemy2MoveBase.cpp" />
-    <ClCompile Include="Enemy2StartScene.cpp" />
     <ClCompile Include="PlayerFalling.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="StageObject.cpp" />
@@ -159,7 +156,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
-    <ClCompile Include="EnemyParts.cpp" />
+    <ClCompile Include="WeakPoint.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -205,11 +202,8 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="Enemy2.h" />
-    <ClInclude Include="Enemy2MoveBase.h" />
-    <ClInclude Include="Enemy2StartScene.h" />
     <ClInclude Include="EnemyBase.h" />
-    <ClInclude Include="EnemyParts.h" />
+    <ClInclude Include="WeakPoint.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameManager.h" />

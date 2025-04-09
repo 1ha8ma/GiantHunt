@@ -2,7 +2,7 @@
 #include<vector>
 #include"EnemyBase.h"
 
-class EnemyParts;
+class WeakPoint;
 class ArmEnemyMoveBase;
 class Calculation;
 
@@ -46,13 +46,19 @@ private:
 	};
 
 	const float ModelScale = 40.0f;					//モデルの描画サイズ
+	const float WeakPointRadius = 320.0f;			//弱点球半径
 
 	void ChangeMove(VECTOR playerPos);
+
+	//オブジェクトに衝突した時の処理
+	void OnHitObject(CollisionData* hitObjectData)override;
+
+	void UpdateMoveVec(VECTOR movePrevPos);
 
 	//他クラス
 	ArmEnemyMoveBase* move;
 	Calculation* calclation;
-	std::vector<EnemyParts*> parts;			//パーツ
+	WeakPoint* weakPoint;			//弱点
 
 	//ステータス
 	int MaxHP;								//最大HP
@@ -65,8 +71,9 @@ private:
 	bool moveChangeflg;						//状態からの動き変更指示フラグ
 	MoveKind nowMoveKind;					//現在の動きの種類
 	int playerRideFlame;					//プレイヤーが乗っている時間
-	bool playerRideflg;						//プレイヤーが乗っているフラグ
+	bool isPlayerRide;						//プレイヤーが乗っているフラグ
 	bool playerRideMoveStartflg;			//プレイヤーが乗っている時の動きの開始フラグ
 	int attackCoolTimeFlame;				//攻撃クールタイムフレーム
 	bool attackCoolTimeflg;					//攻撃クールタイムフラグ
+	bool playerInCapsule;					//プレイヤーが判定カプセル内にいる
 };

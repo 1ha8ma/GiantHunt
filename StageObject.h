@@ -17,20 +17,21 @@ private:
 	void OnHitObject();
 	//当たり判定情報セット
 	void RegisterCollisionData();
-
+	//ポリゴン情報初期化
 	void InitializePolygonData();
+	//ポリゴン描画(確認用)
 	void DrawPolygon();
 
 	//他クラス
 	CollisionManager* collisionManager;
 	CollisionData collisionData;
 
-	int modelHandle;
-	float capsuleRadius;
-	VECTOR capsuleStart;
-	VECTOR capsuleEnd;
-	VECTOR drawPosition;
+	int modelHandle;					//モデルハンドル
+	float capsuleRadius;				//判定開始カプセル半径
+	VECTOR capsuleStart;				//カプセル始点
+	VECTOR capsuleEnd;					//カプセル終点
+	VECTOR drawPosition;				//描画ポジション
 
-	bool objecthit;
-	MV1_REF_POLYGONLIST polygonList;
+	bool objecthit;						//オブジェクトに当たった
+	MV1_REF_POLYGONLIST polygonList;	//ポリゴン情報が入ったリスト
 };

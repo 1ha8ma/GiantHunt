@@ -1,5 +1,8 @@
 #pragma once
 #include"Camera.h"
+#include"CollisionData.h"
+
+class CollisionManager;
 
 class EnemyBase
 {
@@ -32,6 +35,9 @@ public:
 	/// <returns>動きの終了</returns>
 	virtual bool UpdateFallDown(Camera* camera)abstract;
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	virtual void Draw()abstract;
 
 	//GetSet
@@ -39,10 +45,34 @@ public:
 	VECTOR GetTargetCameraPosition() { return targetCameraPosition; }
 
 protected:
+	//ポリゴン情報初期化
+	void InitializePolygonData();
+	//ポリゴン表示
+	void DrawPolygon();
+	//オブジェクトに衝突した時の処理
+	virtual void OnHitObject(CollisionData* hitObjectData)abstract;
+	//あたり判定情報初期化
+	void InitializeCollisionData();
+	//あたり判定更新
+	void UpdateCollisionData();
+	//あたり判定カプセル表示
+	void DrawCapsule();
+	//あたり判定破棄
+	void DeleteCollisionData();
+
+	CollisionManager* collisionManager;
+	CollisionData collisionData;
+
 	//ステータス
 	int HP;
 
 	int modelHandle;						//モデルハンドル
 	VECTOR position;						//描画ポジション
 	VECTOR targetCameraPosition;			//ターゲットカメラ用ポジション
+	MV1_REF_POLYGONLIST polygonList;		//ポリゴンの情報が入ったリスト
+	VECTOR capsuleStart;				//カプセル始点
+	VECTOR capsuleEnd;					//カプセル終点
+	float capsuleRadius;				//カプセル半径
+	VECTOR moveVec;
+
 };

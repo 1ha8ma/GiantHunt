@@ -14,7 +14,7 @@ enum class ObjectTag :int
 	Attack_P,			//UŒ‚
 
 	//“G
-	EnemyParts,			//“G‚Ìƒp[ƒc
+	Enemy,				//“G
 	EnemyAttack,		//“G‚ÌUŒ‚
 	WeakPoint,			//“G‚Ìã“_
 

@@ -26,6 +26,14 @@ public:
 		VECTOR lookDirection;				//向いている方向
 	};
 
+	//フレーム番号
+	enum PlayerFrameNumber
+	{
+		Hips = 1,					//腰辺り
+		RightArmFrameNumber = 45,	//右腕のフレーム番号
+		RightHandFrameNumber = 50,	//右手のフレーム番号(小指)
+	};
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -75,12 +83,6 @@ protected:
 		Falling,		//落下
 	};
 
-	//フレーム番号
-	enum PlayerFrameNumber
-	{
-		RightArmFrameNumber = 45,	//右腕のフレーム番号
-		RightHandFrameNumber = 50,	//右手のフレーム番号(小指)
-	};
 	
 	//アニメーション再生
 	void PlayAnimation(float playSpeed,bool stop);

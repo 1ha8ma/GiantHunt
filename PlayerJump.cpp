@@ -10,7 +10,9 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle">モデルハンドル</param>
-PlayerJump::PlayerJump(int modelHandle,VECTOR prevmoveVec) :PlayerStateProcessBase(modelHandle)
+/// <param name="prevmoveVec">前のmoveVec</param>
+/// <param name="prevLookDir">前の向いている方向</param>
+PlayerJump::PlayerJump(int modelHandle,VECTOR prevmoveVec,VECTOR prevLookDir) :PlayerStateProcessBase(modelHandle)
 {
 	//アニメーションアタッチ
 	nowPlayAnim = MV1AttachAnim(modelHandle, PlayerAnimationNumber::Jump);
@@ -29,7 +31,7 @@ PlayerJump::PlayerJump(int modelHandle,VECTOR prevmoveVec) :PlayerStateProcessBa
 	//変数初期化
 	moveVecV = prevmoveVec;
 	moveVecV.y = 0.0f;
-	newLookDirection = prevmoveVec;
+	newLookDirection = prevLookDir;
 	FirstJumpPower = jsonData["JumpPower"];
 	MoveSpeedHorizon = jsonData["FallingHorizonMoveSpeed"];
 	jumpPower = FirstJumpPower;

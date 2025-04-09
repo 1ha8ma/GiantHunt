@@ -102,15 +102,15 @@ void CollisionManager::Update()
 					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::StageObject ||
 					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::StageObject ||
 					/*プレイヤーと敵*/
-					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyParts ||
-					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyParts ||
+					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::Enemy ||
+					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::Enemy ||
 					/*敵の攻撃とプレイヤー*/
 					data1->tag == ObjectTag::PlayerWholeBody && data2->tag == ObjectTag::EnemyAttack ||
 					data1->tag == ObjectTag::PlayerFoot && data2->tag == ObjectTag::EnemyAttack ||
 					/*敵の攻撃とステージオブジェクト*/
 					data1->tag == ObjectTag::EnemyAttack && data2->tag == ObjectTag::StageObject ||
 					/*プレイヤーの攻撃と敵*/
-					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::EnemyParts ||
+					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::Enemy ||
 					data1->tag == ObjectTag::Attack_P && data2->tag == ObjectTag::WeakPoint
 					)
 				{

@@ -24,7 +24,7 @@ private:
 	const float CameraMoveZSpeed = 4.0f;
 	const VECTOR InitCameraPosition = VGet(5000.0f, 2500.0f, -1500.0f);		//カメラ初期位置
 	const VECTOR InitCameraLookPosition = VGet(500.0f, 1000.0f, 1000.0f);	//カメラ初期注視点
-	const int ChangeSceneflame = 1;											//スタートシーンから変更するフレーム
+	const int ChangeSceneflame = 600;										//スタートシーンから変更するフレーム
 
 	//他クラス
 	Camera* camera;

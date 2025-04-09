@@ -1,7 +1,8 @@
-﻿  Player.cpp
+﻿  ArmEnemy.cpp
 C:\Users\hamar\Desktop\GiantHunt\Library\Dxlib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\hamar\Desktop\GiantHunt\Player.cpp(418,10): warning C4244: '-=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  PlayerClimb.cpp
+C:\Users\hamar\Desktop\GiantHunt\ArmEnemyIdle.h(14): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+  Player.cpp
 C:\Users\hamar\Desktop\GiantHunt\Library\Dxlib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\hamar\Desktop\GiantHunt\Player.cpp(421,10): warning C4244: '-=': 'float' から 'int' への変換です。データが失われる可能性があります。
   コードを生成中...
   GiantHunt.vcxproj -> C:\Users\hamar\Desktop\GiantHunt\x64\Debug\GiantHunt.exe

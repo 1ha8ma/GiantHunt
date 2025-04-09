@@ -83,7 +83,7 @@ private:
 	//描画位置設定
 	void DrawPositionSet();
 	//押し戻し
-	void CollisionPushBack(CollisionData partsData,CollisionData *hitCollisionData);
+	void CollisionPushBack(CollisionData *hitCollisionData);
 	//連続入力防止
 	void PreventionContinuousInput();
 	//動きに使う構造体の中身のセット
@@ -115,6 +115,7 @@ private:
 	int modelHandle;								//モデルハンドル
 	VECTOR drawPosition;							//描画用ポジション
 	MATRIX rotateMatrix;							//モデル回転行列
+	VECTOR lookDirection;							//モデルの向いている方向
 
 	//当たり判定
 	float WholeBodyCapsuleRadius;					//全身カプセル半径
@@ -132,7 +133,6 @@ private:
 	float angle;									//プレイヤーの向き
 	float changeAngleSpeed;							//角度変更速度
 	VECTOR moveVec;									//移動量
-	VECTOR lookDirection;							//モデルの向いている方向
 	bool jumpAfterLeaveFoot;						//ジャンプした後に足が離れた
 	bool onGround;									//足がついているか
 	bool onFootObject;								//足がオブジェクトに着いている

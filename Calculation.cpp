@@ -283,3 +283,43 @@ bool Calculation::SameVector(VECTOR vector1, VECTOR vector2)
 
 	return result;
 }
+
+/// <summary>
+/// 三角形の中点
+/// </summary>
+/// <param name="vertex0">頂点0</param>
+/// <param name="vertex1">頂点1</param>
+/// <param name="vertex2">頂点2</param>
+/// <returns>中点ポジション</returns>
+VECTOR Calculation::TriangleCenter(VECTOR vertex0, VECTOR vertex1, VECTOR vertex2)
+{
+	VECTOR centerPos;
+	centerPos = VAdd(VAdd(vertex0, vertex1), vertex2);
+	centerPos.x = centerPos.x / 3;
+	centerPos.y = centerPos.y / 3;
+	centerPos.z = centerPos.z / 3;
+
+	return centerPos;
+}
+
+/// <summary>
+/// 回転行列のスケーリング成分を除去
+/// </summary>
+/// <param name="matrix">行列</param>
+/// <returns>除去後の回転行列</returns>
+MATRIX Calculation::NormalizeRotateMatrix(MATRIX matrix)
+{
+	VECTOR xAxis = VNorm(VGet(matrix.m[0][0], matrix.m[1][0], matrix.m[2][0]));	//X軸正規化
+	VECTOR yAxis = VNorm(VGet(matrix.m[0][1], matrix.m[1][1], matrix.m[2][1]));	//Y軸正規化
+	VECTOR zAxis = VNorm(VGet(matrix.m[0][2], matrix.m[1][2], matrix.m[2][2]));	//Z軸正規化
+
+	MATRIX normalizeMatrix =
+	{
+		xAxis.x, yAxis.x, zAxis.x, 0.0f,
+		xAxis.y, yAxis.y, zAxis.y, 0.0f,
+		xAxis.z, yAxis.z, zAxis.z, 0.0f,
+		0.0f,    0.0f,    0.0f,    1.0f
+	};
+
+	return normalizeMatrix;
+}

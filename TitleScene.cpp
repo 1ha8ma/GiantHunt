@@ -6,7 +6,6 @@
 #include"BGM.h"
 #include"SoundEffect.h"
 #include"ArmEnemyStartScene.h"
-#include"Enemy2StartScene.h"
 #include"RankingScene.h"
 #include"DemoScene.h"
 #include"TutorialScene.h"
@@ -163,7 +162,6 @@ SceneBase* TitleScene::Update()
 			if (cursor == (int)Cursor::ArmEnemyStage)
 			{
 				return new ArmEnemyStartScene();
-				//return new Enemy2StartScene();
 			}
 			if (cursor == (int)Cursor::CheckRanking)
 			{

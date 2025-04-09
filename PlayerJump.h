@@ -4,7 +4,7 @@
 class PlayerJump :public PlayerStateProcessBase
 {
 public:
-	PlayerJump(int modelHandle,VECTOR prevmoveVec);
+	PlayerJump(int modelHandle,VECTOR prevmoveVec,VECTOR prevLookDir);
 	~PlayerJump()override;
 
 	//‰Šú‰»

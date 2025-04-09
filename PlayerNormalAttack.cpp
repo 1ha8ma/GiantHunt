@@ -123,7 +123,7 @@ void PlayerNormalAttack::Draw()
 /// <param name="objectData">衝突したオブジェクト</param>
 void PlayerNormalAttack::OnHitObject(CollisionData* objectData)
 {
-	if (objectData->tag == ObjectTag::EnemyParts || objectData->tag == ObjectTag::WeakPoint)
+	if (objectData->tag == ObjectTag::Enemy || objectData->tag == ObjectTag::WeakPoint)
 	{
 		attackHit = true;
 	}

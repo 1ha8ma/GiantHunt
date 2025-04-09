@@ -44,14 +44,14 @@ StageObject::~StageObject()
 void StageObject::Draw()
 {
 	MV1DrawModel(modelHandle);
-	if (objecthit)
-	{
-		DrawPolygon();
-	}
-	objecthit = false;
 
 	//Šm”F—p
-	DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+	//if (objecthit)
+	//{
+	//	DrawPolygon();
+	//}
+	//DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+	//objecthit = false;
 }
 
 /// <summary>

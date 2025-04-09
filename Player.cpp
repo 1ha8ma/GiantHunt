@@ -90,6 +90,7 @@ void Player::InitializeGame()
 	canInputX = false;
 	//モデル関係
 	drawPosition = position;
+	lookDirection = VGet(0, 0, 1);
 	//あたり判定
 	positionDistanceGround = jsonData["PositionDistanceGround"];
 	position = VGet(jsonData["InitPositionX"], positionDistanceGround, jsonData["InitPositionZ"]);
@@ -221,11 +222,13 @@ void Player::Draw()
 {
 	MV1SetPosition(modelHandle, drawPosition);
 	MV1DrawModel(modelHandle);
+	
 
 	//確認用
 	DrawCapsule3D(bodyCollisionData.startPosition, bodyCollisionData.endPosition, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
 	nowstate->Draw();	
 	DrawLine3D(position, VAdd(position, VScale(lookDirection, 200)), GetColor(127, 255, 0));							//lookDirection
+	DrawLine3D(position, wholebodyCapStart, GetColor(220, 20, 60));		//真ん中から頭
 	DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);	//足
 }
 
@@ -250,12 +253,12 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 
 	//カプセル
 	if (hitObjectData->tag == ObjectTag::StageObject ||
-		hitObjectData->tag == ObjectTag::EnemyParts)
+		hitObjectData->tag == ObjectTag::Enemy)
 	{
 		//押し戻し
 		if (nowstateKind != State::Climb)
 		{
-			CollisionPushBack(bodyCollisionData, hitObjectData);
+			CollisionPushBack(hitObjectData);
 		}
 	}
 }
@@ -267,9 +270,9 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 void Player::FootOnHitObject(CollisionData* hitObjectData)
 {
 	if (hitObjectData->tag == ObjectTag::StageObject ||		//木
-		hitObjectData->tag == ObjectTag::EnemyParts)	//腕の敵
+		hitObjectData->tag == ObjectTag::Enemy)	//腕の敵
 	{
-		
+		//処理なし
 	}
 }
 
@@ -355,7 +358,7 @@ void Player::ChangeState()
 		onGround = false;
 		jumpAfterLeaveFoot = false;
 		nowstateKind = State::Jump;
-		nowstate = new PlayerJump(modelHandle, moveVec);
+		nowstate = new PlayerJump(modelHandle, moveVec, lookDirection);
 	}
 
 	//突き刺し攻撃
@@ -367,7 +370,7 @@ void Player::ChangeState()
 	}
 
 	//通常攻撃　(突き刺し攻撃の後に判定しないと一度通常攻撃に入ってしまう)
-	if (nowstateKind != State::NormalAttack && nowstateKind != State::Piercing && nowstateKind != State::Jump && nowstateKind != State::Squat && canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
+	if (nowstateKind != State::NormalAttack && nowstateKind != State::Piercing && nowstateKind != State::Jump && nowstateKind != State::Squat && nowstateKind != State::Climb && canInputX && (Input::InputNumber::XButton & inputstate) == Input::InputNumber::XButton)
 	{
 		delete nowstate;
 		nowstateKind = State::NormalAttack;
@@ -452,14 +455,9 @@ void Player::CheckOnGround(Camera* camera)
 void Player::UpdateCapsule()
 {
 	//全身
-	//wholebodyCapStart = VAdd(position, VGet(0.0f, WholeBodyCapsuleHalfLength, 0.0f));
-	//wholebodyCapEnd = VAdd(position, VGet(0.0f, -WholeBodyCapsuleHalfLength, 0.0f));
-	VECTOR startVec = VGet(0, 1, 0);
-	startVec = VTransform(startVec, rotateMatrix);
+	VECTOR startVec = VTransform(VGet(0, 1, 0), rotateMatrix);
 	wholebodyCapStart = VAdd(position, VScale(startVec, WholeBodyCapsuleHalfLength));
-	VECTOR endVec = VGet(0, -1, 0);
-	endVec = VTransform(endVec, MInverse(rotateMatrix));
-	wholebodyCapEnd = VAdd(position, VScale(endVec, WholeBodyCapsuleHalfLength));
+	wholebodyCapEnd = VSub(position, VScale(startVec, WholeBodyCapsuleHalfLength));
 	
 	//中心
 	centerPosition = VAdd(wholebodyCapStart, wholebodyCapEnd);
@@ -500,37 +498,47 @@ void Player::DrawPositionSet()
 	//基本
 	drawPosition = position;
 	drawPosition.y -= positionDistanceGround;
+	MV1SetRotationMatrix(modelHandle, MGetIdent());		//一度初期化して適応しなければ前の回転に追加で回転するようになる
 
 	//ジャンプ
 	if (nowstateKind == State::Jump)
 	{
 		drawPosition.y += JumpDrowCorrectionY;
 	}
-
 	//登り
-	/*if (nowstateKind == State::Climb)
-	{
-		drawPosition.y -= 90.0f;
-		drawPosition.x -= cos(angle) * 100.0f;
-		drawPosition.z -= sin(-angle) * 100.0f;
-	}*/
-
-	//回転
 	if (nowstateKind == State::Climb)
 	{
-		//drawPosition=
+		VECTOR HlookDir = lookDirection;
+		HlookDir.y = 0.0f;
+		float angleZ = calculation->AngleTwoVector(HlookDir, VGet(0, 0, 1));
+		VECTOR axis = VNorm(VSub(wholebodyCapStart, wholebodyCapEnd));
+		MATRIX modelRotate = MMult(rotateMatrix, MGetRotAxis(axis, angleZ));
+		//回転行列モデル適応
+		MV1SetRotationMatrix(modelHandle, modelRotate);
+		//MV1SetRotationMatrix(modelHandle, rotateMatrix);
+		//描画位置補正
+		MV1SetPosition(modelHandle, drawPosition);		//一度修正前のポジションとボーンの位置の差を取るために反映
+		VECTOR hipsFramePos = MV1GetFramePosition(modelHandle, PlayerStateProcessBase::PlayerFrameNumber::Hips);	//腰あたりのポジション	
+		VECTOR correctVec = VSub(position, hipsFramePos);	//腰あたり→カプセル中心のベクトル分アニメーションのずれを補正
+		drawPosition = VAdd(drawPosition, correctVec);
+	}
+
+	//回転
+	if (nowstateKind != State::Climb)
+	{
+		//-z方向に正面を向くように補正
+		rotateMatrix = MGetRotY(angle + DX_PI_F);
+		//回転行列モデル適応
 		MV1SetRotationMatrix(modelHandle, rotateMatrix);
 	}
-	else
-	{
-		MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
-	}
+
 }
 
 /// <summary>
 /// 衝突後の押し戻し
 /// </summary>
-void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObjectData)
+/// <param name="hitObjectData">オブジェクト情報</param>
+void Player::CollisionPushBack(CollisionData *hitObjectData)
 {
 	for (int i = 0; i < hitObjectData->meshData.polygonList.PolygonNum; i++)
 	{
@@ -538,6 +546,11 @@ void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObject
 		VECTOR vertex0 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[0]].Position;
 		VECTOR vertex1 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[1]].Position;
 		VECTOR vertex2 = hitObjectData->meshData.polygonList.Vertexs[hitObjectData->meshData.polygonList.Polygons[i].VIndex[2]].Position;
+
+		if (calculation->SameVector(vertex0, vertex1) || calculation->SameVector(vertex0, vertex2) || calculation->SameVector(vertex1, vertex2))
+		{
+			continue;
+		}
 
 		//カプセルと三角形の当たり判定
 		bool bodyResult = HitCheck_Capsule_Triangle(wholebodyCapStart, wholebodyCapEnd, WholeBodyCapsuleRadius, vertex0, vertex1, vertex2);
@@ -551,6 +564,10 @@ void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObject
 
 		if (bodyResult)
 		{
+			if (hitObjectData->tag == ObjectTag::Enemy)
+			{
+				int a = 0;
+			}
 			//データコピー
 			hitObjectDataPointer = hitObjectData;
 			this->hitObjectData = *hitObjectData;
@@ -565,11 +582,11 @@ void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObject
 			}
 			
 			//押し戻し
-			VECTOR triangleClosest, capsuleClosest;
+			VECTOR triangleClosest = VGet(0, 0, 0);
+			VECTOR capsuleClosest = VGet(0, 0, 0);
 			calculation->ClosestPointCapsuleAndTriangle(wholebodyCapStart, wholebodyCapEnd, vertex0, vertex1, vertex2, capsuleClosest, triangleClosest);
 
 			//距離を取る
-			float distanceaa = Segment_Triangle_MinLength(wholebodyCapStart, wholebodyCapEnd, vertex0, vertex1, vertex2);
 			float distance = calculation->LengthTwoPoint3D(triangleClosest, capsuleClosest);
 			
 			//押し返しベクトル
@@ -588,6 +605,7 @@ void Player::CollisionPushBack(CollisionData partsData, CollisionData *hitObject
 			position = VAdd(position, pushBackVec);
 
 			//カプセルを更新
+			rotateMatrix = MGetIdent();
 			UpdateCapsule();
 
 			//確認用

@@ -4,7 +4,7 @@
 #include"Loader.h"
 #include"Calculation.h"
 #include"Camera.h"
-#include"EnemyParts.h"
+#include"WeakPoint.h"
 #include"ArmEnemyMoveBase.h"
 #include"ArmEnemyIdle.h"
 #include"ArmEnemyDropRock.h"
@@ -46,7 +46,7 @@ ArmEnemy::ArmEnemy()
 	position = VGet(jsonData["InitPositionX"], jsonData["InitPositionY"], jsonData["InitPositionZ"]);
 	moveChangeflg = false;
 	playerRideFlame = 0;
-	playerRideflg = false;
+	isPlayerRide = false;
 	playerRideMoveStartflg = false;
 	attackCoolTimeFlame = 0;
 	attackCoolTimeflg = false;
@@ -56,13 +56,18 @@ ArmEnemy::ArmEnemy()
 	MV1SetRotationXYZ(modelHandle, VGet(0.0f, DX_PI_F / 2, 0.0f));
 	MV1SetPosition(modelHandle, position);
 
-	//部位当たり判定
-	parts.clear();
-	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Upperarm, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm, 600));
-	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Forearm, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm - 1, 500));
-	parts.push_back(new EnemyParts(ObjectTag::EnemyParts, (int)PartsName::Hand, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm, 300));
-	parts.push_back(new EnemyParts(ObjectTag::WeakPoint, (int)PartsName::WeakPoint, modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, 320));
+	//ポリゴン情報初期化
+	InitializePolygonData();
+	//あたり判定情報初期化
+	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+	capsuleRadius = 1100;
+	InitializeCollisionData();
 
+	//部位当たり判定
+	weakPoint = new WeakPoint(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, WeakPointRadius);
+
+	//動き初期化
 	move = new ArmEnemyIdle(modelHandle, VGet(0, 0, 0));
 	nowMoveKind = MoveKind::Idle;
 }
@@ -72,12 +77,8 @@ ArmEnemy::ArmEnemy()
 /// </summary>
 ArmEnemy::~ArmEnemy()
 {
-	for (int i = 0; i < parts.size(); i++)
-	{
-		delete parts[i];
-	}
-
-	parts.clear();
+	DeleteCollisionData();
+	delete weakPoint;
 }
 
 /// <summary>
@@ -97,22 +98,18 @@ void ArmEnemy::Initialize()
 bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 {
 	//プレイヤーの乗っている関係初期化
-	playerRideflg = false;
+	isPlayerRide = false;
+	playerInCapsule = false;
+	//フレームと親フレームの間
+	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+	VECTOR movePrevPos = VScale(VAdd(capsuleStart, capsuleEnd), 0.5f);
 
 	//死んでいるか
 	bool isDead = false;
 
-	for (int i = 0; i < parts.size(); i++)
-	{
-		if (parts[i]->GetIsPlayerRide())
-		{
-			playerRideflg = true;
-			playerRidePlace = parts[i]->GetPartsName();
-		}
-	}
-
 	//プレイヤーが乗っていたら
-	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && playerRideflg)
+	if (nowMoveKind != MoveKind::Swing && nowMoveKind != MoveKind::HandUp && isPlayerRide)
 	{
 		playerRideFlame++;
 
@@ -123,15 +120,14 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 		}
 	}
 
-	//更新
-	for (int i = 0; i < parts.size(); i++)
-	{
-		HP -= parts[i]->TakeDamage();
-		parts[i]->Update();
-	}
-	if (HP < 0)
+	//更新	
+	HP -= weakPoint->TakeDamage();
+	weakPoint->Update();
+	UpdateCollisionData();
+	if (HP <= 0)
 	{
 		HP = 0;
+		isDead = true;
 	}
 
 	//攻撃が終わっている場合クールタイムを進める
@@ -145,27 +141,42 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 		}
 	}
 
-	//HP確認
-	if (HP == 0)
-	{
-		isDead = true;
-	}
-
 	//手をターゲットカメラに設定
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
 	//動き更新
 	moveChangeflg = move->Update(camera, playerPos);
-	for (int i = 0; i < parts.size(); i++)
-	{
-		parts[i]->CalculationMoveVec();
-	}
+	UpdateMoveVec(movePrevPos);
 
 	//動きの変更確認
 	ChangeMove(playerPos);
 
+	//ポジション反映
 	MV1SetPosition(modelHandle, position);
 
+	//メッシュ更新
+	MV1SetupReferenceMesh(modelHandle, -1, TRUE);
+	polygonList = MV1GetReferenceMesh(modelHandle, -1, TRUE);
+
 	return isDead;
+}
+
+/// <summary>
+/// 衝突後の処理
+/// </summary>
+/// <param name="hitObjectData">衝突したオブジェクトの情報</param>
+void ArmEnemy::OnHitObject(CollisionData* hitObjectData)
+{
+	//プレイヤーが乗っている時の処理
+	if (hitObjectData->tag == ObjectTag::PlayerWholeBody)
+	{
+		isPlayerRide = true;
+	}
+
+	//プレイヤーの攻撃だった場合
+	if (hitObjectData->tag == ObjectTag::Attack_P)
+	{
+		HP -= hitObjectData->attackPower;
+	}
 }
 
 /// <summary>
@@ -189,10 +200,7 @@ bool ArmEnemy::UpdateFallDown(Camera* camera)
 	moveEnd = move->UpdateFallDown(camera);
 
 	//パーツ、エフェクトの更新
-	for (int i = 0; i < parts.size(); i++)
-	{
-		parts[i]->Update();
-	}
+	weakPoint->Update();
 
 	//手をターゲットカメラに設定
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
@@ -207,12 +215,11 @@ bool ArmEnemy::UpdateFallDown(Camera* camera)
 void ArmEnemy::Draw()
 {
 	MV1DrawModel(modelHandle);
+	weakPoint->Draw();
 
 	//当たり判定確認用
-	for (int i = 0; i < parts.size(); i++)
-	{
-		parts[i]->Draw();
-	}
+	DrawPolygon();
+	DrawCapsule();
 	move->Draw();
 }
 
@@ -243,7 +250,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 	}
 
 	//岩落とし
-	if (nowMoveKind == MoveKind::Idle && !playerRideflg && playerPos.y < handpos.y && playerPos.y>DropRockStartPlayerHeight && !attackCoolTimeflg)
+	if (nowMoveKind == MoveKind::Idle && !isPlayerRide && playerPos.y < handpos.y && playerPos.y>DropRockStartPlayerHeight && !attackCoolTimeflg)
 	{
 		VECTOR prevRotate = move->GetRotate();
 		delete move;
@@ -270,4 +277,18 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		nowMoveKind = MoveKind::HandUp;
 		move = new ArmEnemyHandUp(modelHandle, prevRotate);
 	}
+}
+
+/// <summary>
+/// moveVec更新
+/// </summary>
+/// <param name="movePrevPos">動く前のポジション</param>
+void ArmEnemy::UpdateMoveVec(VECTOR movePrevPos)
+{
+	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+	VECTOR moveAfterPos = VAdd(capsuleStart, capsuleEnd);
+	moveAfterPos = VScale(moveAfterPos, 0.5f);
+
+	moveVec = VSub(moveAfterPos, movePrevPos);
 }
