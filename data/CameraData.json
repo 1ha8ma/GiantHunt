@@ -3,7 +3,7 @@
   "Far": 20000.0,
   "GameOverNear": 10.0,
   "GameOverFar": 10000.0,
-  "AngleSpeed": 0.03,
+  "AngleSpeed": 0.05,
   "CameraPlayerTargetHeight": 100.0,
   "PlayerDistance": 300.0,
   "TargetCameraLerpSpeed": 0.01,

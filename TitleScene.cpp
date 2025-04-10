@@ -7,7 +7,6 @@
 #include"SoundEffect.h"
 #include"ArmEnemyStartScene.h"
 #include"RankingScene.h"
-#include"DemoScene.h"
 #include"TutorialScene.h"
 #include"TitleScene.h"
 
@@ -32,7 +31,6 @@ TitleScene::TitleScene()
 	trianglePosY = InitTrianglePosY;
 	stringAlpha = MaxAlpha;
 	stateChange = false;
-	demoStartflame = 0;
 	state = State::Title;
 	cursor = (int)Cursor::ArmEnemyStage;
 }
@@ -114,7 +112,6 @@ SceneBase* TitleScene::Update()
 		//ステート変更
 		if (stateChange)
 		{
-			demoStartflame = 0;
 			stringAlpha -= ChangeStageStringAlphaIncrease;
 
 			if (stringAlpha <= 0)
@@ -139,7 +136,6 @@ SceneBase* TitleScene::Update()
 		//上入力
 		if (stringAlpha == MaxAlpha && cursor != (int)Cursor::ArmEnemyStage && canInputStick && stick.Y < 0)
 		{
-			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
 			trianglePosY -= CursorSpeed;
@@ -148,7 +144,6 @@ SceneBase* TitleScene::Update()
 		//下入力
 		if (stringAlpha == MaxAlpha && cursor != (int)Cursor::Tutorial && canInputStick && stick.Y > 0)
 		{
-			demoStartflame = 0;
 			se->PlaySE(SoundEffect::SEKind::CursorMove);
 			canInputStick = false;
 			trianglePosY += CursorSpeed;
@@ -175,13 +170,6 @@ SceneBase* TitleScene::Update()
 	}
 	break;
 	}
-
-	if (demoStartflame == DemoStartflame)
-	{
-		return new DemoScene();
-	}
-
-	demoStartflame++;
 
 	return this;
 }

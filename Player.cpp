@@ -190,6 +190,9 @@ bool Player::UpdateGame(Camera* camera)
 	UpdateCapsule();
 	UpdateCollisionData();
 
+	//描画ポジション設定
+	MV1SetPosition(modelHandle, drawPosition);
+
 	//変数初期化
 	isCatch = false;
 	onFootObject = false;
@@ -220,16 +223,14 @@ void Player::UpdateGameOver()
 /// </summary>
 void Player::Draw()
 {
-	MV1SetPosition(modelHandle, drawPosition);
 	MV1DrawModel(modelHandle);
-	
 
 	//確認用
-	DrawCapsule3D(bodyCollisionData.startPosition, bodyCollisionData.endPosition, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
-	nowstate->Draw();	
-	DrawLine3D(position, VAdd(position, VScale(lookDirection, 200)), GetColor(127, 255, 0));							//lookDirection
-	DrawLine3D(position, wholebodyCapStart, GetColor(220, 20, 60));		//真ん中から頭
-	DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);	//足
+	//DrawCapsule3D(bodyCollisionData.startPosition, bodyCollisionData.endPosition, WholeBodyCapsuleRadius, 8, GetColor(220, 20, 60),GetColor(220,20,60), FALSE);
+	//nowstate->Draw();	
+	//DrawLine3D(position, VAdd(position, VScale(lookDirection, 200)), GetColor(127, 255, 0));							//lookDirection
+	//DrawLine3D(position, wholebodyCapStart, GetColor(220, 20, 60));		//真ん中から頭
+	//DrawCapsule3D(footCapStart, footCapEnd, FootCapsuleRadius, 8, GetColor(220, 20, 60), GetColor(220, 20, 60), FALSE);	//足
 }
 
 /// <summary>
@@ -269,8 +270,8 @@ void Player::BodyOnHitObject(CollisionData* hitObjectData)
 /// <param name="hitObjectData">衝突したオブジェクト</param>
 void Player::FootOnHitObject(CollisionData* hitObjectData)
 {
-	if (hitObjectData->tag == ObjectTag::StageObject ||		//木
-		hitObjectData->tag == ObjectTag::Enemy)	//腕の敵
+	if (hitObjectData->tag == ObjectTag::StageObject ||
+		hitObjectData->tag == ObjectTag::Enemy)
 	{
 		//処理なし
 	}
@@ -508,11 +509,8 @@ void Player::DrawPositionSet()
 	//登り
 	if (nowstateKind == State::Climb)
 	{
-		VECTOR HlookDir = lookDirection;
-		HlookDir.y = 0.0f;
-		float angleZ = calculation->AngleTwoVector(HlookDir, VGet(0, 0, 1));
 		VECTOR axis = VNorm(VSub(wholebodyCapStart, wholebodyCapEnd));
-		MATRIX modelRotate = MMult(rotateMatrix, MGetRotAxis(axis, angleZ));
+		MATRIX modelRotate = MMult(rotateMatrix, MGetRotAxis(axis, angle));
 		//回転行列モデル適応
 		MV1SetRotationMatrix(modelHandle, modelRotate);
 		//MV1SetRotationMatrix(modelHandle, rotateMatrix);
@@ -564,10 +562,6 @@ void Player::CollisionPushBack(CollisionData *hitObjectData)
 
 		if (bodyResult)
 		{
-			if (hitObjectData->tag == ObjectTag::Enemy)
-			{
-				int a = 0;
-			}
 			//データコピー
 			hitObjectDataPointer = hitObjectData;
 			this->hitObjectData = *hitObjectData;
@@ -602,14 +596,25 @@ void Player::CollisionPushBack(CollisionData *hitObjectData)
 			}
 			
 			//ポジション反映
-			position = VAdd(position, pushBackVec);
+			if (nowstateKind == State::Run)
+			{
+				//moveVecを戻す
+				position = VSub(position, moveVec);
+				//押し返す
+				position = VAdd(position, pushBackVec);
+				//moveVecをめり込まないようにポリゴンの平面に映す
+				VECTOR slideVec;
+				slideVec = VSub(moveVec, VScale(normVec, VDot(moveVec, normVec)));
+				position = VAdd(position, slideVec);
+			}
+			else
+			{
+				position = VAdd(position, pushBackVec);
+			}
 
 			//カプセルを更新
 			rotateMatrix = MGetIdent();
 			UpdateCapsule();
-
-			//確認用
-			float check = Segment_Triangle_MinLength(wholebodyCapStart, wholebodyCapEnd, vertex0, vertex1, vertex2);
 		}
 	}
 }
@@ -622,7 +627,7 @@ void Player::MoveStateProcess()
 	//登り時握力
 	if (nowstateKind == State::Climb)
 	{
-		//gripPoint -= MinusGripPoint;
+		gripPoint -= MinusGripPoint;
 	}
 	else
 	{

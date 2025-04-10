@@ -47,12 +47,18 @@ private:
 
 	const float ModelScale = 40.0f;					//モデルの描画サイズ
 	const float WeakPointRadius = 320.0f;			//弱点球半径
+	const float CapsuleRadius = 1100.0f;			//あたり判定開始カプセルサイズ
 
+	//プレイヤーが腕のどの部位に近いか判定
+	void CheckPlayerNearParts(VECTOR playerPos);
+
+	//動作変更
 	void ChangeMove(VECTOR playerPos);
 
 	//オブジェクトに衝突した時の処理
 	void OnHitObject(CollisionData* hitObjectData)override;
 
+	//moveVec更新
 	void UpdateMoveVec(VECTOR movePrevPos);
 
 	//他クラス
@@ -75,5 +81,4 @@ private:
 	bool playerRideMoveStartflg;			//プレイヤーが乗っている時の動きの開始フラグ
 	int attackCoolTimeFlame;				//攻撃クールタイムフレーム
 	bool attackCoolTimeflg;					//攻撃クールタイムフラグ
-	bool playerInCapsule;					//プレイヤーが判定カプセル内にいる
 };

@@ -130,8 +130,8 @@ bool ArmEnemyDropRock::Update(Camera* camera,VECTOR playerPosition)
 	MV1SetFrameUserLocalMatrix(modelHandle, (int)ArmEnemyFrameIndex::Upperarm, Mrotate);
 
 	//çUåÇìñÇΩÇËîªíË
-	attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Hand);
-	attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::Hand);
+	attackCapsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::LeftHandMiddle);
+	attackCapsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyFrameIndex::LeftHandMiddle);
 
 	UpdateCollisionData();
 

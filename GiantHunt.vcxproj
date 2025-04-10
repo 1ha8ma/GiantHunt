@@ -148,7 +148,6 @@
     <ClCompile Include="BGM.cpp" />
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="PlayerFalling.cpp" />
     <ClCompile Include="PlayerIdle.cpp" />
     <ClCompile Include="StageObject.cpp" />
@@ -200,7 +199,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="DemoScene.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="WeakPoint.h" />

@@ -37,7 +37,7 @@ void Camera::StartSceneInitialize(VECTOR position,VECTOR lookPosition)
 	this->lookPosition = lookPosition;
 
 	//距離設定
-	SetCameraNearFar(100.0f, 20000.0f);
+	SetCameraNearFar(Near, Far);
 	//ポジション・注視点反映
 	SetCameraPositionAndTarget_UpVecY(this->position, this->lookPosition);
 }

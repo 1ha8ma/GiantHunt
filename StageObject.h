@@ -31,7 +31,8 @@ private:
 	VECTOR capsuleStart;				//カプセル始点
 	VECTOR capsuleEnd;					//カプセル終点
 	VECTOR drawPosition;				//描画ポジション
-
-	bool objecthit;						//オブジェクトに当たった
 	MV1_REF_POLYGONLIST polygonList;	//ポリゴン情報が入ったリスト
+
+	//確認用
+	bool objecthit;						//オブジェクトに当たった
 };

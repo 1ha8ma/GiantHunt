@@ -46,12 +46,12 @@ void StageObject::Draw()
 	MV1DrawModel(modelHandle);
 
 	//Šm”F—p
-	//if (objecthit)
-	//{
-	//	DrawPolygon();
-	//}
-	//DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
-	//objecthit = false;
+	/*if (objecthit)
+	{
+		DrawPolygon();
+	}
+	DrawCapsule3D(capsuleStart, capsuleEnd, capsuleRadius, 8, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+	objecthit = false;*/
 }
 
 /// <summary>

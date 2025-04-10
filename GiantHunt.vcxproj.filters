@@ -91,9 +91,6 @@
     <Filter Include="Enemy\ArmEnemy\Move\AttackObject">
       <UniqueIdentifier>{463ef065-8a4d-441b-bf33-354aa580080d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\DemoScene">
-      <UniqueIdentifier>{1c7c852a-4155-4919-8253-0aa65c4da5ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Stage\StageObject">
       <UniqueIdentifier>{092fec60-a0af-40c7-9de6-89fcc295a9d9}</UniqueIdentifier>
     </Filter>
@@ -236,9 +233,6 @@
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
-      <Filter>Scene\DemoScene</Filter>
     </ClCompile>
     <ClCompile Include="StageObject.cpp">
       <Filter>Stage\StageObject</Filter>
@@ -388,9 +382,6 @@
     </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scene\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoScene.h">
-      <Filter>Scene\DemoScene</Filter>
     </ClInclude>
     <ClInclude Include="StageObject.h">
       <Filter>Stage\StageObject</Filter>

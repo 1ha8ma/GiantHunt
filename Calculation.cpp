@@ -130,13 +130,6 @@ VECTOR Calculation::Normalize(VECTOR ver0, VECTOR ver1, VECTOR ver2)
 /// <param name="triangleClosest">三角形最近傍点</param>
 void Calculation::ClosestPointCapsuleAndTriangle(VECTOR capPos1, VECTOR capPos2, VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR& capClosest, VECTOR& triangleClosest)
 {
-	//三角形上の最近傍点を求める
-	//VECTOR capCenter = VScale(VAdd(capPos1, capPos2), 0.5f);
-	//triangleClosest = ClosestPointOnTriangle(ver0, ver1, ver2, capCenter);
-
-	////カプセル軸上の最近傍点を求める
-	//capClosest = ClosestPointOnSegment(capPos1, capPos2, triangleClosest);
-
 	VECTOR closestA = ClosestPointOnTriangle(ver0, ver1, ver2, capPos1);
 	VECTOR closestB = ClosestPointOnTriangle(ver0, ver1, ver2, capPos2);
 
@@ -196,22 +189,6 @@ VECTOR Calculation::ClosestPointOnSegment(VECTOR pos1, VECTOR pos2, const VECTOR
 /// <returns>最近傍点</returns>
 VECTOR Calculation::ClosestPointOnTriangle(VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR point)
 {
-	//法線ベクトル
-	//VECTOR norm = Normalize(ver0, ver1, ver2);
-
-	////点を三角形の平面上に投影
-	//VECTOR projectPoint = VSub(point, VScale(norm, VDot(VSub(point, ver0), norm)));
-
-	////バリセン重心座標を計算
-	//float u, v, w;
-	//Barycentric(ver0, ver1, ver2, projectPoint, u, v, w);
-
-	////三角形の内側にある場合は返す
-	//if (u >= 0 && v >= 0 && w >= 0)
-	//{
-	//	return projectPoint;
-	//}
-
 	//三角形の外側にある場合は最近傍点を求める
 	VECTOR closest01 = ClosestPointOnSegment(ver0, ver1, point);
 	VECTOR closest12 = ClosestPointOnSegment(ver1, ver2, point);
@@ -272,16 +249,16 @@ void Calculation::Barycentric(VECTOR ver0, VECTOR ver1, VECTOR ver2, VECTOR proj
 /// <returns>結果</returns>
 bool Calculation::SameVector(VECTOR vector1, VECTOR vector2)
 {
-	bool result = false;
+	bool same = false;
 
 	if (vector1.x == vector2.x &&
 		vector1.y == vector2.y &&
 		vector1.z == vector2.z)
 	{
-		result = true;
+		same = true;
 	}
 
-	return result;
+	return same;
 }
 
 /// <summary>

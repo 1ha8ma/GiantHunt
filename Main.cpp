@@ -62,12 +62,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//•`‰æ
 		ScreenFlip();
 
-		//fps‘Ò‹@
+		//fpsŒÅ’è
 		fps->Wait();
 	}
 
 	//I—¹
 	Effkseer_End();
 	DxLib_End();
-
 }

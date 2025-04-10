@@ -1,7 +1,7 @@
 {
   "MaxHP": 1000,
   "PlayerRideMoveStartFlame": 100,
-  "AttackCoolTime": 100,
+  "AttackCoolTime": 200,
   "InitPositionX": -500.0,
   "InitPositionY": 100.0,
   "InitPositionZ": 6550.0,

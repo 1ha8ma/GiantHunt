@@ -60,12 +60,12 @@ ArmEnemy::ArmEnemy()
 	InitializePolygonData();
 	//あたり判定情報初期化
 	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
-	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
-	capsuleRadius = 1100;
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle);
+	capsuleRadius = CapsuleRadius;
 	InitializeCollisionData();
 
 	//部位当たり判定
-	weakPoint = new WeakPoint(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand - 1, WeakPointRadius);
+	weakPoint = new WeakPoint(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle - 1, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle - 1, WeakPointRadius);
 
 	//動き初期化
 	move = new ArmEnemyIdle(modelHandle, VGet(0, 0, 0));
@@ -97,12 +97,9 @@ void ArmEnemy::Initialize()
 /// <returns>死んでいるか</returns>
 bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 {
-	//プレイヤーの乗っている関係初期化
-	isPlayerRide = false;
-	playerInCapsule = false;
 	//フレームと親フレームの間
 	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
-	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle);
 	VECTOR movePrevPos = VScale(VAdd(capsuleStart, capsuleEnd), 0.5f);
 
 	//死んでいるか
@@ -120,10 +117,11 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 		}
 	}
 
-	//更新	
-	HP -= weakPoint->TakeDamage();
+	//弱点更新	
 	weakPoint->Update();
-	UpdateCollisionData();
+	HP -= weakPoint->TakeDamage();
+
+	//HP確認
 	if (HP <= 0)
 	{
 		HP = 0;
@@ -143,19 +141,36 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 
 	//手をターゲットカメラに設定
 	targetCameraPosition = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+
 	//動き更新
 	moveChangeflg = move->Update(camera, playerPos);
-	UpdateMoveVec(movePrevPos);
+	if (moveChangeflg && nowMoveKind != MoveKind::Idle && nowMoveKind != MoveKind::FallDown)
+	{
+		attackCoolTimeflg = true;
+		attackCoolTimeFlame = 0;
+	}
 
+	//プレイヤーの近くの部位を判定
+	CheckPlayerNearParts(playerPos);
+	
 	//動きの変更確認
 	ChangeMove(playerPos);
 
 	//ポジション反映
 	MV1SetPosition(modelHandle, position);
+	
+	//moveVec取得
+	UpdateMoveVec(movePrevPos);
 
-	//メッシュ更新
+	//メッシュ情報更新
 	MV1SetupReferenceMesh(modelHandle, -1, TRUE);
 	polygonList = MV1GetReferenceMesh(modelHandle, -1, TRUE);
+
+	//あたり判定情報更新
+	UpdateCollisionData();
+
+	//プレイヤーの乗っている関係初期化
+	isPlayerRide = false;
 
 	return isDead;
 }
@@ -167,7 +182,8 @@ bool ArmEnemy::Update(VECTOR playerPos, Camera* camera)
 void ArmEnemy::OnHitObject(CollisionData* hitObjectData)
 {
 	//プレイヤーが乗っている時の処理
-	if (hitObjectData->tag == ObjectTag::PlayerWholeBody)
+	if (hitObjectData->tag == ObjectTag::PlayerWholeBody ||
+		hitObjectData->tag == ObjectTag::PlayerFoot)
 	{
 		isPlayerRide = true;
 	}
@@ -218,9 +234,37 @@ void ArmEnemy::Draw()
 	weakPoint->Draw();
 
 	//当たり判定確認用
-	DrawPolygon();
+	//DrawPolygon();
 	DrawCapsule();
-	move->Draw();
+	//move->Draw();
+}
+
+/// <summary>
+/// プレイヤーが腕のどの部位に近いか判定
+/// </summary>
+/// <param name="playerPos">プレイヤーポジション</param>
+void ArmEnemy::CheckPlayerNearParts(VECTOR playerPos)
+{
+	float nearDistance = -1;		//一番近い距離
+	std::vector<VECTOR> partsPos;	//部位ポジション
+
+	//ポジション設定
+	partsPos.push_back(VScale(VAdd(MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm), MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm)), 0.5f));	//上腕
+	partsPos.push_back(VScale(VAdd(MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm), MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Forearm)), 0.5f));		//前腕
+	partsPos.push_back(VScale(VAdd(MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand), MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle)), 0.5f));	//手
+
+	//距離判定
+	for (int i = 0; i < 3; i++)
+	{
+		float distance = calclation->LengthTwoPoint3D(playerPos, partsPos[i]);
+		if (nearDistance > distance || nearDistance == -1)
+		{
+			nearDistance = distance;
+			playerRidePlace = i;
+		}
+	}
+
+	partsPos.clear();
 }
 
 /// <summary>
@@ -256,8 +300,6 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		delete move;
 		nowMoveKind = MoveKind::DropRock;
 		move = new ArmEnemyDropRock(modelHandle, prevRotate);
-		attackCoolTimeflg = true;
-		attackCoolTimeFlame = 0;
 	}
 
 	//振り回し...プレイヤーが上腕か前腕に乗っている場合
@@ -269,7 +311,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 		move = new ArmEnemySwing(modelHandle, prevRotate);
 	}
 
-	//腕を上げる...プレイヤーが手か弱点に乗っている場合
+	//腕を上げる...プレイヤーが手に乗っている場合
 	if (nowMoveKind != MoveKind::HandUp && nowMoveKind != MoveKind::Swing && playerRideMoveStartflg && playerRidePlace == (int)PartsName::Hand || playerRidePlace == (int)PartsName::WeakPoint)
 	{
 		VECTOR prevRotate = move->GetRotate();
@@ -286,7 +328,7 @@ void ArmEnemy::ChangeMove(VECTOR playerPos)
 void ArmEnemy::UpdateMoveVec(VECTOR movePrevPos)
 {
 	capsuleStart = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Upperarm);
-	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::Hand);
+	capsuleEnd = MV1GetFramePosition(modelHandle, (int)ArmEnemyMoveBase::ArmEnemyFrameIndex::LeftHandMiddle);
 	VECTOR moveAfterPos = VAdd(capsuleStart, capsuleEnd);
 	moveAfterPos = VScale(moveAfterPos, 0.5f);
 

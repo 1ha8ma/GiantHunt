@@ -7,11 +7,12 @@ public:
 	//フレーム番号
 	enum class ArmEnemyFrameIndex :int
 	{
-		Upperarm = 16,	//上腕
-		Forearm = 18,	//前腕
-		Hand = 30,		//手(中指第二関節)
-		Finger1 = 22,	//親指
-		Finger2 = 40,	//小指の先
+		Upperarm = 16,				//上腕
+		Forearm = 17,				//前腕
+		Hand = 18,					//手
+		Finger1 = 22,				//親指
+		LeftHandMiddle = 30,		//中指第二関節
+		Finger2 = 40,				//小指の先
 	};
 
 	ArmEnemyMoveBase(int modelHandle);

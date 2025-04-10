@@ -36,7 +36,6 @@ private:
 	const int AlphaIncrease = 2;					//濃くする速さ
 	const int ChangeStageStringAlphaIncrease = 5;	//タイトルから場面選択に行く時の文字のきえる速さ
 	const float CursorSpeed = 100;					//カーソル移動速度
-	const int DemoStartflame = 1000;				//操作せずにデモプレイが始まるフレーム
 
 	//他クラス
 	Input* input;
@@ -53,5 +52,4 @@ private:
 	bool canInputStick;			//スティック入力可能
 	bool stateChange;			//タイトル内のステート変更
 	int stringAlpha;			//文字の透明度
-	int demoStartflame;			//デモ開始フレーム
 };
